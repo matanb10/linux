@@ -41,6 +41,7 @@
 #include <linux/mutex.h>
 #include <linux/completion.h>
 #include <linux/cdev.h>
+#include <linux/rwsem.h>
 
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_umem.h>
@@ -82,6 +83,8 @@
  * a reference is taken when a CQ is created that uses the file, and
  * released when the CQ is destroyed.
  */
+
+long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
 
 struct ib_uverbs_device {
 	atomic_t				refcount;
