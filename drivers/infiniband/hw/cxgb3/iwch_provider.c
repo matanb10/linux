@@ -1361,10 +1361,14 @@ static void get_dev_fw_ver_str(struct ib_device *ibdev, char *str,
 	snprintf(str, str_len, "%s", info.fw_version);
 }
 
-DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
-
 int iwch_register_device(struct iwch_dev *dev)
 {
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 	int ret;
 	int i;
 
@@ -1456,10 +1460,16 @@ int iwch_register_device(struct iwch_dev *dev)
 	memcpy(dev->ibdev.iwcm->ifname, dev->rdev.t3cdev_p->lldev->name,
 	       sizeof(dev->ibdev.iwcm->ifname));
 
-	dev->ibdev.specs_root = (struct uverbs_root *)&root;
+	dev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+						       root_spec);
+	if (IS_ERR(dev->ibdev.specs_root)) {
+		ret = PTR_ERR(dev->ibdev.specs_root);
+		goto bail1;
+	}
+
 	ret = ib_register_device(&dev->ibdev, NULL);
 	if (ret)
-		goto bail1;
+		goto dealloc_spec;
 
 	for (i = 0; i < ARRAY_SIZE(iwch_class_attributes); ++i) {
 		ret = device_create_file(&dev->ibdev.dev,
@@ -1471,6 +1481,8 @@ int iwch_register_device(struct iwch_dev *dev)
 	return 0;
 bail2:
 	ib_unregister_device(&dev->ibdev);
+dealloc_spec:
+	uverbs_specs_free(dev->ibdev.specs_root);
 bail1:
 	kfree(dev->ibdev.iwcm);
 	return ret;
@@ -1485,6 +1497,7 @@ void iwch_unregister_device(struct iwch_dev *dev)
 		device_remove_file(&dev->ibdev.dev,
 				   iwch_class_attributes[i]);
 	ib_unregister_device(&dev->ibdev);
+	uverbs_specs_free(dev->ibdev.specs_root);
 	kfree(dev->ibdev.iwcm);
 	return;
 }
