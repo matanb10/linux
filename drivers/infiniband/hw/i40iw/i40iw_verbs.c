@@ -2708,6 +2708,7 @@ static void i40iw_unregister_rdma_device(struct i40iw_ib_device *iwibdev)
 		device_remove_file(&iwibdev->ibdev.dev,
 				   i40iw_dev_attributes[i]);
 	ib_unregister_device(&iwibdev->ibdev);
+	uverbs_specs_free(iwibdev->ibdev.specs_root);
 }
 
 /**
@@ -2725,8 +2726,6 @@ void i40iw_destroy_rdma_device(struct i40iw_ib_device *iwibdev)
 	ib_dealloc_device(&iwibdev->ibdev);
 }
 
-DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
-
 /**
  * i40iw_register_rdma_device - register iwarp device to IB
  * @iwdev: iwarp device
@@ -2735,16 +2734,28 @@ int i40iw_register_rdma_device(struct i40iw_device *iwdev)
 {
 	int i, ret;
 	struct i40iw_ib_device *iwibdev;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 
 	iwdev->iwibdev = i40iw_init_rdma_device(iwdev);
 	if (!iwdev->iwibdev)
 		return -ENOMEM;
 	iwibdev = iwdev->iwibdev;
 
-	iwibdev->ibdev.specs_root = (struct uverbs_root *)&root;
-	ret = ib_register_device(&iwibdev->ibdev, NULL);
-	if (ret)
+	iwibdev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+							   root_spec);
+	if (IS_ERR(iwibdev->ibdev.specs_root))
 		goto error;
+
+	ret = ib_register_device(&iwibdev->ibdev, NULL);
+	if (ret) {
+		uverbs_specs_free(iwibdev->ibdev.specs_root);
+		goto error;
+	}
 
 	for (i = 0; i < ARRAY_SIZE(i40iw_dev_attributes); ++i) {
 		ret =
@@ -2756,6 +2767,7 @@ int i40iw_register_rdma_device(struct i40iw_device *iwdev)
 				device_remove_file(&iwibdev->ibdev.dev, i40iw_dev_attributes[i]);
 			}
 			ib_unregister_device(&iwibdev->ibdev);
+			uverbs_specs_free(iwibdev->ibdev.specs_root);
 			goto error;
 		}
 	}
