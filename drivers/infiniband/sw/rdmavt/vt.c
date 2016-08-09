@@ -715,8 +715,6 @@ static noinline int check_support(struct rvt_dev_info *rdi, int verb)
 	return 0;
 }
 
-DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
-
 /**
  * rvt_register_device - register a driver
  * @rdi: main dev structure for all of rdmavt operations
@@ -729,6 +727,10 @@ DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
 int rvt_register_device(struct rvt_dev_info *rdi)
 {
 	int ret = 0, i;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {.types = &uverbs_common_types,
+			.group_id = 0},
+	};
 
 	if (!rdi)
 		return -EINVAL;
@@ -829,17 +831,27 @@ int rvt_register_device(struct rvt_dev_info *rdi)
 	rdi->ibdev.num_comp_vectors = 1;
 
 	/* We are now good to announce we exist */
-	rdi->ibdev.specs_root = (struct uverbs_root *)&root;
+	rdi->ibdev.specs_root =
+		uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+				       root_spec);
+	if (IS_ERR(rdi->ibdev.specs_root)) {
+		ret = PTR_ERR(rdi->ibdev.specs_root);
+		goto bail_cq;
+	}
+
 	ret =  ib_register_device(&rdi->ibdev, rdi->driver_f.port_callback);
 	if (ret) {
 		rvt_pr_err(rdi, "Failed to register driver with ib core.\n");
-		goto bail_cq;
+		goto bail_dealloc_specs;
 	}
 
 	rvt_create_mad_agents(rdi);
 
 	rvt_pr_info(rdi, "Registration with rdmavt done.\n");
 	return ret;
+
+bail_dealloc_specs:
+	uverbs_specs_free(rdi->ibdev.specs_root);
 
 bail_cq:
 	rvt_cq_exit(rdi);
@@ -867,6 +879,7 @@ void rvt_unregister_device(struct rvt_dev_info *rdi)
 	rvt_free_mad_agents(rdi);
 
 	ib_unregister_device(&rdi->ibdev);
+	uverbs_specs_free(rdi->ibdev.specs_root);
 	rvt_cq_exit(rdi);
 	rvt_mr_exit(rdi);
 	rvt_qp_exit(rdi);
