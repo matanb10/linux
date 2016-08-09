@@ -116,10 +116,15 @@ static void get_dev_fw_str(struct ib_device *device, char *str,
 	snprintf(str, str_len, "%s", &dev->attr.fw_ver[0]);
 }
 
-DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
-
 static int ocrdma_register_device(struct ocrdma_dev *dev)
 {
+	int ret;
+	static const struct uverbs_root_spec root_spec[] = {
+	     [0] = {
+	     .types = &uverbs_common_types,
+	     .group_id = 0
+			},
+	};
 	strlcpy(dev->ibdev.name, "ocrdma%d", IB_DEVICE_NAME_MAX);
 	ocrdma_get_guid(dev, (u8 *)&dev->ibdev.node_guid);
 	BUILD_BUG_ON(sizeof(OCRDMA_NODE_DESC) > IB_DEVICE_NODE_DESC_MAX);
@@ -221,8 +226,15 @@ static int ocrdma_register_device(struct ocrdma_dev *dev)
 		dev->ibdev.destroy_srq = ocrdma_destroy_srq;
 		dev->ibdev.post_srq_recv = ocrdma_post_srq_recv;
 	}
-	dev->ibdev.specs_root = (struct uverbs_root *)&root;
-	return ib_register_device(&dev->ibdev, NULL);
+	dev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+						       root_spec);
+	if (IS_ERR(dev->ibdev.specs_root))
+		return PTR_ERR(dev->ibdev.specs_root);
+
+	ret = ib_register_device(&dev->ibdev, NULL);
+	if (ret)
+		uverbs_specs_free(dev->ibdev.specs_root);
+	return ret;
 }
 
 static int ocrdma_alloc_resources(struct ocrdma_dev *dev)
@@ -385,6 +397,7 @@ static void ocrdma_remove(struct ocrdma_dev *dev)
 	cancel_delayed_work_sync(&dev->eqd_work);
 	ocrdma_remove_sysfiles(dev);
 	ib_unregister_device(&dev->ibdev);
+	uverbs_specs_free(dev->ibdev.specs_root);
 
 	ocrdma_rem_port_stats(dev);
 	ocrdma_free_resources(dev);
