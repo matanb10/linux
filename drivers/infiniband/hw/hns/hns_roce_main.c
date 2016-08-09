@@ -421,9 +421,8 @@ static void hns_roce_unregister_device(struct hns_roce_dev *hr_dev)
 	unregister_inetaddr_notifier(&iboe->nb_inet);
 	unregister_netdevice_notifier(&iboe->nb);
 	ib_unregister_device(&hr_dev->ib_dev);
+	uverbs_specs_free(hr_dev->ib_dev.specs_root);
 }
-
-DECLARE_UVERBS_TYPES_GROUP(root, &uverbs_common_types);
 
 static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
 {
@@ -431,6 +430,12 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
 	struct hns_roce_ib_iboe *iboe = NULL;
 	struct ib_device *ib_dev = NULL;
 	struct device *dev = &hr_dev->pdev->dev;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 
 	iboe = &hr_dev->iboe;
 	spin_lock_init(&iboe->lock);
@@ -508,11 +513,15 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
 	/* OTHERS */
 	ib_dev->get_port_immutable	= hns_roce_port_immutable;
 
-	dev->ib_dev.specs_root = (struct uverbs_root *)&root;
+	ib_dev->specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+						    root_spec);
+	if (IS_ERR(ibdev->specs_root))
+		return PTR_ERR(ibdev->specs_root);
+
 	ret = ib_register_device(ib_dev, NULL);
 	if (ret) {
 		dev_err(dev, "ib_register_device failed!\n");
-		return ret;
+		goto dealloc_spec;
 	}
 
 	ret = hns_roce_setup_mtu_mac(hr_dev);
@@ -532,6 +541,9 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
 
 error_failed_setup_mtu_mac:
 	ib_unregister_device(ib_dev);
+
+dealloc_spec:
+	uverbs_specs_free(ib_dev->specs_root);
 
 	return ret;
 }
