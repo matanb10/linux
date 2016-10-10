@@ -84,7 +84,13 @@
  * released when the CQ is destroyed.
  */
 
+struct ib_uverbs_ioctl_hdr;
 long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
+long ib_uverbs_cmd_verbs(struct ib_device *ib_dev,
+			 struct ib_uverbs_file *file,
+			 struct ib_uverbs_ioctl_hdr *hdr,
+			 void __user *buf,
+			 bool w_legacy);
 
 struct ib_uverbs_device {
 	atomic_t				refcount;
