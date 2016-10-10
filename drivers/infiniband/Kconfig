@@ -41,6 +41,13 @@ config INFINIBAND_EXP_USER_ACCESS
 	  IOCTL based ABI support for Infiniband. This allows userspace
 	  to invoke the experimental IOCTL based ABI.
 
+config INFINIBAND_USE_IOCTL_BACKWARD_COMP
+	bool "Use IOCTL parsing for write commands"
+	depends on INFINIBAND_USER_ACCESS
+	---help---
+	  Transform supported write commands to IOCTL commands and
+	  execute them. Serialize the response back to the write schema.
+
 config INFINIBAND_USER_MEM
 	bool
 	depends on INFINIBAND_USER_ACCESS != n

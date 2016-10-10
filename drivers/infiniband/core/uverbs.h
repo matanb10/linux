@@ -46,6 +46,7 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_umem.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/rdma_user_ioctl.h>
 
 #define INIT_UDATA(udata, ibuf, obuf, ilen, olen)			\
 	do {								\
@@ -222,6 +223,10 @@ void ib_uverbs_detach_umcast(struct ib_qp *qp,
 			     struct ib_uqp_object *uobj);
 
 long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
+long ib_uverbs_cmd_verbs(struct ib_device *ib_dev, struct ib_uverbs_file *file,
+			 struct ib_uverbs_ioctl_hdr *hdr, void __user *buf,
+			 bool w_legacy);
+
 
 struct ib_uverbs_flow_spec {
 	union {
