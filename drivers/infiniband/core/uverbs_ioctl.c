@@ -41,7 +41,8 @@ static int uverbs_process_attr(struct ib_device *ibdev,
 			       u16 attr_id,
 			       const struct uverbs_attr_spec_group *attr_spec_group,
 			       struct uverbs_attr_array *attr_array,
-			       struct ib_uverbs_attr __user *uattr_ptr)
+			       struct ib_uverbs_attr __user *uattr_ptr,
+			       bool w_legacy)
 {
 	const struct uverbs_attr_spec *spec;
 	struct uverbs_attr *e;
@@ -102,11 +103,15 @@ static int uverbs_process_attr(struct ib_device *ibdev,
 		if (spec->obj.access == UVERBS_ACCESS_NEW) {
 			u64 id = o_attr->uobject->id;
 
-			if (put_user(id, &o_attr->uattr->data)) {
-				uverbs_finalize_object(o_attr->uobject,
-						       UVERBS_ACCESS_NEW,
-						       false);
-				return -EFAULT;
+			if (!w_legacy) {
+				if (put_user(id, &o_attr->uattr->data)) {
+					uverbs_finalize_object(o_attr->uobject,
+							       UVERBS_ACCESS_NEW,
+							       false);
+					return -EFAULT;
+				}
+			} else {
+				o_attr->uattr->data = id;
 			}
 		}
 
@@ -125,7 +130,8 @@ static int uverbs_uattrs_process(struct ib_device *ibdev,
 				 size_t num_uattrs,
 				 const struct uverbs_action *action,
 				 struct uverbs_attr_array *attr_array,
-				 struct ib_uverbs_attr __user *uattr_ptr)
+				 struct ib_uverbs_attr __user *uattr_ptr,
+				 bool w_legacy)
 {
 	size_t i;
 	int ret = 0;
@@ -150,7 +156,7 @@ static int uverbs_uattrs_process(struct ib_device *ibdev,
 		attr_spec_group = action->attr_groups[ret];
 		ret = uverbs_process_attr(ibdev, ucontext, uattr, attr_id,
 					  attr_spec_group, &attr_array[ret],
-					  uattr_ptr++);
+					  uattr_ptr++, w_legacy);
 		if (ret) {
 			uverbs_finalize_objects(attr_array, num_given_groups,
 						action, false);
@@ -186,14 +192,15 @@ static int uverbs_handle_action(struct ib_uverbs_attr __user *uattr_ptr,
 				struct ib_device *ibdev,
 				struct ib_uverbs_file *ufile,
 				const struct uverbs_action *action,
-				struct uverbs_attr_array *attr_array)
+				struct uverbs_attr_array *attr_array,
+				bool w_legacy)
 {
 	int ret;
 	int num_given_groups;
 
 	num_given_groups = uverbs_uattrs_process(ibdev, ufile->ucontext, uattrs,
 						 num_uattrs, action, attr_array,
-						 uattr_ptr);
+						 uattr_ptr, w_legacy);
 	if (num_given_groups <= 0)
 		return -EINVAL;
 
@@ -213,7 +220,8 @@ cleanup:
 long ib_uverbs_cmd_verbs(struct ib_device *ib_dev,
 			 struct ib_uverbs_file *file,
 			 struct ib_uverbs_ioctl_hdr *hdr,
-			 void __user *buf)
+			 void __user *buf,
+			 bool w_legacy)
 {
 	const struct uverbs_type *type;
 	const struct uverbs_action *action;
@@ -283,15 +291,21 @@ long ib_uverbs_cmd_verbs(struct ib_device *ib_dev,
 		curr_bitmap += BITS_TO_LONGS(curr_num_attrs);
 	}
 
-	err = copy_from_user(ctx->uattrs, buf,
-			     sizeof(*ctx->uattrs) * hdr->num_attrs);
-	if (err) {
-		err = -EFAULT;
-		goto out;
+	if (w_legacy) {
+		memcpy(ctx->uattrs, buf,
+		       sizeof(*ctx->uattrs) * hdr->num_attrs);
+	} else {
+		err = copy_from_user(ctx->uattrs, buf,
+				     sizeof(*ctx->uattrs) * hdr->num_attrs);
+		if (err) {
+			err = -EFAULT;
+			goto out;
+		}
 	}
 
 	err = uverbs_handle_action(buf, ctx->uattrs, hdr->num_attrs, ib_dev,
-				   file, action, ctx->uverbs_attr_array);
+				   file, action, ctx->uverbs_attr_array,
+				   w_legacy);
 out:
 #ifdef UVERBS_OPTIMIZE_USING_STACK_SZ
 	if (ctx_size > UVERBS_OPTIMIZE_USING_STACK_SZ)
@@ -336,7 +350,8 @@ long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 
 		err = ib_uverbs_cmd_verbs(ib_dev, file, &hdr,
-					  (__user void *)arg + sizeof(hdr));
+					  (__user void *)arg + sizeof(hdr),
+					  false);
 	} else {
 		err = -ENOIOCTLCMD;
 	}
