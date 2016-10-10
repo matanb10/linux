@@ -37,6 +37,7 @@
 #include <linux/fs.h>
 #include <linux/slab.h>
 #include <linux/sched.h>
+#include <rdma/rdma_user_ioctl.h>
 
 #include <linux/uaccess.h>
 
@@ -164,6 +165,101 @@ ib_uverbs_lookup_comp_file(int fd, struct ib_ucontext *context)
 			    uobj_file.uobj);
 }
 
+#if IS_ENABLED(CONFIG_INFINIBAND_USE_IOCTL_BACKWARD_COMP)
+static int get_vendor_num_attrs(size_t cmd, size_t resp, int in_len,
+				int out_len)
+{
+	return !!(cmd != in_len) + !!(resp != out_len);
+}
+
+static void init_ioctl_hdr(struct ib_uverbs_ioctl_hdr *hdr,
+			   struct ib_device *ib_dev,
+			   size_t num_attrs,
+			   u16 object_type,
+			   u16 action)
+{
+	hdr->length = sizeof(*hdr) + num_attrs * sizeof(hdr->attrs[0]);
+	hdr->flags = 0;
+	hdr->reserved = 0;
+	hdr->object_type = object_type;
+	hdr->action = action;
+	hdr->num_attrs = num_attrs;
+}
+
+static void fill_attr_ptr(struct ib_uverbs_attr *attr, u16 attr_id, u16 len,
+			  const void * __user source)
+{
+	attr->attr_id = attr_id;
+	attr->len = len;
+	attr->reserved = 0;
+	attr->data = (__u64)source;
+}
+
+static void fill_hw_attrs(struct ib_uverbs_attr *hw_attrs,
+			  const void __user *in_buf,
+			  const void __user *out_buf,
+			  size_t cmd_size, size_t resp_size,
+			  int in_len, int out_len)
+{
+	if (in_len > cmd_size)
+		fill_attr_ptr(&hw_attrs[UVERBS_UHW_IN],
+			      UVERBS_UHW_IN | UVERBS_UDATA_DRIVER_DATA_FLAG,
+			      in_len - cmd_size,
+			      in_buf + cmd_size);
+
+	if (out_len > resp_size)
+		fill_attr_ptr(&hw_attrs[UVERBS_UHW_OUT],
+			      UVERBS_UHW_OUT | UVERBS_UDATA_DRIVER_DATA_FLAG,
+			      out_len - resp_size,
+			      out_buf + resp_size);
+}
+
+ssize_t ib_uverbs_get_context(struct ib_uverbs_file *file,
+			      struct ib_device *ib_dev,
+			      const char __user *buf,
+			      int in_len, int out_len)
+{
+	struct ib_uverbs_get_context      cmd;
+	struct ib_uverbs_get_context_resp resp;
+	struct {
+		struct ib_uverbs_ioctl_hdr hdr;
+		struct ib_uverbs_attr  cmd_attrs[GET_CONTEXT_RESP + 1];
+		struct ib_uverbs_attr  hw_attrs[UVERBS_UHW_OUT + 1];
+	} ioctl_cmd;
+	long err;
+
+	if (out_len < sizeof(resp))
+		return -ENOSPC;
+
+	if (copy_from_user(&cmd, buf, sizeof(cmd)))
+		return -EFAULT;
+
+	init_ioctl_hdr(&ioctl_cmd.hdr, ib_dev, ARRAY_SIZE(ioctl_cmd.cmd_attrs) +
+		       get_vendor_num_attrs(sizeof(cmd), sizeof(resp), in_len,
+					    out_len),
+		       UVERBS_TYPE_DEVICE, UVERBS_DEVICE_ALLOC_CONTEXT);
+
+	/*
+	 * We have to have a direct mapping between the new format and the old
+	 * format. It's easily achievable with new attributes.
+	 */
+	fill_attr_ptr(&ioctl_cmd.cmd_attrs[GET_CONTEXT_RESP],
+		      GET_CONTEXT_RESP, sizeof(resp),
+		      (const void * __user)cmd.response);
+	fill_hw_attrs(ioctl_cmd.hw_attrs, buf,
+		      (const void * __user)cmd.response, sizeof(cmd),
+		      sizeof(resp), in_len, out_len);
+
+	err = ib_uverbs_cmd_verbs(ib_dev, file, &ioctl_cmd.hdr,
+				  ioctl_cmd.cmd_attrs, true);
+
+	if (err < 0)
+		goto err;
+
+err:
+	return err == 0 ? in_len : err;
+}
+#else
 ssize_t ib_uverbs_get_context(struct ib_uverbs_file *file,
 			      struct ib_device *ib_dev,
 			      const char __user *buf,
@@ -262,6 +358,7 @@ err:
 	mutex_unlock(&file->mutex);
 	return ret;
 }
+#endif
 
 void uverbs_copy_query_dev_fields(struct ib_device *ib_dev,
 				  struct ib_uverbs_query_device_resp *resp,
