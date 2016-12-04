@@ -358,4 +358,18 @@ static inline int uverbs_copy_to(struct uverbs_attr_array *attr_array,
 			 (attr_array)->attrs[idx].ptr_attr.len) ?	\
 	   -EFAULT : 0)) : -ENOENT)
 
+/* =================================================
+ *              Types infrastructure
+ * =================================================
+ */
+
+struct uverbs_root_spec {
+	const struct uverbs_type_group	*types;
+	u8				group_id;
+};
+
+struct uverbs_root *uverbs_alloc_spec_tree(unsigned int num_trees,
+					   const struct uverbs_root_spec *trees);
+void uverbs_specs_free(struct uverbs_root *root);
+
 #endif
