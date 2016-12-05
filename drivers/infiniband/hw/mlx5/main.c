@@ -3040,6 +3040,8 @@ static void *mlx5_ib_add(struct mlx5_core_dev *mdev)
 	static const struct uverbs_root_spec root_spec[] = {
 		[0] = {.types = &uverbs_common_types,
 			.group_id = 0},
+		[1] = {.types = &mlx5_common_types,
+			.group_id = 0},
 	};
 
 	port_type_cap = MLX5_CAP_GEN(mdev, port_type);

@@ -45,6 +45,7 @@
 #include <linux/mlx5/transobj.h>
 #include <rdma/ib_user_verbs.h>
 #include <rdma/mlx5-abi.h>
+#include <rdma/uverbs_ioctl.h>
 
 #define mlx5_ib_dbg(dev, format, arg...)				\
 pr_debug("%s:%s:%d:(pid %d): " format, (dev)->ib_dev.name, __func__,	\
@@ -915,6 +916,7 @@ int mlx5_ib_gsi_post_recv(struct ib_qp *qp, struct ib_recv_wr *wr,
 void mlx5_ib_gsi_pkey_change(struct mlx5_ib_gsi_qp *gsi);
 
 int mlx5_ib_generate_wc(struct ib_cq *ibcq, struct ib_wc *wc);
+extern const struct uverbs_type_group mlx5_common_types;
 
 static inline void init_query_mad(struct ib_smp *mad)
 {
