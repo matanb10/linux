@@ -959,8 +959,7 @@ DECLARE_UVERBS_TYPE(uverbs_type_cq,
 		    &UVERBS_ACTIONS(
 			ADD_UVERBS_ACTION(UVERBS_CQ_CREATE,
 					  uverbs_create_cq_handler,
-					  &uverbs_create_cq_spec,
-					  &uverbs_uhw_compat_spec)));
+					  &uverbs_create_cq_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_qp,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_uqp_object), 0,
@@ -968,15 +967,13 @@ DECLARE_UVERBS_TYPE(uverbs_type_qp,
 		    &UVERBS_ACTIONS(
 			ADD_UVERBS_ACTION(UVERBS_QP_CREATE,
 					  uverbs_create_qp_handler,
-					  &uverbs_create_qp_spec,
-					  &uverbs_uhw_compat_spec),
+					  &uverbs_create_qp_spec),
 			ADD_UVERBS_ACTION(UVERBS_QP_CREATE_XRC_TGT,
 					  uverbs_create_qp_xrc_tgt_handler,
 					  &uverbs_create_qp_xrc_tgt_spec),
 			ADD_UVERBS_ACTION(UVERBS_QP_MODIFY,
 					  uverbs_modify_qp_handler,
-					  &uverbs_modify_qp_spec,
-					  &uverbs_uhw_compat_spec)),
+					  &uverbs_modify_qp_spec)),
 );
 
 DECLARE_UVERBS_TYPE(uverbs_type_mw,
@@ -989,8 +986,7 @@ DECLARE_UVERBS_TYPE(uverbs_type_mr,
 		    &UVERBS_TYPE_ALLOC_IDR(1, uverbs_free_mr),
 		    &UVERBS_ACTIONS(
 			ADD_UVERBS_ACTION(UVERBS_MR_REG, uverbs_reg_mr_handler,
-					  &uverbs_reg_mr_spec,
-					  &uverbs_uhw_compat_spec),
+					  &uverbs_reg_mr_spec),
 			ADD_UVERBS_ACTION(UVERBS_MR_DEREG,
 					  uverbs_dereg_mr_handler,
 					  &uverbs_dereg_mr_spec)));
@@ -1034,19 +1030,16 @@ DECLARE_UVERBS_TYPE(uverbs_type_pd,
 		    &UVERBS_ACTIONS(
 			ADD_UVERBS_ACTION(UVERBS_PD_ALLOC,
 					  uverbs_alloc_pd_handler,
-					  &uverbs_alloc_pd_spec,
-					  &uverbs_uhw_compat_spec)));
+					  &uverbs_alloc_pd_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_device, NULL,
 		    &UVERBS_ACTIONS(
 			ADD_UVERBS_CTX_ACTION(UVERBS_DEVICE_ALLOC_CONTEXT,
 					      uverbs_get_context,
-					      &uverbs_get_context_spec,
-					      &uverbs_uhw_compat_spec),
+					      &uverbs_get_context_spec),
 			ADD_UVERBS_ACTION(UVERBS_DEVICE_QUERY,
 					  &uverbs_query_device_handler,
-					  &uverbs_query_device_spec,
-					  &uverbs_uhw_compat_spec)));
+					  &uverbs_query_device_spec)));
 
 DECLARE_UVERBS_TYPES(uverbs_common_types,
 		     ADD_UVERBS_TYPE(UVERBS_TYPE_DEVICE, uverbs_type_device),
