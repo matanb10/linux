@@ -229,7 +229,7 @@ static void ib_uverbs_comp_dev(struct ib_uverbs_device *dev)
 	complete(&dev->comp);
 }
 
-static void ib_uverbs_release_file(struct kref *ref)
+void ib_uverbs_release_file(struct kref *ref)
 {
 	struct ib_uverbs_file *file =
 		container_of(ref, struct ib_uverbs_file, ref);
@@ -1115,7 +1115,6 @@ static void ib_uverbs_free_hw_resources(struct ib_uverbs_device *uverbs_dev,
 		mutex_lock(&file->cleanup_mutex);
 		ucontext = file->ucontext;
 		file->ucontext = NULL;
-		mutex_unlock(&file->cleanup_mutex);
 
 		/* At this point ib_uverbs_close cannot be running
 		 * ib_uverbs_cleanup_ucontext
@@ -1130,6 +1129,7 @@ static void ib_uverbs_free_hw_resources(struct ib_uverbs_device *uverbs_dev,
 			ib_dev->disassociate_ucontext(ucontext);
 			ib_uverbs_cleanup_ucontext(file, ucontext, true);
 		}
+		mutex_unlock(&file->cleanup_mutex);
 
 		mutex_lock(&uverbs_dev->lists_mutex);
 		kref_put(&file->ref, ib_uverbs_release_file);
