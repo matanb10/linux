@@ -93,6 +93,28 @@ struct uverbs_obj_idr_type {
 	void (*hot_unplug)(struct ib_uobject *uobj);
 };
 
+struct uverbs_obj_fd_type {
+	/*
+	 * In fd based objects, uverbs_obj_type_ops points to a generic
+	 * fd operations. In order to specialize the underlying types (e.g.
+	 * completion_channel), we use obj_size, fops, name and flags for fd
+	 * creation and hot_unplug for specific release callback.
+	 */
+	struct uverbs_obj_type  type;
+	size_t			obj_size;
+	void (*hot_unplug)(struct ib_uobject_file *uobj_file,
+			   bool device_removed);
+	/*
+	 * fd objects are usually used within fops. Since we want one release
+	 * function for all kref_put on this object, we get a release_memory
+	 * callback. The generic layer uses this callback as well.
+	 */
+	void (*release_memory)(struct kref *kref);
+	const struct file_operations	*fops;
+	const char			*name;
+	int				flags;
+};
+
 extern const struct uverbs_obj_type_ops uverbs_idr_ops;
 
 #define UVERBS_BUILD_BUG_ON(cond) (sizeof(char[1 - 2 * !!(cond)]) -	\
