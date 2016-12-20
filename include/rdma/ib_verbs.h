@@ -1333,6 +1333,7 @@ struct ib_ucontext_lock;
 
 struct ib_ucontext {
 	struct ib_device       *device;
+	struct ib_uverbs_file  *ufile;
 	struct list_head	pd_list;
 	struct list_head	mr_list;
 	struct list_head	mw_list;
@@ -1374,7 +1375,7 @@ struct ib_uobject {
 	struct ib_ucontext     *context;	/* associated user context */
 	void		       *object;		/* containing object */
 	struct list_head	list;		/* link to context's list */
-	int			id;		/* index into kernel idr */
+	int			id;		/* index into kernel idr/fd */
 	struct kref		ref;
 	struct rw_semaphore	mutex;		/* protects .live */
 	struct rw_semaphore	usecnt;		/* protects exclusive access */
@@ -1382,6 +1383,7 @@ struct ib_uobject {
 	int			live;
 
 	const struct uverbs_type_alloc_action *type;
+	struct ib_ucontext_lock	*uobjects_lock;
 };
 
 struct ib_udata {
