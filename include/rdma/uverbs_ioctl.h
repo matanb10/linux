@@ -68,6 +68,15 @@ struct uverbs_obj_idr_type {
 	void (*hot_unplug)(struct ib_uobject *uobj);
 };
 
+struct uverbs_obj_fd_type {
+	struct uverbs_obj_type  type;
+	size_t			obj_size;
+	void (*hot_unplug)(struct ib_uobject *uobj);
+	const struct file_operations	*fops;
+	const char			*name;
+	int				flags;
+};
+
 struct uverbs_type {
 	const struct uverbs_obj_type   *alloc;
 };
