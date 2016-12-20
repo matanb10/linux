@@ -1336,6 +1336,7 @@ struct ib_ucontext {
 	struct ib_uverbs_file  *ufile;
 	int			closing;
 
+	/* Opened FDs could still use the lock even after the context is dead */
 	struct kref             ref;
 	/* locking the uobjects_list */
 	struct mutex		lock;
@@ -3396,4 +3397,5 @@ void ib_drain_qp(struct ib_qp *qp);
 
 int ib_resolve_eth_dmac(struct ib_device *device,
 			struct ib_ah_attr *ah_attr);
+void uverbs_release_ucontext(struct ib_ucontext *ucontext);
 #endif /* IB_VERBS_H */
