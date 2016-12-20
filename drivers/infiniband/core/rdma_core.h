@@ -52,4 +52,11 @@
 void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext, bool device_removed);
 void uverbs_initialize_ucontext(struct ib_ucontext *ucontext);
 
+/*
+ * Indicate this fd is no longer used by this consumer, but its memory isn't
+ * released yet. The memory shall be released by calling kfree on the file's
+ * private pointer.
+ */
+void uverbs_close_fd(struct file *f);
+
 #endif /* RDMA_CORE_H */
