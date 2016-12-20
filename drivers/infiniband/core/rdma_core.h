@@ -52,4 +52,13 @@
 void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext, bool device_removed);
 void uverbs_initialize_ucontext(struct ib_ucontext *ucontext);
 
+/*
+ * Indicate this fd is no longer used by this consumer, but its memory isn't
+ * released yet. When the last reference is put, we release the memory.
+ * After this call is executed, calling uverbs_uobject_get or uverbs_uobject_out
+ * isn't allowed.
+ * This must be called from the release fop of the file!
+ */
+void uverbs_close_fd(struct file *f);
+
 #endif /* RDMA_CORE_H */

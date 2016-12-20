@@ -175,6 +175,76 @@ static void uverbs_uobject_remove(struct ib_uobject *uobject)
 	mutex_unlock(&uobject->context->uobjects_lock);
 }
 
+static struct ib_uobject *alloc_begin_fd_uobject(const struct uverbs_obj_type *type,
+						 struct ib_ucontext *ucontext)
+{
+	const struct uverbs_obj_fd_type *fd_type =
+		container_of(type, struct uverbs_obj_fd_type, type);
+	int new_fd;
+	struct ib_uobject *uobj;
+	struct ib_uobject_file *uobj_file;
+	struct file *filp;
+
+	new_fd = get_unused_fd_flags(O_CLOEXEC);
+	if (new_fd < 0)
+		return ERR_PTR(new_fd);
+
+	uobj = alloc_uobj(ucontext, type);
+	if (IS_ERR(uobj)) {
+		put_unused_fd(new_fd);
+		return uobj;
+	}
+
+	uobj_file = container_of(uobj, struct ib_uobject_file, uobj);
+	filp = anon_inode_getfile(fd_type->name,
+				  fd_type->fops,
+				  uobj_file,
+				  fd_type->flags);
+	if (IS_ERR(filp)) {
+		put_unused_fd(new_fd);
+		uverbs_uobject_put(uobj);
+		return (void *)filp;
+	}
+
+	uobj_file->uobj.id = new_fd;
+	uobj_file->uobj.object = filp;
+	uobj_file->ufile = ucontext->ufile;
+	INIT_LIST_HEAD(&uobj->list);
+	kref_get(&uobj_file->ufile->ref);
+
+	return uobj;
+}
+
+static struct ib_uobject *lookup_get_fd_uobject(const struct uverbs_obj_type *type,
+						struct ib_ucontext *ucontext,
+						int id, bool write)
+{
+	struct file *f;
+	struct ib_uobject *uobject;
+	const struct uverbs_obj_fd_type *fd_type =
+		container_of(type, struct uverbs_obj_fd_type, type);
+
+	if (write)
+		return ERR_PTR(-EOPNOTSUPP);
+
+	f = fget(id);
+	if (!f)
+		return ERR_PTR(-EBADF);
+
+	uobject = f->private_data;
+	if (f->f_op != fd_type->fops ||
+	    !uobject->context) {
+		fput(f);
+		return ERR_PTR(-EBADF);
+	}
+
+	/*
+	 * No need to protect it with a ref count, as fget increases
+	 * f_count.
+	 */
+	return uobject;
+}
+
 static void alloc_commit_idr_uobject(struct ib_uobject *uobj)
 {
 	uverbs_uobject_add(uobj);
@@ -205,6 +275,38 @@ static void lookup_put_idr_uobject(struct ib_uobject *uobj, bool write)
 		atomic_dec(&uobj->usecnt);
 	else
 		atomic_set(&uobj->usecnt, 0);
+}
+
+static void lookup_put_fd_uobject(struct ib_uobject *uobj, bool write)
+{
+	struct file *filp = uobj->object;
+
+	WARN_ON(write);
+	/* This indirectly calls uverbs_close_fd and free the object */
+	fput(filp);
+}
+
+static void alloc_commit_fd_uobject(struct ib_uobject *uobj)
+{
+	struct ib_uobject_file *uobj_file =
+		container_of(uobj, struct ib_uobject_file, uobj);
+
+	uverbs_uobject_add(&uobj_file->uobj);
+	fd_install(uobj_file->uobj.id, uobj->object);
+	/* This shouldn't be used anymore. Use the file object instead */
+	uobj_file->uobj.id = 0;
+}
+
+static void alloc_abort_fd_uobject(struct ib_uobject *uobj)
+{
+	struct ib_uobject_file *uobj_file =
+		container_of(uobj, struct ib_uobject_file, uobj);
+	struct file *filp = uobj->object;
+	int id = uobj_file->uobj.id;
+
+	/* Unsuccessful NEW */
+	fput(filp);
+	put_unused_fd(id);
 }
 
 static void remove_commit_idr_uobject(struct ib_uobject *uobj)
@@ -252,6 +354,33 @@ const struct uverbs_obj_type_class uverbs_idr_class = {
 	.needs_rcu = true,
 };
 
+static void _uverbs_close_fd(struct ib_uobject_file *uobj_file)
+{
+	mutex_lock(&uobj_file->ufile->cleanup_mutex);
+	if (uobj_file->uobj.context) {
+		uverbs_uobject_remove(&uobj_file->uobj);
+		uobj_file->uobj.context = NULL;
+	}
+	mutex_unlock(&uobj_file->ufile->cleanup_mutex);
+}
+
+void uverbs_close_fd(struct file *f)
+{
+	struct ib_uobject_file *uobj_file = f->private_data;
+
+	_uverbs_close_fd(uobj_file);
+	kref_put(&uobj_file->ufile->ref, ib_uverbs_release_file);
+	uverbs_uobject_put(&uobj_file->uobj);
+}
+
+static void remove_commit_fd_uobject(struct ib_uobject *uobj)
+{
+	struct ib_uobject_file *uobj_file =
+		container_of(uobj, struct ib_uobject_file, uobj);
+
+	_uverbs_close_fd(uobj_file);
+}
+
 void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext, bool device_removed)
 {
 	enum rdma_cleanup_reason reason = device_removed ?
@@ -264,7 +393,13 @@ void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext, bool device_removed)
 
 		/*
 		 * This shouldn't run while executing other commands on this
-		 * context.
+		 * context. Thus, the only thing we should take care of is
+		 * releasing a FD while traversing this list. The FD could be
+		 * closed and released from the _release fop of this FD.
+		 * In order to mitigate this, we add a lock.
+		 * We take and release the lock per order traversal in order
+		 * to let other threads (which might still use the FDs) chance
+		 * to run.
 		 */
 		mutex_lock(&ucontext->uobjects_lock);
 		list_for_each_entry_safe(obj, next_obj, &ucontext->uobjects,
@@ -287,4 +422,27 @@ void uverbs_initialize_ucontext(struct ib_ucontext *ucontext)
 	mutex_init(&ucontext->uobjects_lock);
 	INIT_LIST_HEAD(&ucontext->uobjects);
 }
+
+static void cleanup_fd_uobject(struct ib_uobject *uobj,
+			       enum rdma_cleanup_reason why)
+{
+	const struct uverbs_obj_fd_type *fd_type =
+		container_of(uobj->type, struct uverbs_obj_fd_type, type);
+	struct ib_uobject_file *uobj_file =
+		container_of(uobj, struct ib_uobject_file, uobj);
+
+	fd_type->context_closed(uobj_file, why);
+	uobj_file->uobj.context = NULL;
+}
+
+const struct uverbs_obj_type_class uverbs_fd_class = {
+	.alloc_begin = alloc_begin_fd_uobject,
+	.lookup_get = lookup_get_fd_uobject,
+	.alloc_commit = alloc_commit_fd_uobject,
+	.alloc_abort = alloc_abort_fd_uobject,
+	.lookup_put = lookup_put_fd_uobject,
+	.remove_commit = remove_commit_fd_uobject,
+	.cleanup = cleanup_fd_uobject,
+	.needs_rcu = false,
+};
 
