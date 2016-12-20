@@ -173,6 +173,78 @@ static struct ib_uobject *alloc_begin_idr_uobject(const struct uverbs_obj_type *
 	return uobj;
 }
 
+static struct ib_uobject *alloc_begin_fd_uobject(const struct uverbs_obj_type *type,
+						 struct ib_ucontext *ucontext)
+{
+	struct uverbs_obj_fd_type *fd_type =
+		container_of(type, struct uverbs_obj_fd_type, type);
+	int new_fd;
+	struct ib_uobject *uobj = NULL;
+	struct file *filp;
+
+	new_fd = get_unused_fd_flags(O_CLOEXEC);
+	if (new_fd < 0)
+		return ERR_PTR(new_fd);
+
+	uobj = kmalloc(fd_type->obj_size, GFP_KERNEL);
+	if (!uobj) {
+		put_unused_fd(new_fd);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	init_uobj(uobj, ucontext);
+	filp = anon_inode_getfile(fd_type->name,
+				  fd_type->fops,
+				  uobj,
+				  fd_type->flags);
+	if (IS_ERR(filp)) {
+		put_unused_fd(new_fd);
+		kfree(uobj);
+		return (void *)filp;
+	}
+
+	/*
+	 * user_handle should be filled by the user,
+	 * the list is filled in the commit operation.
+	 */
+	uobj->type = type;
+	uobj->id = new_fd;
+	uobj->object = filp;
+	kref_init(&uobj->ref);
+
+	return uobj;
+}
+
+static struct ib_uobject *lookup_get_fd_uobject(const struct uverbs_obj_type *type,
+						struct ib_ucontext *ucontext,
+						int id, bool write)
+{
+	struct file *f;
+	struct ib_uobject *uobject;
+	struct uverbs_obj_fd_type *fd_type =
+		container_of(type, struct uverbs_obj_fd_type, type);
+
+	if (write)
+		return ERR_PTR(-EOPNOTSUPP);
+
+	f = fget(id);
+	if (!f)
+		return ERR_PTR(-EBADF);
+
+	uobject = f->private_data;
+	if (f->f_op != fd_type->fops ||
+	    !uobject->context) {
+		fput(f);
+		return ERR_PTR(-EBADF);
+	}
+
+	/*
+	 * No need to protect it with a ref count, as fget increases
+	 * f_count.
+	 */
+	return uobject;
+}
+
 static void uverbs_uobject_add(struct ib_uobject *uobject)
 {
 	mutex_lock(&uobject->context->lock);
@@ -228,6 +300,32 @@ static void lookup_put_idr_uobject(struct ib_uobject *uobj, bool write)
 		up_read(&uobj->currently_used);
 }
 
+static void lookup_put_fd_uobject(struct ib_uobject *uobj, bool write)
+{
+	struct file *filp = uobj->object;
+
+	WARN_ON(write);
+	fput(filp);
+}
+
+static void alloc_commit_fd_uobject(struct ib_uobject *uobj)
+{
+	kref_get(&uobj->context->ref);
+	uverbs_uobject_add(uobj);
+	fd_install(uobj->id, uobj->object);
+	uobj->id = 0;
+}
+
+static void alloc_abort_fd_uobject(struct ib_uobject *uobj)
+{
+	struct file *filp = uobj->object;
+
+	/* Unsuccessful NEW */
+	fput(filp);
+	put_unused_fd(uobj->id);
+	kref_put(&uobj->ref, put_uobj_ref);
+}
+
 static void destroy_commit_idr_uobject(struct ib_uobject *uobj)
 {
 	uverbs_uobject_remove(uobj, true);
@@ -240,6 +338,11 @@ static void hot_unplug_idr_uobject(struct ib_uobject *uobj)
 
 	idr_type->hot_unplug(uobj);
 	uverbs_uobject_remove(uobj, false);
+}
+
+static void destroy_commit_null_uobject(struct ib_uobject *uobj)
+{
+	WARN_ON(true);
 }
 
 struct uverbs_obj_type_ops uverbs_idr_ops = {
@@ -300,5 +403,42 @@ void uverbs_initialize_ucontext(struct ib_ucontext *ucontext)
 	mutex_init(&ucontext->lock);
 	kref_init(&ucontext->ref);
 	INIT_LIST_HEAD(&ucontext->uobjects);
+}
+
+static void uverbs_remove_fd(struct ib_uobject *uobject)
+{
+	list_del_init(&uobject->list);
+}
+
+static void hot_unplug_fd_uobject(struct ib_uobject *uobj)
+{
+	struct uverbs_obj_fd_type *fd_type =
+		container_of(uobj->type, struct uverbs_obj_fd_type, type);
+
+	fd_type->hot_unplug(uobj);
+	uverbs_remove_fd(uobj);
+	kref_put(&uobj->ref, put_uobj_ref);
+}
+
+struct uverbs_obj_type_ops uverbs_fd_ops = {
+	.alloc_begin = alloc_begin_fd_uobject,
+	.lookup_get = lookup_get_fd_uobject,
+	.alloc_commit = alloc_commit_fd_uobject,
+	.alloc_abort = alloc_abort_fd_uobject,
+	.lookup_put = lookup_put_fd_uobject,
+	.destroy_commit = destroy_commit_null_uobject,
+	.hot_unplug = hot_unplug_fd_uobject,
+};
+
+/* user should release the uobject in the release file_operation callback. */
+void uverbs_close_fd(struct file *f)
+{
+	struct ib_uobject *uobject = f->private_data;
+
+	mutex_lock(&uobject->context->lock);
+	uverbs_remove_fd(uobject);
+	mutex_unlock(&uobject->context->lock);
+	uverbs_release_ucontext(uobject->context);
+	kref_put(&uobject->ref, put_uobj_ref);
 }
 
