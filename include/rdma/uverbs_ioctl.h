@@ -36,9 +36,22 @@
 #include <linux/kernel.h>
 #include <rdma/ib_verbs.h>
 
+/*
+ * =======================================
+ *	Verbs action specifications
+ * =======================================
+ */
+
+#define UVERBS_ID_RESERVED_MASK 0xF000
+#define UVERBS_ID_RESERVED_SHIFT 12
+
 enum uverbs_attr_type {
+	UVERBS_ATTR_TYPE_NA,
+	UVERBS_ATTR_TYPE_PTR_IN,
+	UVERBS_ATTR_TYPE_PTR_OUT,
 	UVERBS_ATTR_TYPE_IDR,
 	UVERBS_ATTR_TYPE_FD,
+	UVERBS_ATTR_TYPE_FLAG,
 };
 
 enum uverbs_idr_access {
@@ -48,13 +61,24 @@ enum uverbs_idr_access {
 	UVERBS_ACCESS_DESTROY
 };
 
+enum uverbs_attr_spec_flags {
+	UVERBS_ATTR_SPEC_F_MANDATORY	= 1U << 0,
+	UVERBS_ATTR_SPEC_F_MIN_SZ	= 1U << 1,
+};
+
 struct uverbs_attr_spec {
 	enum uverbs_attr_type		type;
+	u8				flags;
 	union {
+		u16				len;
 		struct {
 			u16			obj_type;
 			u8			access;
 		} obj;
+		struct {
+			/* flags are always 64bits */
+			u64			mask;
+		} flag;
 	};
 };
 
@@ -65,6 +89,9 @@ struct uverbs_attr_spec_group {
 	unsigned long			*mandatory_attrs_bitmask;
 };
 
+struct uverbs_attr_array;
+struct ib_uverbs_file;
+
 enum uverbs_action_flags {
 	UVERBS_ACTION_FLAG_CREATE_ROOT = 1 << 0,
 };
@@ -72,6 +99,10 @@ enum uverbs_action_flags {
 struct uverbs_action {
 	const struct uverbs_attr_spec_group		**attr_groups;
 	size_t						num_groups;
+	u32 flags;
+	int (*handler)(struct ib_device *ib_dev, struct ib_uverbs_file *ufile,
+		       struct uverbs_attr_array *ctx, size_t num);
+	u16 num_child_attrs;
 };
 
 struct uverbs_type_alloc_action;
@@ -90,8 +121,15 @@ struct uverbs_type_alloc_action {
 	} fd;
 };
 
+struct uverbs_action_group {
+	size_t					num_actions;
+	const struct uverbs_action		**actions;
+};
+
 struct uverbs_type {
-	const struct uverbs_type_alloc_action   *alloc;
+	size_t					num_groups;
+	const struct uverbs_action_group	**action_groups;
+	const struct uverbs_type_alloc_action	*alloc;
 };
 
 struct uverbs_type_group {
@@ -156,6 +194,11 @@ struct uverbs_root {
  * =================================================
  */
 
+struct uverbs_ptr_attr {
+	void	* __user ptr;
+	u16		len;
+};
+
 struct uverbs_fd_attr {
 	int		fd;
 };
@@ -163,6 +206,10 @@ struct uverbs_fd_attr {
 struct uverbs_uobj_attr {
 	/*  idr handle */
 	u32	idr;
+};
+
+struct uverbs_flag_attr {
+	u64	flags;
 };
 
 struct uverbs_obj_attr {
@@ -178,7 +225,9 @@ struct uverbs_obj_attr {
 
 struct uverbs_attr {
 	union {
+		struct uverbs_ptr_attr	ptr_attr;
 		struct uverbs_obj_attr	obj_attr;
+		struct uverbs_flag_attr flag_attr;
 	};
 };
 
