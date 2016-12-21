@@ -120,6 +120,10 @@ struct uverbs_root {
 	size_t					num_groups;
 };
 
+#define DECLARE_UVERBS_TYPE(name, _type_attrs)			\
+	const struct uverbs_type name = {				\
+		.type_attrs = _type_attrs,				\
+	}
 /* =================================================
  *              Parsing infrastructure
  * =================================================

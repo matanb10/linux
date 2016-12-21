@@ -35,17 +35,17 @@
 
 #include <rdma/uverbs_types.h>
 
-extern const struct uverbs_obj_fd_type uverbs_type_attrs_comp_channel;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_cq;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_qp;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_rwq_ind_table;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_wq;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_srq;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_ah;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_flow;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_mr;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_mw;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_pd;
-extern const struct uverbs_obj_idr_type uverbs_type_attrs_xrcd;
+extern const struct uverbs_type uverbs_type_comp_channel;
+extern const struct uverbs_type uverbs_type_cq;
+extern const struct uverbs_type uverbs_type_qp;
+extern const struct uverbs_type uverbs_type_rwq_ind_table;
+extern const struct uverbs_type uverbs_type_wq;
+extern const struct uverbs_type uverbs_type_srq;
+extern const struct uverbs_type uverbs_type_ah;
+extern const struct uverbs_type uverbs_type_flow;
+extern const struct uverbs_type uverbs_type_mr;
+extern const struct uverbs_type uverbs_type_mw;
+extern const struct uverbs_type uverbs_type_pd;
+extern const struct uverbs_type uverbs_type_xrcd;
 #endif
 

@@ -123,6 +123,7 @@ extern const struct uverbs_obj_type_ops uverbs_fd_ops;
 #define UVERBS_BUILD_BUG_ON(cond) (sizeof(char[1 - 2 * !!(cond)]) -	\
 				   sizeof(char))
 #define UVERBS_TYPE_ALLOC_FD(_order, _obj_size, _hot_unplug, _fops, _name, _flags)\
+	((&((const struct uverbs_obj_fd_type)				\
 	 {.type = {							\
 		.destroy_order = _order,				\
 		.ops = &uverbs_fd_ops,					\
@@ -132,8 +133,9 @@ extern const struct uverbs_obj_type_ops uverbs_fd_ops;
 	 .hot_unplug = _hot_unplug,					\
 	 .fops = _fops,							\
 	 .name = _name,							\
-	 .flags = _flags}
+	 .flags = _flags}))->type)
 #define UVERBS_TYPE_ALLOC_IDR_SZ(_size, _order, _hot_unplug)		\
+	((&((const struct uverbs_obj_idr_type)				\
 	 {.type = {							\
 		.destroy_order = _order,				\
 		.ops = &uverbs_idr_ops,					\
@@ -141,7 +143,7 @@ extern const struct uverbs_obj_type_ops uverbs_fd_ops;
 	 .hot_unplug = _hot_unplug,					\
 	 .obj_size = (_size) +						\
 		UVERBS_BUILD_BUG_ON((_size) < sizeof(struct		\
-						     ib_uobject))}
+						     ib_uobject))}))->type)
 #define UVERBS_TYPE_ALLOC_IDR(_order, _hot_unplug)			\
 	 UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_uobject), _order,	\
 				  _hot_unplug)
