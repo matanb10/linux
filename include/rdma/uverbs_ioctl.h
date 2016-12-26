@@ -48,6 +48,32 @@ enum uverbs_idr_access {
 	UVERBS_ACCESS_DESTROY
 };
 
+struct uverbs_attr_spec {
+	enum uverbs_attr_type		type;
+	union {
+		struct {
+			u16			obj_type;
+			u8			access;
+		} obj;
+	};
+};
+
+struct uverbs_attr_spec_group {
+	struct uverbs_attr_spec		*attrs;
+	size_t				num_attrs;
+	/* populate at runtime */
+	unsigned long			*mandatory_attrs_bitmask;
+};
+
+enum uverbs_action_flags {
+	UVERBS_ACTION_FLAG_CREATE_ROOT = 1 << 0,
+};
+
+struct uverbs_action {
+	const struct uverbs_attr_spec_group		**attr_groups;
+	size_t						num_groups;
+};
+
 struct uverbs_type_alloc_action;
 typedef void (*free_type)(const struct uverbs_type_alloc_action *uobject_type,
 			  struct ib_uobject *uobject);
@@ -124,5 +150,50 @@ struct uverbs_root {
 		.num_groups = _UVERBS_TYPES_SZ(__VA_ARGS__)})
 #define DECLARE_UVERBS_TYPES_GROUP(name, ...)		\
 	const struct uverbs_root name = UVERBS_TYPES_GROUP(__VA_ARGS__)
+
+/* =================================================
+ *              Parsing infrastructure
+ * =================================================
+ */
+
+struct uverbs_fd_attr {
+	int		fd;
+};
+
+struct uverbs_uobj_attr {
+	/*  idr handle */
+	u32	idr;
+};
+
+struct uverbs_obj_attr {
+	/* pointer to the kernel descriptor -> type, access, etc */
+	struct ib_uverbs_attr __user	*uattr;
+	const struct uverbs_type_alloc_action	*type;
+	struct ib_uobject		*uobject;
+	union {
+		struct uverbs_fd_attr		fd;
+		struct uverbs_uobj_attr		uobj;
+	};
+};
+
+struct uverbs_attr {
+	union {
+		struct uverbs_obj_attr	obj_attr;
+	};
+};
+
+/* output of one validator */
+struct uverbs_attr_array {
+	unsigned long *valid_bitmap;
+	size_t num_attrs;
+	/* arrays of attrubytes, index is the id i.e SEND_CQ */
+	struct uverbs_attr *attrs;
+};
+
+static inline bool uverbs_is_valid(const struct uverbs_attr_array *attr_array,
+				   unsigned int idx)
+{
+	return test_bit(idx, attr_array->valid_bitmap);
+}
 
 #endif
