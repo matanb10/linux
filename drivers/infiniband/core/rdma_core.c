@@ -648,3 +648,46 @@ int uverbs_finalize_object(struct ib_uobject *uobj,
 
 	return ret;
 }
+
+int uverbs_finalize_objects(struct uverbs_attr_array *attr_array,
+			    size_t num,
+			    const struct uverbs_action *action,
+			    bool commit)
+{
+	unsigned int i;
+	int ret = 0;
+
+	for (i = 0; i < num; i++) {
+		struct uverbs_attr_array *attr_spec_array = &attr_array[i];
+		const struct uverbs_attr_spec_group *attr_spec_group =
+			action->attr_groups[i];
+		unsigned int j;
+
+		for (j = 0; j < attr_spec_array->num_attrs; j++) {
+			struct uverbs_attr *attr = &attr_spec_array->attrs[j];
+			struct uverbs_attr_spec *spec = &attr_spec_group->attrs[j];
+
+			if (!uverbs_is_valid(attr_spec_array, j))
+				continue;
+
+			if (spec->type == UVERBS_ATTR_TYPE_IDR ||
+			    spec->type == UVERBS_ATTR_TYPE_FD) {
+				int current_ret;
+
+				/*
+				 * refcounts should be handled at the object
+				 * level and not at the uobject level. Refcounts
+				 * of the objects themselves are done in
+				 * handlers.
+				 */
+				current_ret = uverbs_finalize_object(attr->obj_attr.uobject,
+								     spec->obj.access,
+								     commit);
+				if (!ret)
+					ret = current_ret;
+			}
+		}
+	}
+	return ret;
+}
+

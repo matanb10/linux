@@ -41,12 +41,84 @@
  * =======================================
  */
 
+enum uverbs_attr_type {
+	UVERBS_ATTR_TYPE_NA,
+	UVERBS_ATTR_TYPE_IDR,
+	UVERBS_ATTR_TYPE_FD,
+};
+
 enum uverbs_idr_access {
 	UVERBS_ACCESS_READ,
 	UVERBS_ACCESS_WRITE,
 	UVERBS_ACCESS_NEW,
 	UVERBS_ACCESS_DESTROY
 };
+
+struct uverbs_attr_spec {
+	enum uverbs_attr_type		type;
+	union {
+		u16				len;
+		struct {
+			u16			obj_type;
+			u8			access;
+		} obj;
+	};
+};
+
+struct uverbs_attr_spec_group {
+	struct uverbs_attr_spec		*attrs;
+	size_t				num_attrs;
+};
+
+struct uverbs_action {
+	const struct uverbs_attr_spec_group		**attr_groups;
+	size_t						num_groups;
+};
+
+/* =================================================
+ *              Parsing infrastructure
+ * =================================================
+ */
+
+struct uverbs_fd_attr {
+	int		fd;
+};
+
+struct uverbs_uobj_attr {
+	/*  idr handle */
+	u32	idr;
+};
+
+struct uverbs_obj_attr {
+	/* pointer to the kernel descriptor -> type, access, etc */
+	struct ib_uverbs_attr __user	*uattr;
+	const struct uverbs_type_alloc_action	*type;
+	struct ib_uobject		*uobject;
+	union {
+		struct uverbs_fd_attr		fd;
+		struct uverbs_uobj_attr		uobj;
+	};
+};
+
+struct uverbs_attr {
+	union {
+		struct uverbs_obj_attr	obj_attr;
+	};
+};
+
+/* output of one validator */
+struct uverbs_attr_array {
+	unsigned long *valid_bitmap;
+	size_t num_attrs;
+	/* arrays of attrubytes, index is the id i.e SEND_CQ */
+	struct uverbs_attr *attrs;
+};
+
+static inline bool uverbs_is_valid(const struct uverbs_attr_array *attr_array,
+				   unsigned int idx)
+{
+	return test_bit(idx, attr_array->valid_bitmap);
+}
 
 #endif
 
