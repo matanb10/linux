@@ -77,7 +77,7 @@ void uverbs_uobject_put(struct ib_uobject *uobj);
  * the object is from the given type. Lock it to the required access.
  * This function could create (access == NEW) or destroy (access == DESTROY)
  * objects if required. The action will be finalized only when
- * uverbs_finalize_object is called.
+ * uverbs_finalize_object or uverbs_finalize_objects is called.
  */
 struct ib_uobject *uverbs_get_uobject_from_context(const struct uverbs_obj_type *type_attrs,
 						   struct ib_ucontext *ucontext,
@@ -86,5 +86,9 @@ struct ib_uobject *uverbs_get_uobject_from_context(const struct uverbs_obj_type 
 void uverbs_finalize_object(struct ib_uobject *uobj,
 			    enum uverbs_idr_access access,
 			    bool commit);
+void uverbs_finalize_objects(struct uverbs_attr_array *attr_array,
+			     size_t num,
+			     const struct uverbs_action *action,
+			     bool success);
 
 #endif /* RDMA_CORE_H */
