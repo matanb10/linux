@@ -197,7 +197,10 @@ DECLARE_UVERBS_TYPE(uverbs_type_pd,
 		    /* 2 is used in order to free the PD after MRs */
 		    &UVERBS_TYPE_ALLOC_IDR(2, uverbs_free_pd));
 
+DECLARE_UVERBS_TYPE(uverbs_type_device, NULL);
+
 DECLARE_UVERBS_TYPES(uverbs_common_types,
+		     ADD_UVERBS_TYPE(UVERBS_TYPE_DEVICE, uverbs_type_device),
 		     ADD_UVERBS_TYPE(UVERBS_TYPE_PD, uverbs_type_pd),
 		     ADD_UVERBS_TYPE(UVERBS_TYPE_MR, uverbs_type_mr),
 		     ADD_UVERBS_TYPE(UVERBS_TYPE_COMP_CHANNEL, uverbs_type_comp_channel),

@@ -36,6 +36,7 @@
 #include <rdma/uverbs_ioctl.h>
 
 enum uverbs_common_types {
+	UVERBS_TYPE_DEVICE, /* No instances of DEVICE are allowed */
 	UVERBS_TYPE_PD,
 	UVERBS_TYPE_COMP_CHANNEL,
 	UVERBS_TYPE_CQ,
@@ -63,6 +64,7 @@ extern const struct uverbs_type uverbs_type_mr;
 extern const struct uverbs_type uverbs_type_mw;
 extern const struct uverbs_type uverbs_type_pd;
 extern const struct uverbs_type uverbs_type_xrcd;
+extern const struct uverbs_type uverbs_type_device;
 extern const struct uverbs_type_group uverbs_common_types;
 #endif
 
