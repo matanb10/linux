@@ -47,7 +47,7 @@
  * the object is from the given type. Lock it to the required access.
  * This function could create (access == NEW) or destroy (access == DESTROY)
  * objects if required. The action will be finalized only when
- * uverbs_finalize_object is called.
+ * uverbs_finalize_object or uverbs_finalize_objects is called.
  */
 struct ib_uobject *uverbs_get_uobject_from_context(const struct uverbs_type_alloc_action *type_alloc,
 						   struct ib_ucontext *ucontext,
@@ -59,6 +59,11 @@ bool uverbs_is_live(struct ib_uobject *uobj);
 void uverbs_finalize_object(struct ib_uobject *uobj,
 			    enum uverbs_idr_access access,
 			    bool success);
+void uverbs_finalize_objects(struct uverbs_attr_array *attr_array,
+			     size_t num,
+			     const struct uverbs_action *action,
+			     bool success);
+
 /*
  * These functions initialize and destroy the context. The context has a
  * list of objects which is protected by a kref-ed lock, whose purpose is
