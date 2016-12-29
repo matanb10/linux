@@ -34,6 +34,7 @@
 #include "rxe.h"
 #include "rxe_loc.h"
 #include "rxe_queue.h"
+#include <rdma/uverbs_ioctl_cmd.h>
 
 static int rxe_query_device(struct ib_device *dev,
 			    struct ib_device_attr *attr,
@@ -1201,6 +1202,10 @@ int rxe_register_device(struct rxe_dev *rxe)
 	int err;
 	int i;
 	struct ib_device *dev = &rxe->ib_dev;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {.types = &uverbs_common_types,
+			.group_id = 0},
+	};
 
 	strlcpy(dev->name, "rxe%d", IB_DEVICE_NAME_MAX);
 	strlcpy(dev->node_desc, "rxe", sizeof(dev->node_desc));
@@ -1293,10 +1298,16 @@ int rxe_register_device(struct rxe_dev *rxe)
 	dev->attach_mcast = rxe_attach_mcast;
 	dev->detach_mcast = rxe_detach_mcast;
 
+	dev->specs_root =
+		uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+				       root_spec);
+	if (IS_ERR(dev->specs_root))
+		goto err1;
+
 	err = ib_register_device(dev, NULL);
 	if (err) {
 		pr_warn("rxe_register_device failed, err = %d\n", err);
-		goto err1;
+		goto err2;
 	}
 
 	for (i = 0; i < ARRAY_SIZE(rxe_dev_attributes); ++i) {
@@ -1304,14 +1315,16 @@ int rxe_register_device(struct rxe_dev *rxe)
 		if (err) {
 			pr_warn("device_create_file failed, i = %d, err = %d\n",
 				i, err);
-			goto err2;
+			goto err3;
 		}
 	}
 
 	return 0;
 
-err2:
+err3:
 	ib_unregister_device(dev);
+err2:
+	uverbs_specs_free(dev->specs_root);
 err1:
 	return err;
 }
@@ -1325,6 +1338,7 @@ int rxe_unregister_device(struct rxe_dev *rxe)
 		device_remove_file(&dev->dev, rxe_dev_attributes[i]);
 
 	ib_unregister_device(dev);
+	uverbs_specs_free(dev->specs_root);
 
 	return 0;
 }

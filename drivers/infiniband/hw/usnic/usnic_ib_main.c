@@ -48,6 +48,7 @@
 #include <linux/netdevice.h>
 
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 #include <rdma/ib_addr.h>
 
 #include "usnic_abi.h"
@@ -349,6 +350,12 @@ static void usnic_get_dev_fw_str(struct ib_device *device,
 /* Start of PF discovery section */
 static void *usnic_ib_device_add(struct pci_dev *dev)
 {
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 	struct usnic_ib_dev *us_ibdev;
 	union ib_gid gid;
 	struct in_ifaddr *in;
@@ -432,8 +439,13 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
 	us_ibdev->ib_dev.get_dev_fw_str     = usnic_get_dev_fw_str;
 
 
-	if (ib_register_device(&us_ibdev->ib_dev, NULL))
+	us_ibdev->ib_dev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+							     root_spec);
+	if (IS_ERR(us_ibdev->ib_dev.specs_root))
 		goto err_fwd_dealloc;
+
+	if (ib_register_device(&us_ibdev->ib_dev, NULL))
+		goto dealloc_spec;
 
 	usnic_fwd_set_mtu(us_ibdev->ufdev, us_ibdev->netdev->mtu);
 	usnic_fwd_set_mac(us_ibdev->ufdev, us_ibdev->netdev->dev_addr);
@@ -456,6 +468,8 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
 			us_ibdev->ufdev->mtu);
 	return us_ibdev;
 
+dealloc_spec:
+	uverbs_specs_free(us_ibdev->ib_dev.specs_root);
 err_fwd_dealloc:
 	usnic_fwd_dev_free(us_ibdev->ufdev);
 err_dealloc:
@@ -470,6 +484,7 @@ static void usnic_ib_device_remove(struct usnic_ib_dev *us_ibdev)
 	usnic_ib_sysfs_unregister_usdev(us_ibdev);
 	usnic_fwd_dev_free(us_ibdev->ufdev);
 	ib_unregister_device(&us_ibdev->ib_dev);
+	uverbs_specs_free(us_ibdev->ib_dev.specs_root);
 	ib_dealloc_device(&us_ibdev->ib_dev);
 }
 

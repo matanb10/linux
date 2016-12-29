@@ -45,6 +45,7 @@
 
 #include <rdma/ib_smi.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 #include <rdma/ib_addr.h>
 #include <rdma/ib_cache.h>
 
@@ -2555,6 +2556,12 @@ static void get_fw_ver_str(struct ib_device *device, char *str,
 
 static void *mlx4_ib_add(struct mlx4_dev *dev)
 {
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 	struct mlx4_ib_dev *ibdev;
 	int num_ports = 0;
 	int i, j;
@@ -2833,8 +2840,13 @@ static void *mlx4_ib_add(struct mlx4_dev *dev)
 	if (mlx4_ib_alloc_diag_counters(ibdev))
 		goto err_steer_free_bitmap;
 
-	if (ib_register_device(&ibdev->ib_dev, NULL))
+	ibdev->ib_dev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+							  root_spec);
+	if (IS_ERR(ibdev->ib_dev.specs_root))
 		goto err_diag_counters;
+
+	if (ib_register_device(&ibdev->ib_dev, NULL))
+		goto dealloc_spec;
 
 	if (mlx4_ib_mad_init(ibdev))
 		goto err_reg;
@@ -2900,6 +2912,9 @@ err_mad:
 
 err_reg:
 	ib_unregister_device(&ibdev->ib_dev);
+
+dealloc_spec:
+	uverbs_specs_free(ibdev->ib_dev.specs_root);
 
 err_diag_counters:
 	mlx4_ib_diag_cleanup(ibdev);
@@ -3007,6 +3022,7 @@ static void mlx4_ib_remove(struct mlx4_dev *dev, void *ibdev_ptr)
 	mlx4_ib_close_sriov(ibdev);
 	mlx4_ib_mad_cleanup(ibdev);
 	ib_unregister_device(&ibdev->ib_dev);
+	uverbs_specs_free(ibdev->ib_dev.specs_root);
 	mlx4_ib_diag_cleanup(ibdev);
 	if (ibdev->iboe.nb.notifier_call) {
 		if (unregister_netdevice_notifier(&ibdev->iboe.nb))

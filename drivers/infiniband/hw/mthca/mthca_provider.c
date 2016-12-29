@@ -37,6 +37,7 @@
 #include <rdma/ib_smi.h>
 #include <rdma/ib_umem.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 
 #include <linux/sched.h>
 #include <linux/slab.h>
@@ -1189,6 +1190,12 @@ static void get_dev_fw_str(struct ib_device *device, char *str,
 
 int mthca_register_device(struct mthca_dev *dev)
 {
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 	int ret;
 	int i;
 
@@ -1294,15 +1301,23 @@ int mthca_register_device(struct mthca_dev *dev)
 
 	mutex_init(&dev->cap_mask_mutex);
 
+	dev->ib_dev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+							root_spec);
+	if (IS_ERR(dev->ib_dev.specs_root))
+		return PTR_ERR(dev->ib_dev.specs_root);
+
 	ret = ib_register_device(&dev->ib_dev, NULL);
-	if (ret)
+	if (ret) {
+		uverbs_specs_free(dev->ib_dev.specs_root);
 		return ret;
+	}
 
 	for (i = 0; i < ARRAY_SIZE(mthca_dev_attributes); ++i) {
 		ret = device_create_file(&dev->ib_dev.dev,
 					 mthca_dev_attributes[i]);
 		if (ret) {
 			ib_unregister_device(&dev->ib_dev);
+			uverbs_specs_free(dev->ib_dev.specs_root);
 			return ret;
 		}
 	}
@@ -1316,4 +1331,5 @@ void mthca_unregister_device(struct mthca_dev *dev)
 {
 	mthca_stop_catas_poll(dev);
 	ib_unregister_device(&dev->ib_dev);
+	uverbs_specs_free(dev->ib_dev.specs_root);
 }

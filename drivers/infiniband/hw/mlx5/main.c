@@ -51,10 +51,12 @@
 #include <linux/list.h>
 #include <rdma/ib_smi.h>
 #include <rdma/ib_umem.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 #include <linux/in.h>
 #include <linux/etherdevice.h>
 #include <linux/mlx5/fs.h>
 #include "mlx5_ib.h"
+#include <rdma/uverbs_ioctl_cmd.h>
 
 #define DRIVER_NAME "mlx5_ib"
 #define DRIVER_VERSION "2.2-1"
@@ -2926,6 +2928,12 @@ static void *mlx5_ib_add(struct mlx5_core_dev *mdev)
 	const char *name;
 	int err;
 	int i;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {.types = &uverbs_common_types,
+			.group_id = 0},
+		[1] = {.types = &mlx5_common_types,
+			.group_id = 0},
+	};
 
 	port_type_cap = MLX5_CAP_GEN(mdev, port_type);
 	ll = mlx5_port_type_cap_to_rdma_ll(port_type_cap);
@@ -3128,9 +3136,15 @@ static void *mlx5_ib_add(struct mlx5_core_dev *mdev)
 	if (err)
 		goto err_odp;
 
+	dev->ib_dev.specs_root =
+		uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+				       root_spec);
+	if (IS_ERR(dev->ib_dev.specs_root))
+		goto err_q_cnt;
+
 	err = ib_register_device(&dev->ib_dev, NULL);
 	if (err)
-		goto err_q_cnt;
+		goto dealloc_spec;
 
 	err = create_umr_res(dev);
 	if (err)
@@ -3152,6 +3166,9 @@ err_umrc:
 
 err_dev:
 	ib_unregister_device(&dev->ib_dev);
+
+dealloc_spec:
+	uverbs_specs_free(dev->ib_dev.specs_root);
 
 err_q_cnt:
 	mlx5_ib_dealloc_q_counters(dev);
@@ -3184,6 +3201,7 @@ static void mlx5_ib_remove(struct mlx5_core_dev *mdev, void *context)
 
 	mlx5_remove_roce_notifier(dev);
 	ib_unregister_device(&dev->ib_dev);
+	uverbs_specs_free(dev->ib_dev.specs_root);
 	mlx5_ib_dealloc_q_counters(dev);
 	destroy_umrc_res(dev);
 	mlx5_ib_odp_remove_one(dev);

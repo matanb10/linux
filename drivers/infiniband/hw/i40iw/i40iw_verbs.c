@@ -42,6 +42,7 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/iw_cm.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 #include <rdma/ib_umem.h>
 #include "i40iw.h"
 
@@ -2707,6 +2708,7 @@ static void i40iw_unregister_rdma_device(struct i40iw_ib_device *iwibdev)
 		device_remove_file(&iwibdev->ibdev.dev,
 				   i40iw_dev_attributes[i]);
 	ib_unregister_device(&iwibdev->ibdev);
+	uverbs_specs_free(iwibdev->ibdev.specs_root);
 }
 
 /**
@@ -2732,15 +2734,28 @@ int i40iw_register_rdma_device(struct i40iw_device *iwdev)
 {
 	int i, ret;
 	struct i40iw_ib_device *iwibdev;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 
 	iwdev->iwibdev = i40iw_init_rdma_device(iwdev);
 	if (!iwdev->iwibdev)
 		return -ENOMEM;
 	iwibdev = iwdev->iwibdev;
 
-	ret = ib_register_device(&iwibdev->ibdev, NULL);
-	if (ret)
+	iwibdev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+							   root_spec);
+	if (IS_ERR(iwibdev->ibdev.specs_root))
 		goto error;
+
+	ret = ib_register_device(&iwibdev->ibdev, NULL);
+	if (ret) {
+		uverbs_specs_free(iwibdev->ibdev.specs_root);
+		goto error;
+	}
 
 	for (i = 0; i < ARRAY_SIZE(i40iw_dev_attributes); ++i) {
 		ret =
@@ -2752,6 +2767,7 @@ int i40iw_register_rdma_device(struct i40iw_device *iwdev)
 				device_remove_file(&iwibdev->ibdev.dev, i40iw_dev_attributes[i]);
 			}
 			ib_unregister_device(&iwibdev->ibdev);
+			uverbs_specs_free(iwibdev->ibdev.specs_root);
 			goto error;
 		}
 	}

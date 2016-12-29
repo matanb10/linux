@@ -41,6 +41,7 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/iw_cm.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 
 #include "nes.h"
 
@@ -3873,10 +3874,22 @@ int nes_register_ofa_device(struct nes_ib_device *nesibdev)
 	struct nes_vnic *nesvnic = nesibdev->nesvnic;
 	struct nes_device *nesdev = nesvnic->nesdev;
 	struct nes_adapter *nesadapter = nesdev->nesadapter;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 	int i, ret;
+
+	nesvnic->nesibdev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+								     root_spec);
+	if (IS_ERR(nesvnic->nesibdev->ibdev.specs_root))
+		return PTR_ERR(nesvnic->nesibdev->ibdev.specs_root);
 
 	ret = ib_register_device(&nesvnic->nesibdev->ibdev, NULL);
 	if (ret) {
+		uverbs_specs_free(nesvnic->nesibdev->ibdev.specs_root);
 		return ret;
 	}
 
@@ -3895,6 +3908,7 @@ int nes_register_ofa_device(struct nes_ib_device *nesibdev)
 						   nes_dev_attributes[i]);
 			}
 			ib_unregister_device(&nesibdev->ibdev);
+			uverbs_specs_free(nesibdev->ibdev.specs_root);
 			return ret;
 		}
 	}
@@ -3919,6 +3933,7 @@ static void nes_unregister_ofa_device(struct nes_ib_device *nesibdev)
 
 	if (nesvnic->of_device_registered) {
 		ib_unregister_device(&nesibdev->ibdev);
+		uverbs_specs_free(nesibdev->ibdev.specs_root);
 	}
 
 	nesvnic->of_device_registered = 0;

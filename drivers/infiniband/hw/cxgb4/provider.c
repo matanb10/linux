@@ -51,6 +51,7 @@
 #include <rdma/ib_smi.h>
 #include <rdma/ib_umem.h>
 #include <rdma/ib_user_verbs.h>
+#include <rdma/uverbs_ioctl_cmd.h>
 
 #include "iw_cxgb4.h"
 
@@ -532,6 +533,12 @@ int c4iw_register_device(struct c4iw_dev *dev)
 {
 	int ret;
 	int i;
+	static const struct uverbs_root_spec root_spec[] = {
+		[0] = {
+			.types = &uverbs_common_types,
+			.group_id = 0
+			},
+	};
 
 	PDBG("%s c4iw_dev %p\n", __func__, dev);
 	BUG_ON(!dev->rdev.lldi.ports[0]);
@@ -623,9 +630,16 @@ int c4iw_register_device(struct c4iw_dev *dev)
 	memcpy(dev->ibdev.iwcm->ifname, dev->rdev.lldi.ports[0]->name,
 	       sizeof(dev->ibdev.iwcm->ifname));
 
+	dev->ibdev.specs_root = uverbs_alloc_spec_tree(ARRAY_SIZE(root_spec),
+						       root_spec);
+	if (IS_ERR(dev->ibdev.specs_root)) {
+		ret = PTR_ERR(dev->ibdev.specs_root);
+		goto bail1;
+	}
+
 	ret = ib_register_device(&dev->ibdev, NULL);
 	if (ret)
-		goto bail1;
+		goto dealloc_spec;
 
 	for (i = 0; i < ARRAY_SIZE(c4iw_class_attributes); ++i) {
 		ret = device_create_file(&dev->ibdev.dev,
@@ -636,6 +650,8 @@ int c4iw_register_device(struct c4iw_dev *dev)
 	return 0;
 bail2:
 	ib_unregister_device(&dev->ibdev);
+dealloc_spec:
+	uverbs_specs_free(dev->ibdev.specs_root);
 bail1:
 	kfree(dev->ibdev.iwcm);
 	return ret;
@@ -650,6 +666,7 @@ void c4iw_unregister_device(struct c4iw_dev *dev)
 		device_remove_file(&dev->ibdev.dev,
 				   c4iw_class_attributes[i]);
 	ib_unregister_device(&dev->ibdev);
+	uverbs_specs_free(dev->ibdev.specs_root);
 	kfree(dev->ibdev.iwcm);
 	return;
 }
