@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_bc021b3d",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_3c128bb5",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3cb60bdd",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-01T13:02:22Z",
       "side": 1,
       "message": "Isn\u0027t the correct place for that comment is below for the close_fd (line 388) ? (This function is some static one and part of the close).\n\nLet\u0027s clarify what is the \"release callback\" means.",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dcecaf91",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_3cb60bdd",
       "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1cf34775",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_5c9c1f69",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_bc957b41",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9cff5734",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_bc957b41",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3c884b22",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2017-01-01T13:02:22Z",
       "side": 1,
       "message": "Let\u0027s drop the \u0027ib_\u0027 prefix. (be consistent with other APIs)",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_fce773aa",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_3c884b22",
       "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
