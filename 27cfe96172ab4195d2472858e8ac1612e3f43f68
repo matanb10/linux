@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_fc82d3c7",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "\"Either ...\", may fix below \u0027( )\u0027 to have 2 cases.",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5c1d3fbc",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "Which lock are you referring to ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3c796bfd",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "Are you referring to a concurrent call to ib_uverbs_close_fd ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1c7ea7e4",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "We may add a comment to justify the lock/unlock each per order, not seems to be straightforward ..\n\nWhat might happen if not doing that ? most of the objects have same order 0, isn\u0027t it ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5cc1bf2d",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "How about using the kref mechanism as done in previous patch ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dc102fab",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "Do we need \u0027type\u0027 as part of function name ? (same comment for below functions).\n\nHow about uverbs_cleanup_ucontext ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9c23d705",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:48Z",
+      "side": 1,
+      "message": "ib_ prefix ..",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
