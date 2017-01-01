@@ -63,12 +63,9 @@ void uverbs_free_qp(const struct uverbs_type_alloc_action *type_alloc_action,
 	struct ib_uqp_object *uqp =
 		container_of(uobject, struct ib_uqp_object, uevent.uobject);
 
-	if (qp != qp->real_qp) {
-		ib_close_qp(qp);
-	} else {
+	if (qp == qp->real_qp)
 		ib_uverbs_detach_umcast(qp, uqp);
-		ib_destroy_qp(qp);
-	}
+	ib_destroy_qp(qp);
 	ib_uverbs_release_uevent(uobject->context->ufile, &uqp->uevent);
 }
 
