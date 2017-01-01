@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_3c95ebe3",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_fc82d3c7",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_5c1d3fbc",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-01T13:02:48Z",
       "side": 1,
       "message": "Which lock are you referring to ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1c9a2715",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_5c1d3fbc",
       "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_fc9e5306",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Yeah",
+      "parentUuid": "fabf19d9_3c796bfd",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_1c7ea7e4",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-01T13:02:48Z",
       "side": 1,
       "message": "We may add a comment to justify the lock/unlock each per order, not seems to be straightforward ..\n\nWhat might happen if not doing that ? most of the objects have same order 0, isn\u0027t it ?",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dca38f4e",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Most of the objects have an order of 0, but I prefer not to keep other threads waiting for that long (sometimes resource destruction causes FW commands), so I prefer taking this lock and releasing it for small intervals.",
+      "parentUuid": "fabf19d9_1c7ea7e4",
       "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_bc89fbcc",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_5cc1bf2d",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_dc102fab",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 1
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7cfc833e",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_dc102fab",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_9c23d705",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 1
@@ -115,6 +223,24 @@
       "writtenOn": "2017-01-01T13:02:48Z",
       "side": 1,
       "message": "ib_ prefix ..",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5cf9bf4c",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_9c23d705",
       "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
