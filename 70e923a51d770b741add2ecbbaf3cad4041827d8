@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_3c128bb5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:22Z",
+      "side": 1,
+      "message": "As we talked, seems strange to see kfree in a patch and review the code before introducing its allocation ...\n\nWe may add some note in the cover letter / commit log to refer to the above ordering.",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3cb60bdd",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:22Z",
+      "side": 1,
+      "message": "Isn\u0027t the correct place for that comment is below for the close_fd (line 388) ? (This function is some static one and part of the close).\n\nLet\u0027s clarify what is the \"release callback\" means.",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5c9c1f69",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:22Z",
+      "side": 1,
+      "message": "\"either\" (should be removed)",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_bc957b41",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:22Z",
+      "side": 1,
+      "message": "As talked let\u0027s move to the patch where it\u0027s used.",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3c884b22",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:02:22Z",
+      "side": 1,
+      "message": "Let\u0027s drop the \u0027ib_\u0027 prefix. (be consistent with other APIs)",
+      "revId": "70e923a51d770b741add2ecbbaf3cad4041827d8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
