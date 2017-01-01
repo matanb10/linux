@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_dc870fd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:03:00Z",
+      "side": 1,
+      "message": "no need for \u0027.\u0027 at the end",
+      "revId": "c110aa70e3851af94dfa39c8a4596ad99c60f9bd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_bc6d7b34",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-01T13:03:00Z",
+      "side": 1,
+      "message": "What is the check here (i.e 1 - 2 * ..) ? looks quite \"magic\".",
+      "revId": "c110aa70e3851af94dfa39c8a4596ad99c60f9bd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
