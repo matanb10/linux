@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_dcba6f6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_9c6ab719",
+      "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_7c77e302",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-01T14:15:14Z",
       "side": 1,
       "message": "Can we add why ?",
+      "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_bcb0db8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_7c77e302",
       "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9cad1734",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_5c741ffc",
+      "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_bc545b54",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_5c909fec",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_bc545b54",
+      "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_7c4ec3c2",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2017-01-01T14:15:14Z",
       "side": 1,
       "message": "can you point on the lines in the old code that made the \u0027rollback\u0027 for the destroy as done here ?",
+      "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3cbccb6b",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-01T15:21:43Z",
+      "side": 1,
+      "message": "yeah, destroyed \u003d whether the xrcd was deallocated.\nSo lets look at the original logic, live \u003d whether the xrcd was NOT deallocated and thus live \u003d !destroyed.\nIn the original logic, we always unlock (line 919). If the destruction failed, we bail out in line 922.\nSo actually, rollback \u003d line 919 + bail out at 929 and commit \u003d line 919 + 927.\n\nIn our new logic, we commit at 673 and rollback at 690. Since the object is locked for DESTROY, this should be safe.",
+      "parentUuid": "fabf19d9_7c4ec3c2",
       "revId": "a5ffb8b8cb199557d1c39b2cb9d64aad323aba23",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
