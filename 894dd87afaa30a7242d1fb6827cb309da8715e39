@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7706dc21",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T11:42:30Z",
+      "side": 1,
+      "message": "There\u0027s only forward deceleration outside, as it\u0027s used only as a pointer.",
+      "parentUuid": "fabf19d9_b777d4d3",
+      "revId": "894dd87afaa30a7242d1fb6827cb309da8715e39",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_bc20db4a",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
