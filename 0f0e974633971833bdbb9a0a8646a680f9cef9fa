@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_42ff9401",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1060,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "We use kref_get on the lock, which is pointed by the context. A context is associated by a file. So basically, we have a kref on an object related to that file. Do you see any problems with this?",
+      "parentUuid": "fabf19d9_57c51859",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_779ffc5f",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "Does it make sense to share above code with similar code done as part of ib_uverbs_alloc_async_event_file ? (e.g. ib_uverbs_init_event_file)",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_821dac68",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_779ffc5f",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_2204a013",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "I don\u0027t think it matters, we haven\u0027t called fd_install so this fd isn\u0027t accessible to the user-space. In addition, now it\u0027s opposite to the order of construction.",
+      "parentUuid": "fabf19d9_b77c7421",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_5773d84d",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "Don\u0027t we want to return the internal errno (e.g. -EBADF) ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e20d8838",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_5773d84d",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_621a9870",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_372bc4ed",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_d71008ab",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -98,6 +188,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "Who set other fields to 0 comparing the original kzalloc ? (e.g. events_reported)",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_02207c9a",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1493,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "All the fields are initialized here (events_reported in line 1582).",
+      "parentUuid": "fabf19d9_d71008ab",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_e22468b0",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1845,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "user_handle is set in create_qp (line 1489).\nuxrcd set in the original code in line 1959 and via kzalloc allocation.",
+      "parentUuid": "fabf19d9_37606435",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_b7547454",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -132,6 +258,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "Don\u0027t you skip here the kfree(s) done as part of out ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6248585c",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1929,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_b7547454",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_4274349b",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2484,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_774edcc2",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_f7d0accb",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -166,6 +328,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "Don\u0027t you need to set user_handle ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_22794094",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2574,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_f7d0accb",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_026e3cc9",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2706,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_57e2b8a0",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_17f32075",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -200,6 +398,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "same comment as od 2706, can we do one call based on ret ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e27228ad",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2748,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_17f32075",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_c26844bd",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3156,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_d7ba486e",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_b7b0f48c",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -234,6 +468,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "How about returning PTR_ERR ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a26550e2",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3332,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_b7b0f48c",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_82624cd7",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3467,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Correct",
+      "parentUuid": "fabf19d9_57a7584f",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3763c41c",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -274,6 +544,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_625f380f",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3668,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_3763c41c",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_1768c0f4",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -285,6 +573,24 @@
       "writtenOn": "2017-01-02T10:48:05Z",
       "side": 1,
       "message": "can we share with 3696 based on ret ?",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_429b14ca",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3700,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T12:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_1768c0f4",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
