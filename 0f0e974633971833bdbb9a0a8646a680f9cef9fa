@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_42d0b453",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1060,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-02T13:32:14Z",
+      "side": 1,
+      "message": "May it be that the uverbs file will be freed once this ev_file is still alive ? let\u0027s discuss to make sure that we are safe here.",
+      "parentUuid": "fabf19d9_42ff9401",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_779ffc5f",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -241,6 +259,24 @@
       "side": 1,
       "message": "user_handle is set in create_qp (line 1489).\nuxrcd set in the original code in line 1959 and via kzalloc allocation.",
       "parentUuid": "fabf19d9_37606435",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_62e4d83a",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1845,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-02T13:32:14Z",
+      "side": 1,
+      "message": "We are in open qp and get a new uobj, how create qp is relevant ?",
+      "parentUuid": "fabf19d9_e22468b0",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
