@@ -142,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_a23790e2",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-02T12:19:05Z",
+      "side": 1,
+      "message": "We may consider add a comment for that justification.",
+      "parentUuid": "fabf19d9_dca38f4e",
+      "revId": "27cfe96172ab4195d2472858e8ac1612e3f43f68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_5cc1bf2d",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
