@@ -16,6 +16,24 @@
       "revId": "c54afd11324a0f4a7c199c09f6250c75741afd6b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_423794b0",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T14:41:25Z",
+      "side": 1,
+      "message": "right",
+      "parentUuid": "fabf19d9_22d5c042",
+      "revId": "c54afd11324a0f4a7c199c09f6250c75741afd6b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
