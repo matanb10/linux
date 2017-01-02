@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_82beccfd",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1060,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T14:41:25Z",
+      "side": 1,
+      "message": "Sure, let\u0027s discuss",
+      "parentUuid": "fabf19d9_42d0b453",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_779ffc5f",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -277,6 +295,24 @@
       "side": 1,
       "message": "We are in open qp and get a new uobj, how create qp is relevant ?",
       "parentUuid": "fabf19d9_e22468b0",
+      "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_62bbb80f",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1845,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-02T14:41:25Z",
+      "side": 1,
+      "message": "right, not needed",
+      "parentUuid": "fabf19d9_62e4d83a",
       "revId": "0f0e974633971833bdbb9a0a8646a680f9cef9fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
