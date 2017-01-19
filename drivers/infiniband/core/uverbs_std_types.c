@@ -102,7 +102,11 @@ void uverbs_free_cq(struct ib_uobject *uobject)
 		container_of(uobject, struct ib_ucq_object, uobject);
 
 	ib_destroy_cq(cq);
-	ib_uverbs_release_ucq(uobject->context->ufile, ev_file, ucq);
+	ib_uverbs_release_ucq(uobject->context->ufile, ev_file ?
+			      container_of(ev_file,
+					   struct ib_uverbs_completion_event_file,
+					   ev_file) : NULL,
+			      ucq);
 }
 
 void uverbs_free_mr(struct ib_uobject *uobject)
@@ -123,6 +127,32 @@ void uverbs_free_pd(struct ib_uobject *uobject)
 {
 	ib_dealloc_pd((struct ib_pd *)uobject->object);
 }
+
+void uverbs_hot_unplug_completion_event_file(struct ib_uobject_file *uobj_file,
+					     enum rdma_cleanup_reason why)
+{
+	struct ib_uverbs_completion_event_file *comp_event_file =
+		container_of(uobj_file, struct ib_uverbs_completion_event_file,
+			     uobj_file);
+	struct ib_uverbs_event_file *event_file = &comp_event_file->ev_file;
+
+	spin_lock_irq(&event_file->lock);
+	event_file->is_closed = 1;
+	spin_unlock_irq(&event_file->lock);
+
+	if (why == RDMA_REMOVE_DRIVER_REMOVE) {
+		wake_up_interruptible(&event_file->poll_wait);
+		kill_fasync(&event_file->async_queue, SIGIO, POLL_IN);
+	}
+};
+
+const struct uverbs_obj_fd_type uverbs_type_attrs_comp_channel = {
+	.type = UVERBS_TYPE_ALLOC_FD(sizeof(struct ib_uverbs_completion_event_file), 0),
+	.context_closed = uverbs_hot_unplug_completion_event_file,
+	.fops = &uverbs_event_fops,
+	.name = "[infinibandevent]",
+	.flags = O_RDONLY,
+};
 
 const struct uverbs_obj_idr_type uverbs_type_attrs_cq = {
 	.type = UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_ucq_object), 0),

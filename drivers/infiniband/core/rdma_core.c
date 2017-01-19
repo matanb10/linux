@@ -37,6 +37,11 @@
 #include "uverbs.h"
 #include "rdma_core.h"
 
+void uverbs_uobject_get(struct ib_uobject *uobject)
+{
+	kref_get(&uobject->ref);
+}
+
 static void uverbs_uobject_put_ref(struct kref *ref)
 {
 	struct ib_uobject *uobj =
