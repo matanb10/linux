@@ -59,4 +59,7 @@ void uverbs_initialize_ucontext(struct ib_ucontext *ucontext);
  */
 void uverbs_close_fd(struct file *f);
 
+void uverbs_uobject_get(struct ib_uobject *uobj);
+void uverbs_uobject_put(struct ib_uobject *uobj);
+
 #endif /* RDMA_CORE_H */
