@@ -102,7 +102,11 @@ void uverbs_free_cq(struct ib_uobject *uobject)
 		container_of(uobject, struct ib_ucq_object, uobject);
 
 	ib_destroy_cq(cq);
-	ib_uverbs_release_ucq(uobject->context->ufile, ev_file, ucq);
+	ib_uverbs_release_ucq(uobject->context->ufile, ev_file ?
+			      container_of(ev_file,
+					   struct ib_uverbs_completion_event_file,
+					   ev_file) : NULL,
+			      ucq);
 }
 
 void uverbs_free_mr(struct ib_uobject *uobject)
@@ -123,6 +127,24 @@ void uverbs_free_pd(struct ib_uobject *uobject)
 {
 	ib_dealloc_pd((struct ib_pd *)uobject->object);
 }
+
+void uverbs_free_event_file(struct ib_uobject *uobject)
+{
+	struct ib_uverbs_event_file *event_file = (void *)(uobject + 1);
+
+	spin_lock_irq(&event_file->lock);
+	event_file->is_closed = 1;
+	spin_unlock_irq(&event_file->lock);
+
+	wake_up_interruptible(&event_file->poll_wait);
+	kill_fasync(&event_file->async_queue, SIGIO, POLL_IN);
+};
+
+const struct uverbs_type uverbs_type_comp_channel = {
+	.alloc = &UVERBS_TYPE_ALLOC_FD(0, sizeof(struct ib_uverbs_completion_event_file),
+					  uverbs_free_event_file,
+					  &uverbs_event_fops,
+					  "[infinibandevent]", O_RDONLY)};
 
 const struct uverbs_type uverbs_type_cq = {
 	.alloc = &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_ucq_object), 0,
