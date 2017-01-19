@@ -47,6 +47,24 @@
 #include "uverbs.h"
 #include "core_priv.h"
 
+static struct ib_uverbs_completion_event_file *
+ib_uverbs_lookup_comp_file(int fd, struct ib_ucontext *context)
+{
+	struct ib_uobject *uobj = uobj_get_read(comp_channel, fd, context);
+	struct ib_uobject_file *uobj_file;
+
+	if (IS_ERR(uobj))
+		return NULL;
+
+	uobj_file = container_of(uobj, struct ib_uobject_file, uobj);
+
+	uverbs_uobject_get(&uobj_file->uobj);
+	uobj_put_read(uobj);
+
+	return container_of(uobj_file, struct ib_uverbs_completion_event_file,
+			    uobj_file);
+}
+
 ssize_t ib_uverbs_get_context(struct ib_uverbs_file *file,
 			      struct ib_device *ib_dev,
 			      const char __user *buf,
@@ -110,7 +128,7 @@ ssize_t ib_uverbs_get_context(struct ib_uverbs_file *file,
 		goto err_free;
 	resp.async_fd = ret;
 
-	filp = ib_uverbs_alloc_event_file(file, ib_dev, 1);
+	filp = ib_uverbs_alloc_async_event_file(file, ib_dev);
 	if (IS_ERR(filp)) {
 		ret = PTR_ERR(filp);
 		goto err_fd;
@@ -893,8 +911,8 @@ ssize_t ib_uverbs_create_comp_channel(struct ib_uverbs_file *file,
 {
 	struct ib_uverbs_create_comp_channel	   cmd;
 	struct ib_uverbs_create_comp_channel_resp  resp;
-	struct file				  *filp;
-	int ret;
+	struct ib_uobject			  *uobj;
+	struct ib_uverbs_completion_event_file	  *ev_file;
 
 	if (out_len < sizeof resp)
 		return -ENOSPC;
@@ -902,25 +920,23 @@ ssize_t ib_uverbs_create_comp_channel(struct ib_uverbs_file *file,
 	if (copy_from_user(&cmd, buf, sizeof cmd))
 		return -EFAULT;
 
-	ret = get_unused_fd_flags(O_CLOEXEC);
-	if (ret < 0)
-		return ret;
-	resp.fd = ret;
+	uobj = uobj_alloc(comp_channel, file->ucontext);
+	if (IS_ERR(uobj))
+		return PTR_ERR(uobj);
 
-	filp = ib_uverbs_alloc_event_file(file, ib_dev, 0);
-	if (IS_ERR(filp)) {
-		put_unused_fd(resp.fd);
-		return PTR_ERR(filp);
-	}
+	resp.fd = uobj->id;
+
+	ev_file = container_of(uobj, struct ib_uverbs_completion_event_file,
+			       uobj_file.uobj);
+	ib_uverbs_init_event_file(&ev_file->ev_file);
 
 	if (copy_to_user((void __user *) (unsigned long) cmd.response,
 			 &resp, sizeof resp)) {
-		put_unused_fd(resp.fd);
-		fput(filp);
+		uobj_alloc_abort(uobj);
 		return -EFAULT;
 	}
 
-	fd_install(resp.fd, filp);
+	uobj_alloc_commit(uobj);
 	return in_len;
 }
 
@@ -938,7 +954,7 @@ static struct ib_ucq_object *create_cq(struct ib_uverbs_file *file,
 				       void *context)
 {
 	struct ib_ucq_object           *obj;
-	struct ib_uverbs_event_file    *ev_file = NULL;
+	struct ib_uverbs_completion_event_file    *ev_file = NULL;
 	struct ib_cq                   *cq;
 	int                             ret;
 	struct ib_uverbs_ex_create_cq_resp resp;
@@ -952,7 +968,8 @@ static struct ib_ucq_object *create_cq(struct ib_uverbs_file *file,
 		return obj;
 
 	if (cmd->comp_channel >= 0) {
-		ev_file = ib_uverbs_lookup_comp_file(cmd->comp_channel);
+		ev_file = ib_uverbs_lookup_comp_file(cmd->comp_channel,
+						     file->ucontext);
 		if (!ev_file) {
 			ret = -EINVAL;
 			goto err;
@@ -982,7 +999,7 @@ static struct ib_ucq_object *create_cq(struct ib_uverbs_file *file,
 	cq->uobject       = &obj->uobject;
 	cq->comp_handler  = ib_uverbs_comp_handler;
 	cq->event_handler = ib_uverbs_cq_event_handler;
-	cq->cq_context    = ev_file;
+	cq->cq_context    = &ev_file->ev_file;
 	atomic_set(&cq->usecnt, 0);
 
 	obj->uobject.object = cq;
