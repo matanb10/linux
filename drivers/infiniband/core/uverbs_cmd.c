@@ -1913,8 +1913,6 @@ ssize_t ib_uverbs_open_qp(struct ib_uverbs_file *file,
 		goto err_xrcd;
 	}
 
-	qp->uobject = &obj->uevent.uobject;
-
 	obj->uevent.uobject.object = qp;
 	obj->uevent.uobject.user_handle = cmd.user_handle;
 
@@ -1930,9 +1928,9 @@ ssize_t ib_uverbs_open_qp(struct ib_uverbs_file *file,
 
 	obj->uxrcd = container_of(xrcd_uobj, struct ib_uxrcd_object, uobject);
 	atomic_inc(&obj->uxrcd->refcnt);
-	put_xrcd_read(xrcd_uobj);
+	qp->uobject = &obj->uevent.uobject;
 
-	obj->uevent.uobject.live = 1;
+	put_uobj_read(xrcd_uobj);
 
 	(&obj->uevent.uobject)->type->ops->alloc_commit(&obj->uevent.uobject);
 
