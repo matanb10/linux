@@ -1336,6 +1336,7 @@ struct ib_ucontext {
 	struct ib_uverbs_file  *ufile;
 	int			closing;
 
+	struct kref             ref;
 	/* locking the uobjects_list */
 	struct mutex		lock;
 	struct list_head	uobjects;

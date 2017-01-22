@@ -213,15 +213,15 @@ void ib_uverbs_detach_umcast(struct ib_qp *qp,
 	}
 }
 
-static int ib_uverbs_cleanup_ucontext(struct ib_uverbs_file *file,
-				      struct ib_ucontext *context,
-				      bool device_removed)
+static void ib_uverbs_cleanup_ucontext(struct ib_uverbs_file *file,
+				       struct ib_ucontext *context,
+				       bool device_removed)
 {
 	context->closing = 1;
 	uverbs_cleanup_ucontext(context, device_removed);
 	put_pid(context->tgid);
 
-	return context->device->dealloc_ucontext(context);
+	uverbs_release_ucontext(context);
 }
 
 static void ib_uverbs_comp_dev(struct ib_uverbs_device *dev)
