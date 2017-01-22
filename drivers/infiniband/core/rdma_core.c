@@ -35,6 +35,7 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/uverbs_ioctl.h>
 #include "uverbs.h"
+#include "rdma_core.h"
 
 static int uverbs_lock_object(struct ib_uobject *uobj, bool write)
 {
@@ -170,7 +171,7 @@ static void uverbs_uobject_add(struct ib_uobject *uobject)
 	mutex_unlock(&uobject->context->lock);
 }
 
-static void uverbs_uobject_remove(struct ib_uobject *uobject)
+static void uverbs_uobject_remove(struct ib_uobject *uobject, bool lock)
 {
 	/*
 	 * Calling remove requires exclusive access, so it's not possible
@@ -178,9 +179,11 @@ static void uverbs_uobject_remove(struct ib_uobject *uobject)
 	 * with exclusive access.
 	 */
 	uverbs_idr_remove_uobj(uobject);
-	mutex_lock(&uobject->context->lock);
+	if (lock)
+		mutex_lock(&uobject->context->lock);
 	list_del(&uobject->list);
-	mutex_unlock(&uobject->context->lock);
+	if (lock)
+		mutex_unlock(&uobject->context->lock);
 	kref_put(&uobject->ref, put_uobj_ref_rcu);
 }
 
@@ -218,7 +221,7 @@ static void lookup_put_idr_uobject(struct ib_uobject *uobj, bool write)
 
 static void destroy_commit_idr_uobject(struct ib_uobject *uobj)
 {
-	uverbs_uobject_remove(uobj);
+	uverbs_uobject_remove(uobj, true);
 }
 
 static void hot_unplug_idr_uobject(struct ib_uobject *uobj)
@@ -227,7 +230,7 @@ static void hot_unplug_idr_uobject(struct ib_uobject *uobj)
 		container_of(uobj->type, struct uverbs_obj_idr_type, type);
 
 	idr_type->hot_unplug(uobj);
-	uverbs_uobject_remove(uobj);
+	uverbs_uobject_remove(uobj, false);
 }
 
 struct uverbs_obj_type_ops uverbs_idr_ops = {
@@ -239,3 +242,46 @@ struct uverbs_obj_type_ops uverbs_idr_ops = {
 	.destroy_commit = destroy_commit_idr_uobject,
 	.hot_unplug = hot_unplug_idr_uobject,
 };
+
+void uverbs_release_ucontext(struct ib_ucontext *ucontext)
+{
+	kfree(ucontext);
+}
+
+void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext)
+{
+	unsigned int cur_order = 0;
+
+	while (!list_empty(&ucontext->uobjects)) {
+		struct ib_uobject *obj, *next_obj;
+		unsigned int next_order = UINT_MAX;
+
+		/*
+		 * This souldn't run while executing other commands on this
+		 * context. Thus, the only thing we should take care of is
+		 * releasing a FD while traversing this list. The FD could be
+		 * closed and released from the _release fop of this FD.
+		 * In order to mitigate this, we add a lock.
+		 * We take and release the lock per order traversal in order
+		 * to let other threads (which might still use the FDs) chance
+		 * to run.
+		 */
+		mutex_lock(&ucontext->lock);
+		list_for_each_entry_safe(obj, next_obj, &ucontext->uobjects,
+					 list)
+			if (obj->type->destroy_order == cur_order)
+				obj->type->ops->hot_unplug(obj);
+			else
+				next_order = min(next_order,
+						 obj->type->destroy_order);
+		mutex_unlock(&ucontext->lock);
+		cur_order = next_order;
+	}
+}
+
+void uverbs_initialize_ucontext(struct ib_ucontext *ucontext)
+{
+	mutex_init(&ucontext->lock);
+	INIT_LIST_HEAD(&ucontext->uobjects);
+}
+
