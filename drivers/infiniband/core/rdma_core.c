@@ -47,6 +47,15 @@ static int uverbs_lock_object(struct ib_uobject *uobj, bool write)
 	return down_write_trylock(&uobj->currently_used) == 1 ? 0 : -EBUSY;
 }
 
+static void release_ucontext(struct kref *ref)
+{
+	struct ib_ucontext *ucontext = container_of(ref,
+						    struct ib_ucontext,
+						    ref);
+
+	kfree(ucontext);
+}
+
 static void init_uobj(struct ib_uobject *uobj, struct ib_ucontext *context)
 {
 	init_rwsem(&uobj->currently_used);
@@ -245,7 +254,14 @@ struct uverbs_obj_type_ops uverbs_idr_ops = {
 
 void uverbs_release_ucontext(struct ib_ucontext *ucontext)
 {
-	kfree(ucontext);
+	/*
+	 * Since FD objects could outlive their context, we use a kref'ed
+	 * lock. This lock is referenced when a context and FD objects are
+	 * created. This lock protects concurrent context release from FD
+	 * objects release. Therefore, we need to put this lock object in
+	 * the context and every FD object release.
+	 */
+	kref_put(&ucontext->ref, release_ucontext);
 }
 
 void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext)
@@ -282,6 +298,7 @@ void uverbs_cleanup_ucontext(struct ib_ucontext *ucontext)
 void uverbs_initialize_ucontext(struct ib_ucontext *ucontext)
 {
 	mutex_init(&ucontext->lock);
+	kref_init(&ucontext->ref);
 	INIT_LIST_HEAD(&ucontext->uobjects);
 }
 
