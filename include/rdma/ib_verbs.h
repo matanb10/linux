@@ -1370,7 +1370,6 @@ struct ib_uobject {
 	struct kref		ref;
 	struct rw_semaphore	currently_used;	/* protects exclusive access */
 	struct rcu_head		rcu;		/* kfree_rcu() overhead */
-	int			live;
 
 	const struct uverbs_obj_type *type;
 };
