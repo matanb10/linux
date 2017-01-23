@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_184661bf",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:18:17Z",
+      "side": 1,
+      "message": "where is the matching to \"put_rwq_indirection_table_read\" that is deleted from the left ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_f8896d27",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:18:17Z",
+      "side": 1,
+      "message": "Why don\u0027t you use the idr_get_xxx scheme ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_38c6c548",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:18:17Z",
+      "side": 1,
+      "message": "comment should be when below line was introduced (first patch)",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_b88415d4",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:18:17Z",
+      "side": 1,
+      "message": "The allocation was done in the provider as part  of alloc_ucontext so the free should be also there, isn\u0027t it ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3850055d",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:18:17Z",
+      "side": 1,
+      "message": "Do we take the down_write comparing the original code or that it\u0027s not needed in the new API ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
