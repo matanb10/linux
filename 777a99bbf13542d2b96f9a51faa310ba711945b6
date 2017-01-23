@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_92801048",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:13Z",
+      "side": 1,
+      "message": "How about put as part of ib_uverbs_release_file to make sure it\u0027s valid till file is really cleaned-up ?",
+      "revId": "777a99bbf13542d2b96f9a51faa310ba711945b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
