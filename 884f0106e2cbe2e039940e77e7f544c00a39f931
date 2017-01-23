@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_2d08c52b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:01:46Z",
+      "side": 1,
+      "message": "Why this lock wasn\u0027t introduced in previous patch where this function was used in two modes of lock (e.g. destroy_commit_idr_uobject with true, hot_unplug_idr_uobject with false).",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_98f711f5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:01:46Z",
+      "side": 1,
+      "message": "Looks quite \"logic\" dependent, what would happen if we always use lock/unlock ?",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_98a951e2",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:01:46Z",
+      "side": 1,
+      "message": "Why don\u0027t you need the lock here ?",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1831c1ec",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:01:46Z",
+      "side": 1,
+      "message": "Do you rely on the hot_unplug to delete the obj from the list so that the above while loop in line 255 will be ended ? I would expect that this layer will handle that.",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_78155d3e",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T17:01:46Z",
+      "side": 1,
+      "message": "This was already used in previous patch correct ? we can consider merging with previou one.",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
