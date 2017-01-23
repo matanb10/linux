@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_adb73585",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:32Z",
+      "side": 1,
+      "message": "functio -\u003e function",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_add295d0",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:32Z",
+      "side": 1,
+      "message": "Not intuitive what is destroy commit.",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4dd899ef",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:32Z",
+      "side": 1,
+      "message": "Why it\u0027s needed ? there are alloc functions set above ?",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6ddd9ddf",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:32Z",
+      "side": 1,
+      "message": "Does this overwrite the hot_unplug function of uverbs_obj_type_ops ?\n\n\nWe may at least put some comment for above 67-68 which gives the flexibility to work per type ...",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ade97582",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-23T16:55:32Z",
+      "side": 1,
+      "message": "Not intuitive, what is this for ? why it\u0027s named alloc ?\n\nLet\u0027s consider:\n1) Or drop for now line 71 and add as part of next series.\n2) Have better names ...",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
