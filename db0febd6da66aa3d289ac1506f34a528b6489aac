@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_d9a228ae",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:27:50Z",
+      "side": 1,
+      "message": "Let\u0027s reorder the \"alloc\" ops ...",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_add295d0",
         "filename": "include/rdma/uverbs_ioctl.h",
         "patchSetId": 5
