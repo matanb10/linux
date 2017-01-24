@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_1e51a662",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:13:51Z",
+      "side": 1,
+      "message": "Why do we need to move from above to here ? not clear from looking at the code.\n\nMay re-add and delete the live for this function in this patch.",
+      "revId": "01d963333578914dcb0334822e72ce1960c6cf3a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
