@@ -1,0 +1,180 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_8821fca1",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "We can consider do that when no error occurred (line 206 below) and share setting of \u0027type\u0027, \u0027id\u0027, \u0027kref\u0027 internally with alloc_begin_idr_uobject flow.",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a8784090",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "user -\u003e handler\nthe list is filled -\u003e the list is handled",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_483c04c8",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "This comment is true also for the IDR flow, correct ? how about put in one place (i.e. init_uobj, assuming that all the settings will be there based on previous comment).",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6880e846",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "what prevent at that step from the context to be cleaned-up ? is it in the caller layer ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a8860063",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "Why you overwrite the real id with 0 ? may need a comment and fix the comment \" index into kernel idr/fd\".",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e8e3d831",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "Do we really need this one in the interface between IDR \u0026 FDs while for one on them it should not be used ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_68cea8b5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "Why here it\u0027s list_del_init comparing uverbs_uobject_remove where list_del is used ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c8001404",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "The memory shall be ..",
+      "range": {
+        "startLine": 60,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 31
+      },
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a803a00c",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "Do we want the comment in this patch ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a88cc035",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:02:00Z",
+      "side": 1,
+      "message": "Comparing previous release that used ib_uverbs_cleanup_ucontext, don\u0027t see handling for FD, Looking at coming patches, can see some code around for that, do we change some logic here ? is it really justified ?\n\nEspecially talking on the ib_uverbs_close flow ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
