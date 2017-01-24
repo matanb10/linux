@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_88457c71",
+        "filename": "drivers/infiniband/core/uverbs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:09:33Z",
+      "side": 1,
+      "message": "Deletion of line 184 (idr_remove_uobj) relates to previous patches, isn\u0027t it ?",
+      "revId": "a34a5e18ca4a61ead4f872e8e72f16dbd37a4750",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_bba2ccac",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:09:33Z",
+      "side": 1,
+      "message": "How about call it \"ib_uverbs_release_comp_event_file\" ?",
+      "revId": "a34a5e18ca4a61ead4f872e8e72f16dbd37a4750",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5b9df057",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:09:33Z",
+      "side": 1,
+      "message": "How about be consistent with names and have _comp_ ?",
+      "revId": "a34a5e18ca4a61ead4f872e8e72f16dbd37a4750",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7e5b0288",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:09:33Z",
+      "side": 1,
+      "message": "How about dropping this line and also line 1200 which checks the \u0027if\u0027 ?",
+      "revId": "a34a5e18ca4a61ead4f872e8e72f16dbd37a4750",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_88b7bc85",
+        "filename": "drivers/infiniband/core/uverbs_std_types.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-24T17:09:33Z",
+      "side": 1,
+      "message": "Where event file is freed here ?",
+      "revId": "a34a5e18ca4a61ead4f872e8e72f16dbd37a4750",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
