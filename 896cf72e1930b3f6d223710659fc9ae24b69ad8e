@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_f504c8c0",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_8821fca1",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a8784090",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-24T17:02:00Z",
       "side": 1,
       "message": "user -\u003e handler\nthe list is filled -\u003e the list is handled",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_d97a28f1",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_a8784090",
       "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_b97d34e9",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_483c04c8",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_6880e846",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-24T17:02:00Z",
       "side": 1,
       "message": "what prevent at that step from the context to be cleaned-up ? is it in the caller layer ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9984b0d4",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "All allocation commands is done in a context where ucontext can\u0027t be released (protected with srcu).",
+      "parentUuid": "fabf19d9_6880e846",
       "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_79879cd7",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_a8860063",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_e8e3d831",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_596f382b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "I would like them to be the same",
+      "parentUuid": "fabf19d9_e8e3d831",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_68cea8b5",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
@@ -115,6 +223,24 @@
       "writtenOn": "2017-01-24T17:02:00Z",
       "side": 1,
       "message": "Why here it\u0027s list_del_init comparing uverbs_uobject_remove where list_del is used ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_f973ac13",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "(a) I don\u0027t want to leave uninitialized fields in a live object.\n(b) This could be used by the fd to check if the ucontext is still alive.",
+      "parentUuid": "fabf19d9_68cea8b5",
       "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -144,6 +270,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1922e000",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_c8001404",
+      "range": {
+        "startLine": 60,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 31
+      },
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a803a00c",
         "filename": "include/rdma/ib_verbs.h",
         "patchSetId": 6
@@ -161,6 +311,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_d5ff84a8",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "I think so, it\u0027s a comment about fds :)",
+      "parentUuid": "fabf19d9_a803a00c",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a88cc035",
         "filename": "include/rdma/uverbs_ioctl.h",
         "patchSetId": 6
@@ -172,6 +340,24 @@
       "writtenOn": "2017-01-24T17:02:00Z",
       "side": 1,
       "message": "Comparing previous release that used ib_uverbs_cleanup_ucontext, don\u0027t see handling for FD, Looking at coming patches, can see some code around for that, do we change some logic here ? is it really justified ?\n\nEspecially talking on the ib_uverbs_close flow ?",
+      "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_995b9087",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:16Z",
+      "side": 1,
+      "message": "It was cleaned in the reset flow.",
+      "parentUuid": "fabf19d9_a88cc035",
       "revId": "896cf72e1930b3f6d223710659fc9ae24b69ad8e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
