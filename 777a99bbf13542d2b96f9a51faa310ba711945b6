@@ -16,6 +16,24 @@
       "revId": "777a99bbf13542d2b96f9a51faa310ba711945b6",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6587f1d7",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:09:24Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to. We don\u0027t expect any objects to be alive here (it\u0027s right after ib_uverbs_cleanup_ucontext). Please note that if file-\u003eucontext \u003d NULL, that means we don\u0027t have context and thus no objects could be created.",
+      "parentUuid": "fabf19d9_92801048",
+      "revId": "777a99bbf13542d2b96f9a51faa310ba711945b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
