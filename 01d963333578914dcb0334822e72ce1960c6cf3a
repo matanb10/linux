@@ -16,6 +16,24 @@
       "revId": "01d963333578914dcb0334822e72ce1960c6cf3a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_95d7cc22",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:20:19Z",
+      "side": 1,
+      "message": "The event function checked both the pointer and the live flag. Postponing the assign here (where we assigned the live flag before) makes this flag irrelevant.",
+      "parentUuid": "fabf19d9_1e51a662",
+      "revId": "01d963333578914dcb0334822e72ce1960c6cf3a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
