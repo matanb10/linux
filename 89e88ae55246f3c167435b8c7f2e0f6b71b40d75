@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1908a02b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:13:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_d8d46948",
+      "range": {
+        "startLine": 9,
+        "startChar": 46,
+        "endLine": 9,
+        "endChar": 51
+      },
+      "revId": "89e88ae55246f3c167435b8c7f2e0f6b71b40d75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3857e5cf",
         "filename": "drivers/infiniband/core/uverbs_std_types.c",
         "patchSetId": 1
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_59605801",
+        "filename": "drivers/infiniband/core/uverbs_std_types.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:13:37Z",
+      "side": 1,
+      "message": "AFAIK, it could be shared between processes.",
+      "parentUuid": "fabf19d9_3857e5cf",
+      "revId": "89e88ae55246f3c167435b8c7f2e0f6b71b40d75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_78c67d9b",
         "filename": "include/rdma/uverbs_std_types.h",
         "patchSetId": 1
@@ -53,6 +95,24 @@
       "writtenOn": "2017-01-23T17:06:26Z",
       "side": 1,
       "message": "Should match H file name (uverbs_std_types.h).",
+      "revId": "89e88ae55246f3c167435b8c7f2e0f6b71b40d75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_95622cac",
+        "filename": "include/rdma/uverbs_std_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:13:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_78c67d9b",
       "revId": "89e88ae55246f3c167435b8c7f2e0f6b71b40d75",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
