@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_151dfc0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:52Z",
+      "side": 1,
+      "message": "I\u0027ll squash it, so this line won\u0027t be there.",
+      "parentUuid": "fabf19d9_487e441a",
+      "revId": "d771360e6b1c8e98390570a2ad98538010c500eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_c896d4ef",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-24T17:02:15Z",
       "side": 1,
       "message": "Can consider putting as part of next patch where it\u0027s used.",
+      "revId": "d771360e6b1c8e98390570a2ad98538010c500eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_552a542d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:18:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_c896d4ef",
       "revId": "d771360e6b1c8e98390570a2ad98538010c500eb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
