@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_25d8d9ee",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:11:00Z",
+      "side": 1,
+      "message": "I\u0027ll squash it to the prev patch",
+      "parentUuid": "fabf19d9_2d08c52b",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_98f711f5",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-23T17:01:46Z",
       "side": 1,
       "message": "Looks quite \"logic\" dependent, what would happen if we always use lock/unlock ?",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e5e1c19b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:11:00Z",
+      "side": 1,
+      "message": "You\u0027ll get lockup in release context",
+      "parentUuid": "fabf19d9_98f711f5",
       "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_65ec918f",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:11:00Z",
+      "side": 1,
+      "message": "It\u0027s always called from uverbs_cleanup_ucontext inside a lock",
+      "parentUuid": "fabf19d9_98a951e2",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_1831c1ec",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_4504ed48",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:11:00Z",
+      "side": 1,
+      "message": "I\u0027ll fix it.",
+      "parentUuid": "fabf19d9_1831c1ec",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_78155d3e",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2017-01-23T17:01:46Z",
       "side": 1,
       "message": "This was already used in previous patch correct ? we can consider merging with previou one.",
+      "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c596bdef",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_78155d3e",
       "revId": "884f0106e2cbe2e039940e77e7f544c00a39f931",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
