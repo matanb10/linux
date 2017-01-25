@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_79867c14",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_184661bf",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_f8896d27",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-23T17:18:17Z",
       "side": 1,
       "message": "Why don\u0027t you use the idr_get_xxx scheme ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_99839004",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:16:16Z",
+      "side": 1,
+      "message": "because we need both the uobject and the object.",
+      "parentUuid": "fabf19d9_f8896d27",
       "revId": "f31e56ef07677a370988301737c01016ed83173f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_19a1c0a3",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_38c6c548",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_b88415d4",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_f99bac70",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_b88415d4",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3850055d",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2017-01-23T17:18:17Z",
       "side": 1,
       "message": "Do we take the down_write comparing the original code or that it\u0027s not needed in the new API ?",
+      "revId": "f31e56ef07677a370988301737c01016ed83173f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_d9890828",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:16:16Z",
+      "side": 1,
+      "message": "Allocation doesn\u0027t really expose the object, so it\u0027s not really needed.",
+      "parentUuid": "fabf19d9_3850055d",
       "revId": "f31e56ef07677a370988301737c01016ed83173f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
