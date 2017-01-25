@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_456f4d2b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_adb73585",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_d9a228ae",
         "filename": "include/rdma/uverbs_ioctl.h",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-24T17:27:50Z",
       "side": 1,
       "message": "Let\u0027s reorder the \"alloc\" ops ...",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_b53890a1",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_d9a228ae",
       "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_a564e948",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "Added a comment",
+      "parentUuid": "fabf19d9_add295d0",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_4dd899ef",
         "filename": "include/rdma/uverbs_ioctl.h",
         "patchSetId": 5
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-23T16:55:32Z",
       "side": 1,
       "message": "Why it\u0027s needed ? there are alloc functions set above ?",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_2551f962",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "Added a comment",
+      "parentUuid": "fabf19d9_4dd899ef",
       "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7542f811",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_6ddd9ddf",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ade97582",
         "filename": "include/rdma/uverbs_ioctl.h",
         "patchSetId": 5
@@ -98,6 +188,24 @@
       "writtenOn": "2017-01-23T16:55:32Z",
       "side": 1,
       "message": "Not intuitive, what is this for ? why it\u0027s named alloc ?\n\nLet\u0027s consider:\n1) Or drop for now line 71 and add as part of next series.\n2) Have better names ...",
+      "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_85d205d1",
+        "filename": "include/rdma/uverbs_ioctl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-25T16:10:17Z",
+      "side": 1,
+      "message": "I\u0027ll remove this",
+      "parentUuid": "fabf19d9_ade97582",
       "revId": "db0febd6da66aa3d289ac1506f34a528b6489aac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
