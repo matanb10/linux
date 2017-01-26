@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_1374f165",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T16:43:26Z",
+      "side": 1,
+      "message": "IS_ERR(uobj) ? NULL : uobj-\u003eobject;",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_d3ae7984",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T16:43:26Z",
+      "side": 1,
+      "message": "Looks like you missed the return value upon an error ..",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_56e817b4",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1577,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T16:43:26Z",
+      "side": 1,
+      "message": "Does the nested indication should have any meaning in the new infrastructure ? in legacy API it might end up with down_read_nested instead of of down_read.",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_f6f4cb87",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2731,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T16:43:26Z",
+      "side": 1,
+      "message": "no need here for the else { } as line 2727 returns.",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_b6ee53b2",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2796,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T16:43:26Z",
+      "side": 1,
+      "message": "At that step you don\u0027t have the lock, looks as a non clear/safe change when reviewing.",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
