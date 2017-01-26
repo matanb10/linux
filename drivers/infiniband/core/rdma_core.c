@@ -34,6 +34,7 @@
 #include <linux/anon_inodes.h>
 #include <rdma/ib_verbs.h>
 #include <rdma/uverbs_types.h>
+#include <rdma/uverbs_ioctl.h>
 #include "uverbs.h"
 #include "rdma_core.h"
 
@@ -435,3 +436,51 @@ void uverbs_close_fd(struct file *f)
 	uverbs_uobject_put(&uobj_file->uobj);
 }
 
+struct ib_uobject *uverbs_get_uobject_from_context(const struct uverbs_obj_type *type_attrs,
+						   struct ib_ucontext *ucontext,
+						   enum uverbs_idr_access access,
+						   int id)
+{
+	switch (access) {
+	case UVERBS_ACCESS_READ:
+		return type_attrs->ops->lookup_get(type_attrs, ucontext, id,
+						   false);
+	case UVERBS_ACCESS_DESTROY:
+	case UVERBS_ACCESS_WRITE:
+		return type_attrs->ops->lookup_get(type_attrs, ucontext, id,
+						   true);
+	case UVERBS_ACCESS_NEW:
+		return type_attrs->ops->alloc_begin(type_attrs, ucontext);
+	default:
+		WARN_ON(true);
+		return ERR_PTR(-EOPNOTSUPP);
+	}
+}
+
+void uverbs_finalize_object(struct ib_uobject *uobj,
+			    enum uverbs_idr_access access,
+			    bool commit)
+{
+	switch (access) {
+	case UVERBS_ACCESS_READ:
+		uobj->type->ops->lookup_put(uobj, false);
+		break;
+	case UVERBS_ACCESS_WRITE:
+		uobj->type->ops->lookup_put(uobj, true);
+		break;
+	case UVERBS_ACCESS_DESTROY:
+		if (commit)
+			uobj->type->ops->destroy_commit(uobj);
+		else
+			uobj->type->ops->lookup_put(uobj, true);
+		break;
+	case UVERBS_ACCESS_NEW:
+		if (commit)
+			uobj->type->ops->alloc_commit(uobj);
+		else
+			uobj->type->ops->alloc_abort(uobj);
+		break;
+	default:
+		WARN_ON(true);
+	}
+}
