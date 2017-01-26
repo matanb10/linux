@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_16605f00",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T17:17:11Z",
+      "side": 1,
+      "message": "We can\u0027t delay the driver from release his resources ...",
+      "revId": "3319f412dfbfcec0bf9e3056f92bc34d66ffd3ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
