@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_6627ec64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "become",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_061dd00e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "finalizing",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_86be80d2",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "How about \"by the handler\" ?",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_062270b9",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "Didn\u0027t you point that kref-ed is used ?",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e1e88612",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "Still looks to me as redundant to use the \u0027init\u0027 mode, but up to you.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c616b8f0",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "e.g.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_46e188fd",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "How kref-ed lock protects concurrent call ? usually kref-ed lock protects from releasing an object when it\u0027s still in use.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c6ed98f0",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "How about decreases instead of drops ?",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a1004e02",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "Used when ..",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a1272eb5",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "e.g.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_812aea7c",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:42:14Z",
+      "side": 1,
+      "message": "etc.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
