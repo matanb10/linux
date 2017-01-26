@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_01e49a0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:55:58Z",
+      "side": 1,
+      "message": "declaration",
+      "revId": "51462adf10df7149147f3a3dd676580843b47daa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_01793a2f",
+        "filename": "drivers/infiniband/core/uverbs_std_types.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-26T12:55:58Z",
+      "side": 1,
+      "message": "2017",
+      "revId": "51462adf10df7149147f3a3dd676580843b47daa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
