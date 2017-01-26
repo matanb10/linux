@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_d61e6762",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_6627ec64",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_061dd00e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-26T12:42:14Z",
       "side": 1,
       "message": "finalizing",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_b619b37b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_061dd00e",
       "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_d382f993",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_86be80d2",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_062270b9",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-26T12:42:14Z",
       "side": 1,
       "message": "Didn\u0027t you point that kref-ed is used ?",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_13607100",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "We transform this to kref in later patches",
+      "parentUuid": "fabf19d9_062270b9",
       "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_5345c96d",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Since this object is still around, I prefer to be precautions here.",
+      "parentUuid": "fabf19d9_e1e88612",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_c616b8f0",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 6
@@ -98,6 +188,24 @@
       "writtenOn": "2017-01-26T12:42:14Z",
       "side": 1,
       "message": "e.g.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_132751cb",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_c616b8f0",
       "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_560a5722",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "I\u0027ll refine that:\nThe context has a list of objects which is protected by a mutex on the context. Therefore,  the context memory can\u0027t be freed until all objects that might use this lock are freed as well.",
+      "parentUuid": "fabf19d9_46e188fd",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_c6ed98f0",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 6
@@ -132,6 +258,24 @@
       "writtenOn": "2017-01-26T12:42:14Z",
       "side": 1,
       "message": "How about decreases instead of drops ?",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1615ff3e",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_c6ed98f0",
       "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_d359d95b",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_a1004e02",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a1272eb5",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 6
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_b3542521",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_a1272eb5",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_812aea7c",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 6
@@ -183,6 +363,24 @@
       "writtenOn": "2017-01-26T12:42:14Z",
       "side": 1,
       "message": "etc.",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9332410f",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-26T15:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_812aea7c",
       "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
