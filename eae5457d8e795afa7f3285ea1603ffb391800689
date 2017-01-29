@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_fed01921",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T12:28:50Z",
+      "side": 1,
+      "message": "I would prefer below which is more clearly:\nreturn ret ? ret : in_len;",
+      "revId": "eae5457d8e795afa7f3285ea1603ffb391800689",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_decd5586",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2796,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T12:28:50Z",
+      "side": 1,
+      "message": "When reviewing there is a change from idr_write_qp to idr_read_ap which looks like an issue. \n\nWe may consider some note on. (We can discuss as well)",
+      "revId": "eae5457d8e795afa7f3285ea1603ffb391800689",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
