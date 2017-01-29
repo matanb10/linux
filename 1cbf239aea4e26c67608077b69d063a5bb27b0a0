@@ -107,6 +107,23 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7e9769ec",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:54:42Z",
+      "side": 1,
+      "message": "Need to drop as it\u0027s a dead-code, here and in H file and commit log ...",
+      "revId": "1cbf239aea4e26c67608077b69d063a5bb27b0a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_062270b9",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 6
