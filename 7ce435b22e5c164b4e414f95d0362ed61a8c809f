@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_1ea2ad4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T17:04:39Z",
+      "side": 1,
+      "message": "Let\u0027s squash (BI-SEC, some code that not relevant specific to this patch, other way to drop is_live which could be done regardless to the new infrastructure )",
+      "revId": "7ce435b22e5c164b4e414f95d0362ed61a8c809f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_fe8b79c1",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1933,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T17:04:39Z",
+      "side": 1,
+      "message": "Not looks related to this patch",
+      "revId": "7ce435b22e5c164b4e414f95d0362ed61a8c809f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
