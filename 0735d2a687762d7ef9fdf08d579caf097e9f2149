@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_de6c3537",
+        "filename": "drivers/infiniband/core/uverbs.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "Is this relevant to ib_uverbs_completion_event_file ? do we need this field any more ?",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_fe6ff928",
+        "filename": "drivers/infiniband/core/uverbs.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "This already holds a pointer to uverbs_file so why it\u0027s needed as part of ib_uobject_file ?",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9e491dba",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "Which code guaranteed that ? not clear from the comment.",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7ec9a925",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "Few notes:\n1) Could it be done internally as part of ib_uverbs_lookup_comp_file ?\n\n2) Where its matching put in both good flow and error flow below ?",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5ecee52e",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1204,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "Why do we put it upon success ?",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_be7501fb",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:04:23Z",
+      "side": 1,
+      "message": "Where is its matching get ? code is quite complex ...\nWe may consider adding some general note about the locking schema around.",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
