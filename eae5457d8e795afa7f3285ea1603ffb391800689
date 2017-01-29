@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7e1ac97e",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T18:01:07Z",
+      "side": 1,
+      "message": "This form is used in the kernel. I don\u0027t mind using it, but I think it looks better this way :)",
+      "parentUuid": "fabf19d9_fed01921",
+      "revId": "eae5457d8e795afa7f3285ea1603ffb391800689",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_decd5586",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-29T12:28:50Z",
       "side": 1,
       "message": "When reviewing there is a change from idr_write_qp to idr_read_ap which looks like an issue. \n\nWe may consider some note on. (We can discuss as well)",
+      "revId": "eae5457d8e795afa7f3285ea1603ffb391800689",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1e150d48",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2796,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T18:01:07Z",
+      "side": 1,
+      "message": "Next patch is adding a lock exactly for this.",
+      "parentUuid": "fabf19d9_decd5586",
       "revId": "eae5457d8e795afa7f3285ea1603ffb391800689",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
