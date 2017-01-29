@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_be9d0168",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T15:08:01Z",
+      "side": 1,
+      "message": "Is this \u0027kref statement\u0027 still up-to-date ? looks that you need to describe the new locking mechanism, isn\u0027t it ?",
+      "revId": "b084b1d0344006cac29a528ba8a9ad2ab585a39e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_fefa5974",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T15:08:01Z",
+      "side": 1,
+      "message": "Not sure what is this comment about ?",
+      "revId": "b084b1d0344006cac29a528ba8a9ad2ab585a39e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_be1e21b9",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T15:08:01Z",
+      "side": 1,
+      "message": "Let\u0027s have some quick review here.",
+      "revId": "b084b1d0344006cac29a528ba8a9ad2ab585a39e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
