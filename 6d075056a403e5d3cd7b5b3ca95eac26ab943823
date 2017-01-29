@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_7e9d29bb",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T10:36:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_1374f165",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_d3ae7984",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-26T16:43:26Z",
       "side": 1,
       "message": "Looks like you missed the return value upon an error ..",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5ea265fe",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T10:36:09Z",
+      "side": 1,
+      "message": "why?\nit means:\nret ? ret : in_len",
+      "parentUuid": "fabf19d9_d3ae7984",
       "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_3ea33102",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1577,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T10:36:09Z",
+      "side": 1,
+      "message": "Since we\u0027re locking for read, the new infra will just do another down_read which should be ok.",
+      "parentUuid": "fabf19d9_56e817b4",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_f6f4cb87",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 2
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1ea86dda",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2731,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T10:36:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_f6f4cb87",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_b6ee53b2",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 2
@@ -81,6 +153,24 @@
       "writtenOn": "2017-01-26T16:43:26Z",
       "side": 1,
       "message": "At that step you don\u0027t have the lock, looks as a non clear/safe change when reviewing.",
+      "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_feb13948",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2796,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-29T10:36:09Z",
+      "side": 1,
+      "message": "Do you mean that getting this QP without a lock is unsafe?\nIf so, why isn\u0027t it safe?\nIn modify_qp, we do the same thing.\n\nIf you mean this patch isn\u0027t safe here - this is correct. Next patch adds this lock. Splitting this (even if it isn\u0027t bisectable) was requested in upstream.",
+      "parentUuid": "fabf19d9_b6ee53b2",
       "revId": "6d075056a403e5d3cd7b5b3ca95eac26ab943823",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
