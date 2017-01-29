@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1eebcd79",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:46:52Z",
+      "side": 1,
+      "message": "As discussed let\u0027s drop this comment.",
+      "parentUuid": "fabf19d9_9e491dba",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_7ec9a925",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 5
@@ -87,6 +105,23 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_de01d539",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:46:52Z",
+      "side": 1,
+      "message": "Looks like we miss the kref put ..",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_be7501fb",
         "filename": "drivers/infiniband/core/uverbs_main.c",
         "patchSetId": 5
@@ -98,6 +133,23 @@
       "writtenOn": "2017-01-29T16:04:23Z",
       "side": 1,
       "message": "Where is its matching get ? code is quite complex ...\nWe may consider adding some general note about the locking schema around.",
+      "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_fe04994a",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-29T16:46:52Z",
+      "side": 1,
+      "message": "comp -\u003e async",
       "revId": "0735d2a687762d7ef9fdf08d579caf097e9f2149",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
