@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_256b15b9",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-30T16:56:08Z",
+      "side": 1,
+      "message": "Looks like comment is not correct as you really don\u0027t use kfree_rcu, isn\u0027t it ?",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a5eba512",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-30T16:56:08Z",
+      "side": 1,
+      "message": "Not look standart, why can\u0027t it be some generic function in this layer ?",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_85d7814a",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-30T16:56:08Z",
+      "side": 1,
+      "message": "e.g.",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_25c79597",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-30T16:56:08Z",
+      "side": 1,
+      "message": "You may update above comment for that new private function.",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
