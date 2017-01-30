@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_8abe7063",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-30T16:34:06Z",
+      "side": 1,
+      "message": "What is uverbs_type_pd ? it looks outdated.",
+      "revId": "74a9ad47389707778f3dab687cb8c5c1a8feb4ce",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
