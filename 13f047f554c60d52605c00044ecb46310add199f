@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9bf00469",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:25:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_650d8de7",
+      "revId": "13f047f554c60d52605c00044ecb46310add199f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a5a3a5b1",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-30T17:19:02Z",
       "side": 1,
       "message": "I believe that only the kref_put from above function is really applicable, is that correct ?",
+      "revId": "13f047f554c60d52605c00044ecb46310add199f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7bc3f0ed",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1205,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:25:43Z",
+      "side": 1,
+      "message": "As discussed this seems fine and identical to the previous code.",
+      "parentUuid": "fabf19d9_a5a3a5b1",
       "revId": "13f047f554c60d52605c00044ecb46310add199f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
