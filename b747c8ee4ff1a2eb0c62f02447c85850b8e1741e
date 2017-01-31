@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_3bc7b597",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-01-31T14:01:58Z",
+      "side": 1,
+      "message": "Let\u0027s add some note about the expected usage ...",
+      "revId": "b747c8ee4ff1a2eb0c62f02447c85850b8e1741e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
