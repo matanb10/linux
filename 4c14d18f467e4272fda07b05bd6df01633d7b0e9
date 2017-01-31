@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_3b5d7879",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_256b15b9",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_a5eba512",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2017-01-30T16:56:08Z",
       "side": 1,
       "message": "Not look standart, why can\u0027t it be some generic function in this layer ?",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1b575459",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:11:32Z",
+      "side": 1,
+      "message": "Because if we do that, we get two callbacks that could free this uobject (kref_put from uverbs_main and that). That\u0027s why I thought it\u0027s better to get get a callback from the user that defines how do we free this object.",
+      "parentUuid": "fabf19d9_a5eba512",
       "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_3bd458bb",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_85d7814a",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_25c79597",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 10
@@ -64,6 +118,24 @@
       "writtenOn": "2017-01-30T16:56:08Z",
       "side": 1,
       "message": "You may update above comment for that new private function.",
+      "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1bde34dd",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-01-31T09:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_25c79597",
       "revId": "4c14d18f467e4272fda07b05bd6df01633d7b0e9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
