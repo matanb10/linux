@@ -223,6 +223,8 @@ void uverbs_copy_query_dev_fields(struct ib_device *ib_dev,
 void ib_uverbs_detach_umcast(struct ib_qp *qp,
 			     struct ib_uqp_object *uobj);
 
+long ib_uverbs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
+
 struct ib_uverbs_flow_spec {
 	union {
 		union {
