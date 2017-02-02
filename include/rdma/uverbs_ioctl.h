@@ -55,6 +55,7 @@ enum uverbs_attr_type {
 	UVERBS_ATTR_TYPE_PTR_OUT,
 	UVERBS_ATTR_TYPE_IDR,
 	UVERBS_ATTR_TYPE_FD,
+	UVERBS_ATTR_TYPE_FLAG,
 };
 
 enum uverbs_idr_access {
@@ -78,6 +79,10 @@ struct uverbs_attr_spec {
 			u16			obj_type;
 			u8			access;
 		} obj;
+		struct {
+			/* flags are always 64bits */
+			u64			mask;
+		} flag;
 	};
 };
 
@@ -148,6 +153,9 @@ struct uverbs_root {
 				(_access) != UVERBS_ACCESS_NEW &&	\
 				(_access) != UVERBS_ACCESS_READ)	\
 		 }, ##__VA_ARGS__ }
+#define UVERBS_ATTR_FLAG(_id, _mask, ...)				\
+	[_id] = {.type = UVERBS_ATTR_TYPE_FLAG,				\
+		 .flag = {.mask = _mask}, ##__VA_ARGS__ }
 #define _UVERBS_ATTR_SPEC_SZ(...)					\
 	(sizeof((struct uverbs_attr_spec[]){__VA_ARGS__}) /	\
 	 sizeof(struct uverbs_attr_spec))
@@ -226,6 +234,10 @@ struct uverbs_ptr_attr {
 	u16		len;
 };
 
+struct uverbs_flag_attr {
+	u64	flags;
+};
+
 struct uverbs_obj_attr {
 	/* pointer to the kernel descriptor -> type, access, etc */
 	struct ib_uverbs_attr __user	*uattr;
@@ -238,6 +250,7 @@ struct uverbs_attr {
 	union {
 		struct uverbs_ptr_attr	ptr_attr;
 		struct uverbs_obj_attr	obj_attr;
+		struct uverbs_flag_attr flag_attr;
 	};
 };
 
