@@ -75,6 +75,15 @@ static int uverbs_process_attr(struct ib_device *ibdev,
 		e->ptr_attr.len = uattr->len;
 		break;
 
+	case UVERBS_ATTR_TYPE_FLAG:
+		e->flag_attr.flags = uattr->data;
+		if (uattr->len)
+			return -EINVAL;
+		if (uattr->flags & UVERBS_ATTR_F_MANDATORY &&
+		    e->flag_attr.flags & ~spec->flag.mask)
+			return -EINVAL;
+		break;
+
 	case UVERBS_ATTR_TYPE_IDR:
 		if (uattr->data >> 32)
 			return -EINVAL;
