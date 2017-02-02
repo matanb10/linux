@@ -186,12 +186,23 @@ struct uverbs_root {
 	 sizeof(struct uverbs_action *))
 #define ADD_UVERBS_ACTION(action_idx, _handler,  ...)		\
 	[action_idx] = &UVERBS_ACTION(_handler, __VA_ARGS__)
+#define DECLARE_UVERBS_ACTION(name, _handler, ...)		\
+	struct uverbs_action name =				\
+		UVERBS_ACTION(_handler, __VA_ARGS__)
 #define ADD_UVERBS_CTX_ACTION(action_idx, _handler,  ...)	\
 	[action_idx] = &UVERBS_CTX_ACTION(_handler, __VA_ARGS__)
+#define DECLARE_UVERBS_CTX_ACTION(name, _handler, ...)	\
+	struct uverbs_action name =					\
+		UVERBS_CTX_ACTION(_handler, __VA_ARGS__)
+#define ADD_UVERBS_ACTION_PTR(idx, ptr)					\
+	[idx] = ptr
 #define UVERBS_ACTIONS(...)						\
 	((const struct uverbs_action_group)			\
 	  {.num_actions = _UVERBS_ACTIONS_SZ(__VA_ARGS__),		\
 	   .actions = (struct uverbs_action *[]){__VA_ARGS__} })
+#define DECLARE_UVERBS_ACTIONS(name, ...)				\
+	const struct  uverbs_type_actions_group name =			\
+		UVERBS_ACTIONS(__VA_ARGS__)
 #define _UVERBS_ACTIONS_GROUP_SZ(...)					\
 	(sizeof((const struct uverbs_action_group*[]){__VA_ARGS__}) / \
 	 sizeof(const struct uverbs_action_group *))
@@ -205,6 +216,8 @@ struct uverbs_root {
 #define _UVERBS_TYPE_SZ(...)						\
 	(sizeof((const struct uverbs_type *[]){__VA_ARGS__}) /	\
 	 sizeof(const struct uverbs_type *))
+#define ADD_UVERBS_TYPE_ACTIONS(type_idx, ...)				\
+	[type_idx] = &UVERBS_ACTIONS(__VA_ARGS__)
 #define ADD_UVERBS_TYPE(type_idx, type_ptr)				\
 	[type_idx] = ((const struct uverbs_type * const)&(type_ptr))
 #define UVERBS_TYPES(...)  ((const struct uverbs_type_group)		\
