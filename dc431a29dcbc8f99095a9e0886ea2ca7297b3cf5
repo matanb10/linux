@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_2e64c3b6",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Didn\u0027t look into the correctness here..., assumed that it was previously reviewed in the RFC mode, need to ?\n\nNote:\nWe could consider adding some comment on.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ce754764",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Not clear, may need some rephrasing.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6e663bbc",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "simplify",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4e0817da",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Internally as part of uverbs_uobject_put_ref you have a flag for that isn\u0027t it ? \n\nnote:\ncomment not looks in place.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_2e0ba3d7",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Not clear why set to 0 instead of dec ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ee100b02",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "What is \"other cases\" ? not clear.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8e02afb2",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Why do we need this lock comparing previous version ? you updated above comment as well.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ee27eb60",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "when can it happen ? why do we really need it ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4e9ed7b9",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "space at the end",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6eb3db4d",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "lock is not accurate any more .. (here and below)",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8e8f4f74",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "What do you mean and put ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8ebd0f04",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "Does above new lines related to latest changes ? which use case can lead for that it will be removed by still have krefs ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_0e40df05",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-02-15T17:14:13Z",
+      "side": 1,
+      "message": "What is this note comparing below note which refers to remove_commit ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
