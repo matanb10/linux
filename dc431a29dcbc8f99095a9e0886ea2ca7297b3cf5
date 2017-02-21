@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_c6cf5527",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "I think it\u0027s better to review this",
+      "parentUuid": "fabf19d9_2e64c3b6",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ce754764",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 12
@@ -30,6 +48,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "Not clear, may need some rephrasing.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c6e635af",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_ce754764",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_a6e90181",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_6e663bbc",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_4e0817da",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 12
@@ -64,6 +118,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "Internally as part of uverbs_uobject_put_ref you have a flag for that isn\u0027t it ? \n\nnote:\ncomment not looks in place.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8605dd46",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "In needs_rcu based types, we can skip the rcu in abort conditions, but we chose to keep the code simple.",
+      "parentUuid": "fabf19d9_4e0817da",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_66008934",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "I\u0027ll add a comment in the locking",
+      "parentUuid": "fabf19d9_2e0ba3d7",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ee100b02",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 12
@@ -98,6 +188,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "What is \"other cases\" ? not clear.",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_a6a0e142",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "I\u0027ll remove it (I meant for FDs, but it\u0027s no longer correct).",
+      "parentUuid": "fabf19d9_ee100b02",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_868cbdda",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "We don\u0027t need it here, but Jason claimed it\u0027s easier to review it this way.",
+      "parentUuid": "fabf19d9_8e02afb2",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ee27eb60",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 12
@@ -132,6 +258,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "when can it happen ? why do we really need it ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_668769b5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Jason requests - this would scream out when some kind of a lookup/destroy is running in the same time as the cleanup.\nIt can\u0027t happen because of the SRCU, but still....",
+      "parentUuid": "fabf19d9_ee27eb60",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_e6c139e5",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_4e9ed7b9",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_6eb3db4d",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 12
@@ -166,6 +328,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "lock is not accurate any more .. (here and below)",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_c6b4f582",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Why? using an atomic still behaves the same way as the try lock we had earlier.",
+      "parentUuid": "fabf19d9_6eb3db4d",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_26a4d148",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "uverbs_uobject_put",
+      "parentUuid": "fabf19d9_8e8f4f74",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_8ebd0f04",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 12
@@ -206,6 +404,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_267bb1bf",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "Yeah, you could still take a uverbs_uobject_get on that object",
+      "parentUuid": "fabf19d9_8ebd0f04",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_0e40df05",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 12
@@ -217,6 +433,24 @@
       "writtenOn": "2017-02-15T17:14:13Z",
       "side": 1,
       "message": "What is this note comparing below note which refers to remove_commit ?",
+      "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_665c094b",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-02-21T14:11:17Z",
+      "side": 1,
+      "message": "I\u0027ll rephrase",
+      "parentUuid": "fabf19d9_0e40df05",
       "revId": "dc431a29dcbc8f99095a9e0886ea2ca7297b3cf5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
