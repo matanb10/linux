@@ -1,0 +1,271 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_6a1f035c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Just wondering whether below is still up-to-date after all the new changes.",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ca5e0f12",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Personally I would prefer the rw solution from previous version but it\u0027s up to you.\n\nDoes it make sense to put the part of the release near its code ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ea8f9373",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "How can that be ? this module calls it internally and take rcu_lock, correct ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_2aafcbe4",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "proper",
+      "range": {
+        "startLine": 142,
+        "startChar": 57,
+        "endLine": 142,
+        "endChar": 64
+      },
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8a93774f",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "What is this WARN and how it relates to cleanup context ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e58fc473",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Let\u0027s put some note here ...",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_5c3ad1e8",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1335,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Why ? is it a change comparing current framework ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3f5b8f30",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1340,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Why do we need do differentiate  with such an enum ? let\u0027s discuss.",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9c306909",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1341,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Not sure that is this about ?\n\n(typo unplugged",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_df6133d5",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Few notes:\n\n1) How can this fail comparing previous release that function was void ?\n2) \"Must be called with ...\" - who needs to make sure that this really be the case ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1fafabe4",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "What is the _must_check prefix ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dfe6d343",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Which objects specifically are you referring here in current frame work ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7f86a766",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "typo (modules)",
+      "range": {
+        "startLine": 101,
+        "startChar": 44,
+        "endLine": 101,
+        "endChar": 52
+      },
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_9fcf3bb3",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Not sure who this comment intend to and why it\u0027s changed comparing previous version.",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3fceefb4",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-01T15:51:05Z",
+      "side": 1,
+      "message": "Are those new calls comparing previous version ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
