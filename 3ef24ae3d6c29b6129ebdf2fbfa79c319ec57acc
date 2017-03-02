@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_d3ab67d5",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T14:00:35Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be an error in the RDMA_REMOVE_DESTROY case ? what is the expected in driver cleanup ?",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_802a33e6",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T14:00:35Z",
+      "side": 1,
+      "message": "Not sure why you have specific handling for xrcd comparing other cases above.",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_60c03fe1",
+        "filename": "drivers/infiniband/core/uverbs_std_types.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T14:00:35Z",
+      "side": 1,
+      "message": "Looking at the driver cleanup case (e.g. ib_uverbs_cleanup_ucontext) don\u0027t see matching code for lines 127-130 above, isn\u0027t it ?",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
