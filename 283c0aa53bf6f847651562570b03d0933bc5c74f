@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_16af8d95",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "Few notes:\n1) Why this relates to the FD series ? \n2) Why do we need it at all ? can that happen ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_f67bf927",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "What might cause that to fail in current code implementation ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_169d4d59",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "What is this for ? doesn\u0027t it need to be under some mutex to be in sync with other functions which uses it.\n\nLet\u0027s discuss.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_d6c6b548",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "What does this comment mean ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_36fdf16e",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "Not sure that I follow the logic of the above 2 options, let\u0027s discuss.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_76036977",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "This function defined as _must_check, don\u0027t see that return code is considered here.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_b6f10198",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "THe lock is only for FD(s) ? if so we can consider adding it in that patch.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_932baf94",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "uverbs_uobject_out -\u003e uverbs_uobject_put",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3311835e",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "What will happen if someone will call it ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_13167f55",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "Which function are you referring to ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_562f45f6",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "Is this new comparing previous version ? let\u0027s go over the locking scheme after the changes in this series.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_534e3797",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T17:10:37Z",
+      "side": 1,
+      "message": "to a -\u003e to generic fd operations.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
