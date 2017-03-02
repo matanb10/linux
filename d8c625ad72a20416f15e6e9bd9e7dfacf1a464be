@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_132aff2c",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T15:07:47Z",
+      "side": 1,
+      "message": "\u0027pd\u0027 here has no relation to line 280, correct ? it\u0027s quite confusing...",
+      "revId": "d8c625ad72a20416f15e6e9bd9e7dfacf1a464be",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_330bc37f",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T15:07:47Z",
+      "side": 1,
+      "message": "Is it must to be before lines 1280-1283 as of the uobj_remove_commit ? see previous version (9) it was done before.",
+      "revId": "d8c625ad72a20416f15e6e9bd9e7dfacf1a464be",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_93684f89",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-02T15:07:47Z",
+      "side": 1,
+      "message": "Comment looks as out dated re \"live\".",
+      "revId": "d8c625ad72a20416f15e6e9bd9e7dfacf1a464be",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
