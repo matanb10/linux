@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_3d6dd4cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_6a1f035c",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ca5e0f12",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_bd61e4d5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "I\u0027ll add a reference in the unlock part",
+      "parentUuid": "fabf19d9_ca5e0f12",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ea8f9373",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -47,6 +83,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "How can that be ? this module calls it internally and take rcu_lock, correct ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ddab78d5",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Yeah, just a precaution. It\u0027ll basically catch errors of type_classes that needs needs_rcu but set it to false.",
+      "parentUuid": "fabf19d9_ea8f9373",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -76,6 +130,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9db50033",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_2aafcbe4",
+      "range": {
+        "startLine": 142,
+        "startChar": 57,
+        "endLine": 142,
+        "endChar": 64
+      },
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_8a93774f",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -87,6 +165,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "What is this WARN and how it relates to cleanup context ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3df27407",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "It means that we couldn\u0027t get the write lock because the cleanup context takes this write_lock.",
+      "parentUuid": "fabf19d9_8a93774f",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -110,6 +206,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_bdda0416",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_e58fc473",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_5c3ad1e8",
         "filename": "include/rdma/ib_verbs.h",
         "patchSetId": 13
@@ -121,6 +235,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "Why ? is it a change comparing current framework ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_7d034c77",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1335,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "We consolidated the handler removal and the hot_unplug path.",
+      "parentUuid": "fabf19d9_5c3ad1e8",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -144,6 +276,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_5d088891",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1340,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "fabf19d9_3f5b8f30",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_9c306909",
         "filename": "include/rdma/ib_verbs.h",
         "patchSetId": 13
@@ -155,6 +305,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "Not sure that is this about ?\n\n(typo unplugged",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_1d021070",
+        "filename": "include/rdma/ib_verbs.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1341,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "the user successfully committed an object, but the contest is just being cleaned-up.",
+      "parentUuid": "fabf19d9_9c306909",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -178,6 +346,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_ddf49888",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "remove_commit now actually destroy the IB object (which could fail). In the previous iteration, it just removed the uobject (which couldn\u0027t fail).",
+      "parentUuid": "fabf19d9_df6133d5",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_1fafabe4",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 13
@@ -195,6 +381,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_bdf1e497",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "The caller must check the return value.",
+      "parentUuid": "fabf19d9_1fafabe4",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_dfe6d343",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 13
@@ -206,6 +410,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "Which objects specifically are you referring here in current frame work ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_3d34b448",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "fd based",
+      "parentUuid": "fabf19d9_dfe6d343",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -235,6 +457,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_1d39f041",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_7f86a766",
+      "range": {
+        "startLine": 101,
+        "startChar": 44,
+        "endLine": 101,
+        "endChar": 52
+      },
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_9fcf3bb3",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 13
@@ -252,6 +498,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_fd3e3c28",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "For users of objects which could be in detached state",
+      "parentUuid": "fabf19d9_9fcf3bb3",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_3fceefb4",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 13
@@ -263,6 +527,24 @@
       "writtenOn": "2017-03-01T15:51:05Z",
       "side": 1,
       "message": "Are those new calls comparing previous version ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_dd3b7837",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-02T10:15:18Z",
+      "side": 1,
+      "message": "Yeah, wrappers (some with some logic). They replace type-\u003etype_class-\u003eops-\u003exxxx(....);",
+      "parentUuid": "fabf19d9_3fceefb4",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
