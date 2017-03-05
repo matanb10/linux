@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_0ae2b99f",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "Seems like you\u0027re right here - if close_fd and get_uobject are mutually exclusive (either via external lock or because close_fd is only called from the release_file callback), this can\u0027t happen. I\u0027ll drop that.",
+      "parentUuid": "fabf19d9_16af8d95",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_f67bf927",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 18
@@ -30,6 +48,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "What might cause that to fail in current code implementation ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_eaed458f",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "Well, it depends on whatever the user\u0027s callback is.\nThe only fd callback currently can\u0027t fail.",
+      "parentUuid": "fabf19d9_f67bf927",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_eabb0574",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "For the usages of this object via lookup, this object is locked, so it\u0027s protected.\nFor asynchronous close_fd, the user\u0027s synchronize these close_fd with handlers invocations (either a mutex or only invoke close_fd from file_release callback).",
+      "parentUuid": "fabf19d9_169d4d59",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_d6c6b548",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 18
@@ -64,6 +118,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "What does this comment mean ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_cac041e3",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "If we\u0027re in cleanup context, we don\u0027t need to really cleanup resources (we clean things anyway now).",
+      "parentUuid": "fabf19d9_d6c6b548",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_aab50d7f",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "!context \u003d object was already destroyed (see remove_commit)\ndown_read_trylock - we initiated cleanup_context",
+      "parentUuid": "fabf19d9_36fdf16e",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_76036977",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 18
@@ -98,6 +188,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "This function defined as _must_check, don\u0027t see that return code is considered here.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_8aba496d",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "The _ isn\u0027t must_check, only the non _ function is.",
+      "parentUuid": "fabf19d9_76036977",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_6ab0158c",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "Jason asked to do that in the original patch to make things clearer.",
+      "parentUuid": "fabf19d9_b6f10198",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_932baf94",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 18
@@ -132,6 +258,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "uverbs_uobject_out -\u003e uverbs_uobject_put",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_0d31b3ec",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_932baf94",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_cd517b10",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "He can access freed memory.",
+      "parentUuid": "fabf19d9_3311835e",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_13167f55",
         "filename": "drivers/infiniband/core/rdma_core.h",
         "patchSetId": 18
@@ -166,6 +328,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "Which function are you referring to ?",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ad564704",
+        "filename": "drivers/infiniband/core/rdma_core.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "the .release callback of file_operations.",
+      "parentUuid": "fabf19d9_13167f55",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_8d5b832e",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "If I recall, I\u0027ve just exported it to the caller instead of the callee.",
+      "parentUuid": "fabf19d9_562f45f6",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_534e3797",
         "filename": "include/rdma/uverbs_types.h",
         "patchSetId": 18
@@ -200,6 +398,24 @@
       "writtenOn": "2017-03-02T17:10:37Z",
       "side": 1,
       "message": "to a -\u003e to generic fd operations.",
+      "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4d3e8bb9",
+        "filename": "include/rdma/uverbs_types.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T18:21:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabf19d9_534e3797",
       "revId": "283c0aa53bf6f847651562570b03d0933bc5c74f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
