@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_0a74f9fa",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:54:31Z",
+      "side": 1,
+      "message": "I don\u0027t think so. It only means one user wanted to remove this xrcd domain. I think it\u0027s similar to what we have today.",
+      "parentUuid": "fabf19d9_d3ab67d5",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_802a33e6",
         "filename": "drivers/infiniband/core/uverbs_main.c",
         "patchSetId": 11
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_4a51d161",
+        "filename": "drivers/infiniband/core/uverbs_main.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:54:31Z",
+      "side": 1,
+      "message": "Because we could reach this code either because of reset flow or context destruction.",
+      "parentUuid": "fabf19d9_802a33e6",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_60c03fe1",
         "filename": "drivers/infiniband/core/uverbs_std_types.c",
         "patchSetId": 11
@@ -47,6 +83,24 @@
       "writtenOn": "2017-03-02T14:00:35Z",
       "side": 1,
       "message": "Looking at the driver cleanup case (e.g. ib_uverbs_cleanup_ucontext) don\u0027t see matching code for lines 127-130 above, isn\u0027t it ?",
+      "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_0a4bd9b1",
+        "filename": "drivers/infiniband/core/uverbs_std_types.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:54:31Z",
+      "side": 1,
+      "message": "Please see ib_uverbs_destroy_srq.\nYou didn\u0027t have this in destroy context or reset flow because of the release order. I preferred to unite these paths.",
+      "parentUuid": "fabf19d9_60c03fe1",
       "revId": "3ef24ae3d6c29b6129ebdf2fbfa79c319ec57acc",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
