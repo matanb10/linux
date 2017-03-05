@@ -241,6 +241,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_4a231106",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "To make sure the user actually called the appropriate get function. If [s]he didn\u0027t, he\u0027ll get a WARN_ON.",
+      "parentUuid": "fabf19d9_207247ae",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_20a927e0",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -252,6 +270,24 @@
       "writtenOn": "2017-03-02T12:40:16Z",
       "side": 1,
       "message": "Why do we set use count to 0 here ? what is the expected value before doing that ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_2a20ddf6",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "remove requires a write lock, that means the usecnt was -1.\nSince we didn\u0027t remove the object successfully, we recover this object by removing its lock.",
+      "parentUuid": "fabf19d9_20a927e0",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -275,6 +311,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_0a1d19bd",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "Same as today - what will happen if you failed in the middle during a destroy function?",
+      "parentUuid": "fabf19d9_c0b82b2d",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_c0194b24",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -286,6 +340,24 @@
       "writtenOn": "2017-03-02T12:40:16Z",
       "side": 1,
       "message": "What does this comment mean ? not clear when this API should be used comparing _rdma_remove_commit_uobject above.",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ea78a5fa",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "This is the external API. It imples a reason of DESTROY (since it\u0027s only called by handlers). The _ api is internal and could get various reasons.",
+      "parentUuid": "fabf19d9_c0194b24",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -309,6 +381,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_ca7de1e8",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "Yeah, but there are two refcnts taken here - one because of lookup_get and the other one because of the object is a part of our repository.",
+      "parentUuid": "fabf19d9_80d23333",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_60303f9f",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -320,6 +410,24 @@
       "writtenOn": "2017-03-02T12:40:16Z",
       "side": 1,
       "message": "The comment points on some dead-case isn\u0027t it ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_aa82adc6",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "This could happen only as of bugs.",
+      "parentUuid": "fabf19d9_60303f9f",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -343,6 +451,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_8a87e9d6",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "Why? If the context is still alive, the idr will be still alive as well and everything should work.\nI think it\u0027s better to have a code that tries to recover.",
+      "parentUuid": "fabf19d9_a0ed37f1",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_80b913ef",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -360,6 +486,24 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_6a6db531",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "Why? it\u0027s still relevant here as we don\u0027t really need rcu until we committed the object.",
+      "parentUuid": "fabf19d9_80b913ef",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_00ce2383",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -371,6 +515,24 @@
       "writtenOn": "2017-03-02T12:40:16Z",
       "side": 1,
       "message": "Can that happen ? if not what protect us ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4a6af11b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-05T12:11:56Z",
+      "side": 1,
+      "message": "Only if there\u0027s a bug.\nIt guarantees you\u0027ll have a WARN_ON if that happens (either here or in the lookup_get).",
+      "parentUuid": "fabf19d9_00ce2383",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
