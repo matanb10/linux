@@ -224,6 +224,23 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_9908652a",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-06T16:34:23Z",
+      "side": 1,
+      "message": "Should be if (write) ...",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_207247ae",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -259,6 +276,23 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_19e7b541",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-06T16:34:23Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be static ?",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_20a927e0",
         "filename": "drivers/infiniband/core/rdma_core.c",
         "patchSetId": 13
@@ -288,6 +322,24 @@
       "side": 1,
       "message": "remove requires a write lock, that means the usecnt was -1.\nSince we didn\u0027t remove the object successfully, we recover this object by removing its lock.",
       "parentUuid": "fabf19d9_20a927e0",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_593acdce",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-06T16:34:23Z",
+      "side": 1,
+      "message": "can we add some note for ?",
+      "parentUuid": "fabf19d9_2a20ddf6",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
@@ -357,6 +409,24 @@
       "writtenOn": "2017-03-05T12:11:56Z",
       "side": 1,
       "message": "This is the external API. It imples a reason of DESTROY (since it\u0027s only called by handlers). The _ api is internal and could get various reasons.",
+      "parentUuid": "fabf19d9_c0194b24",
+      "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_194b355b",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-06T16:34:23Z",
+      "side": 1,
+      "message": "Let\u0027s improve comment to say that this is for the \"USER DESTROY flow ...\"",
       "parentUuid": "fabf19d9_c0194b24",
       "revId": "c0006acd7f1608ce510cc116a564c090eed51f4e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
