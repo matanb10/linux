@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "3b16d607_ee64753a",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-07T09:27:12Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment, please look at other destroy_xxx (QP, WQ) might be same ...",
+      "parentUuid": "fabf19d9_aad06dca",
+      "revId": "d8c625ad72a20416f15e6e9bd9e7dfacf1a464be",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_93684f89",
         "filename": "drivers/infiniband/core/uverbs_main.c",
         "patchSetId": 11
