@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6fdf118a_5b099237",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-09T11:20:53Z",
+      "side": 1,
+      "message": "compared to V1 to see what need to focus on via the review, quite hard to follow as of other changes around, but it looks like changes were minor (if at all..), is that correct ? let\u0027s discuss the expected changes from your point of view in this patch.",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a156270e_335da84b",
+        "filename": "drivers/infiniband/core/uverbs.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-09T11:20:53Z",
+      "side": 1,
+      "message": "Where this is used in current patch ?",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c057d48_afe319ee",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-09T11:20:53Z",
+      "side": 1,
+      "message": "How about returning the internal err itself all way up ?",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
