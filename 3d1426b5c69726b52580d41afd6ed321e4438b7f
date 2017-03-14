@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ea7f79ac_116c43a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-14T09:13:35Z",
+      "side": 1,
+      "message": "Ok, mostly it should fit the new model of cleaning up things in the free function.",
+      "parentUuid": "6fdf118a_5b099237",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a156270e_335da84b",
         "filename": "drivers/infiniband/core/uverbs.h",
         "patchSetId": 14
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "979ab9d6_55926f2e",
+        "filename": "drivers/infiniband/core/uverbs.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-14T09:13:35Z",
+      "side": 1,
+      "message": "drivers/infiniband/core/uverbs_std_types.c:1122\n\nYou need to expose it in order to create the completion channel object.",
+      "parentUuid": "a156270e_335da84b",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c057d48_afe319ee",
         "filename": "drivers/infiniband/core/uverbs_cmd.c",
         "patchSetId": 14
@@ -47,6 +83,24 @@
       "writtenOn": "2017-03-09T11:20:53Z",
       "side": 1,
       "message": "How about returning the internal err itself all way up ?",
+      "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e5412f4_c24e4ef3",
+        "filename": "drivers/infiniband/core/uverbs_cmd.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-14T09:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c057d48_afe319ee",
       "revId": "3d1426b5c69726b52580d41afd6ed321e4438b7f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
