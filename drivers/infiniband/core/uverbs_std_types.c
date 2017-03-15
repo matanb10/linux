@@ -574,6 +574,78 @@ err:
 }
 
 DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_rereg_mr_spec,
+	UVERBS_ATTR_IDR(REREG_MR_HANDLE, UVERBS_TYPE_MR, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(REREG_MR_PD_HANDLE, UVERBS_TYPE_PD, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(REREG_MR_CMD, struct ib_uverbs_rereg_mr,
+			   UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_OUT(REG_MR_RESP, struct ib_uverbs_rereg_mr_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+int uverbs_rereg_mr_handler(struct ib_device *ib_dev,
+			    struct ib_uverbs_file *file,
+			    struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+
+	struct ib_udata                 udata;
+	struct ib_uverbs_rereg_mr       cmd;
+	struct ib_uverbs_rereg_mr_resp  resp;
+	struct ib_mr                    *mr;
+	struct ib_pd                    *pd = NULL;
+	struct ib_pd                    *old_pd;
+	int                             ret;
+
+	if (uverbs_copy_from(&cmd, common, REREG_MR_CMD))
+		return -EFAULT;
+
+	if (cmd.flags & ~IB_MR_REREG_SUPPORTED || !cmd.flags)
+		return -EINVAL;
+
+	if ((cmd.flags & IB_MR_REREG_TRANS) &&
+	    (!cmd.start || !cmd.hca_va || 0 >= cmd.length ||
+	     (cmd.start & ~PAGE_MASK) != (cmd.hca_va & ~PAGE_MASK)))
+		return -EINVAL;
+
+	INIT_UDATA(&udata, &cmd, &resp,
+		   sizeof(struct ib_uverbs_rereg_mr),
+		   sizeof(struct ib_uverbs_rereg_mr_resp));
+
+	mr = common->attrs[REREG_MR_HANDLE].obj_attr.uobject->object;
+	pd = common->attrs[REREG_MR_PD_HANDLE].obj_attr.uobject->object;
+
+	if (cmd.flags & IB_MR_REREG_ACCESS) {
+		ret = ib_check_mr_access(cmd.access_flags);
+		if (ret)
+			return -EFAULT;
+	}
+
+	old_pd = mr->pd;
+	ret = mr->device->rereg_user_mr(mr, cmd.flags, cmd.start,
+					cmd.length, cmd.hca_va,
+					cmd.access_flags, pd, &udata);
+	if (!ret) {
+		if (cmd.flags & IB_MR_REREG_PD) {
+			atomic_inc(&pd->usecnt);
+			mr->pd = pd;
+			atomic_dec(&old_pd->usecnt);
+		}
+	} else
+		return -EFAULT;
+
+	memset(&resp, 0, sizeof(resp));
+	resp.lkey      = mr->lkey;
+	resp.rkey      = mr->rkey;
+
+	if (uverbs_copy_to(common, REREG_MR_RESP, &resp))
+		return -EFAULT;
+
+	return 0;
+}
+
+DECLARE_UVERBS_ATTR_SPEC(
 	uverbs_dereg_mr_spec,
 	UVERBS_ATTR_IDR(DEREG_MR_HANDLE, UVERBS_TYPE_MR, UVERBS_ACCESS_DESTROY,
 			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
@@ -1116,6 +1188,104 @@ err:
 	return ret;
 }
 
+
+DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_query_qp_spec, 
+	UVERBS_ATTR_IDR(QUERY_QP_HANDLE,
+			UVERBS_TYPE_QP,
+			UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(QUERY_QP_ATTR_MASK, u32), 
+	UVERBS_ATTR_PTR_OUT(QUERY_QP_RESP,
+			    struct ib_uverbs_query_qp_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+int uverbs_query_qp_handler(struct ib_device *ib_dev,
+			      struct ib_uverbs_file *file,
+			      struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_qp              *qp;
+	u32 attr_mask = 0;
+	int ret;
+
+	struct ib_qp_attr              *attr;
+	struct ib_qp_init_attr         *init_attr;
+	struct ib_uverbs_query_qp_resp resp;
+
+	printk("--->%s():%d\n", __func__, __LINE__);
+
+	attr      = kmalloc(sizeof *attr, GFP_KERNEL);
+	init_attr = kmalloc(sizeof *init_attr, GFP_KERNEL);
+	if (!attr || !init_attr)
+		return -ENOMEM;
+
+	uverbs_copy_from(&attr_mask, common, QUERY_QP_ATTR_MASK); 
+	qp = common->attrs[QUERY_QP_HANDLE].obj_attr.uobject->object;
+
+	ret = ib_query_qp(qp, attr, attr_mask, init_attr); 
+	memset(&resp, 0, sizeof resp);
+
+	resp.qp_state               = attr->qp_state;
+	resp.cur_qp_state           = attr->cur_qp_state;
+	resp.path_mtu               = attr->path_mtu;
+	resp.path_mig_state         = attr->path_mig_state;
+	resp.qkey                   = attr->qkey;
+	resp.rq_psn                 = attr->rq_psn;
+	resp.sq_psn                 = attr->sq_psn;
+	resp.dest_qp_num            = attr->dest_qp_num;
+	resp.qp_access_flags        = attr->qp_access_flags;
+	resp.pkey_index             = attr->pkey_index;
+	resp.alt_pkey_index         = attr->alt_pkey_index;
+	resp.sq_draining            = attr->sq_draining;
+	resp.max_rd_atomic          = attr->max_rd_atomic;
+	resp.max_dest_rd_atomic     = attr->max_dest_rd_atomic;
+	resp.min_rnr_timer          = attr->min_rnr_timer;
+	resp.port_num               = attr->port_num;
+	resp.timeout                = attr->timeout;
+	resp.retry_cnt              = attr->retry_cnt;
+	resp.rnr_retry              = attr->rnr_retry;
+	resp.alt_port_num           = attr->alt_port_num;
+	resp.alt_timeout            = attr->alt_timeout;
+
+	memcpy(resp.dest.dgid, attr->ah_attr.grh.dgid.raw, 16);
+	resp.dest.flow_label        = attr->ah_attr.grh.flow_label;
+	resp.dest.sgid_index        = attr->ah_attr.grh.sgid_index;
+	resp.dest.hop_limit         = attr->ah_attr.grh.hop_limit;
+	resp.dest.traffic_class     = attr->ah_attr.grh.traffic_class;
+	resp.dest.dlid              = attr->ah_attr.dlid;
+	resp.dest.sl                = attr->ah_attr.sl;
+	resp.dest.src_path_bits     = attr->ah_attr.src_path_bits;
+	resp.dest.static_rate       = attr->ah_attr.static_rate;
+	resp.dest.is_global         = !!(attr->ah_attr.ah_flags & IB_AH_GRH);
+	resp.dest.port_num          = attr->ah_attr.port_num;
+
+	memcpy(resp.alt_dest.dgid, attr->alt_ah_attr.grh.dgid.raw, 16);
+	resp.alt_dest.flow_label    = attr->alt_ah_attr.grh.flow_label;
+	resp.alt_dest.sgid_index    = attr->alt_ah_attr.grh.sgid_index;
+	resp.alt_dest.hop_limit     = attr->alt_ah_attr.grh.hop_limit;
+	resp.alt_dest.traffic_class = attr->alt_ah_attr.grh.traffic_class;
+	resp.alt_dest.dlid          = attr->alt_ah_attr.dlid;
+	resp.alt_dest.sl            = attr->alt_ah_attr.sl;
+	resp.alt_dest.src_path_bits = attr->alt_ah_attr.src_path_bits;
+	resp.alt_dest.static_rate   = attr->alt_ah_attr.static_rate;
+	resp.alt_dest.is_global     = !!(attr->alt_ah_attr.ah_flags & IB_AH_GRH);
+	resp.alt_dest.port_num      = attr->alt_ah_attr.port_num;
+
+	resp.max_send_wr            = init_attr->cap.max_send_wr;
+	resp.max_recv_wr            = init_attr->cap.max_recv_wr;
+	resp.max_send_sge           = init_attr->cap.max_send_sge;
+	resp.max_recv_sge           = init_attr->cap.max_recv_sge;
+	resp.max_inline_data        = init_attr->cap.max_inline_data;
+	resp.sq_sig_all             = init_attr->sq_sig_type == IB_SIGNAL_ALL_WR;
+
+
+	if (uverbs_copy_to(common, QUERY_QP_RESP, &resp))
+		return -EFAULT; 
+
+	return 0;
+}
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0, sizeof(struct ib_uverbs_completion_event_file),
 					  uverbs_hot_unplug_completion_event_file,
@@ -1155,8 +1325,10 @@ DECLARE_UVERBS_TYPE(uverbs_type_qp,
 					  &uverbs_uhw_compat_spec),
 			ADD_UVERBS_ACTION(UVERBS_QP_DESTROY,
 					  uverbs_destroy_qp_handler,
-					  &uverbs_destroy_qp_spec)),
-);
+					  &uverbs_destroy_qp_spec),
+			ADD_UVERBS_ACTION(UVERBS_QP_QUERY,
+					  uverbs_query_qp_handler,
+					  &uverbs_query_qp_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_mw,
 		    &UVERBS_TYPE_ALLOC_IDR(0, uverbs_free_mw));
@@ -1170,7 +1342,10 @@ DECLARE_UVERBS_TYPE(uverbs_type_mr,
 					  &uverbs_uhw_compat_spec),
 			ADD_UVERBS_ACTION(UVERBS_MR_DEREG,
 					  uverbs_dereg_mr_handler,
-					  &uverbs_dereg_mr_spec)));
+					  &uverbs_dereg_mr_spec),
+			ADD_UVERBS_ACTION(UVERBS_MR_REREG,
+					  uverbs_rereg_mr_handler,
+					  &uverbs_rereg_mr_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_srq,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_usrq_object), 0,
