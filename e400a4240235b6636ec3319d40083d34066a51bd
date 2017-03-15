@@ -34,6 +34,24 @@
       "revId": "e400a4240235b6636ec3319d40083d34066a51bd",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "29e7bbd1_c88b81a4",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-15T14:16:11Z",
+      "side": 1,
+      "message": "Doesn\u0027t it make sense to put this comment below in line 423 where you release it ?",
+      "parentUuid": "7f522397_f8b26048",
+      "revId": "e400a4240235b6636ec3319d40083d34066a51bd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
