@@ -16,6 +16,24 @@
       "revId": "e400a4240235b6636ec3319d40083d34066a51bd",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7f522397_f8b26048",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1010105
+      },
+      "writtenOn": "2017-03-15T13:35:25Z",
+      "side": 1,
+      "message": "Yeah, it is. At first, I didn\u0027t release the lock (which is what I wanted to do logically), but if you don\u0027t do that - you get a BUG message.",
+      "parentUuid": "29c4541e_30c48e79",
+      "revId": "e400a4240235b6636ec3319d40083d34066a51bd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
