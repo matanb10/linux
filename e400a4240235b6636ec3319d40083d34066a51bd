@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29c4541e_30c48e79",
+        "filename": "drivers/infiniband/core/rdma_core.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1010107
+      },
+      "writtenOn": "2017-03-15T12:49:11Z",
+      "side": 1,
+      "message": "do we really need the note re: \"Logically ...\"BUG\" message\"? in addition, isn\u0027t it related to the up_write at line 424 ?",
+      "revId": "e400a4240235b6636ec3319d40083d34066a51bd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
