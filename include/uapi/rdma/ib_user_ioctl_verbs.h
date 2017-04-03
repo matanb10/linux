@@ -183,6 +183,28 @@ enum uverbs_modify_qp_cmd_attr_ids {
 	MODIFY_QP_RATE_LIMIT,
 };
 
+enum uverbs_create_srq_cmd_attr_ids {
+	CREATE_XSRQ_HANDLE,
+	CREATE_XSRQ_PD_HANDLE,
+	CREATE_XSRQ_CMD,
+	CREATE_XSRQ_XRCD_HANDLE,
+	CREATE_XSRQ_CQ_HANDLE,
+	CREATE_XSRQ_RESP,
+	CREATE_XSRQ_RESERVED
+};
+
+enum uverbs_modify_srq_attr_ids {
+	MODIFY_SRQ_HANDLE,
+	MODIFY_SRQ_CMD,
+	MODIFY_SRQ_RESERVED
+};
+
+enum uverbs_query_srq_attr_ids {
+	QUERY_SRQ_HANDLE,
+	QUERY_SRQ_RESP,
+	QUERY_SRQ_RESERVED
+};
+
 enum uverbs_actions_device_ops {
 	UVERBS_DEVICE_ALLOC_CONTEXT,
 	UVERBS_DEVICE_QUERY,
@@ -215,6 +237,13 @@ enum uverbs_actions_qp_ops {
 	UVERBS_QP_MODIFY,
 	UVERBS_QP_DESTROY,
 	UVERBS_QP_QUERY,
+};
+
+enum uverbs_actions_srq_ops {
+	UVERBS_SRQ_CREATE,
+	UVERBS_SRQ_QUERY,
+	UVERBS_SRQ_MODIFY,
+	UVERBS_SRQ_DESTROY,
 };
 
 #endif

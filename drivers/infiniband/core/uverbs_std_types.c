@@ -1375,6 +1375,200 @@ static int uverbs_query_qp_handler(struct ib_device *ib_dev,
 	return 0;
 }
 
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_srq_query_spec,
+	UVERBS_ATTR_IDR(QUERY_SRQ_HANDLE, UVERBS_TYPE_SRQ,
+			UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_OUT(QUERY_SRQ_RESP, struct ibv_query_srq_resp));
+
+static int uverbs_srq_query_handler(struct ib_device *ib_dev,
+				    struct ib_uverbs_file *file,
+				    struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_srq *srq;
+	struct ib_srq_attr attr;
+	struct ibv_query_srq_resp resp;
+	int ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_QUERY_SRQ))
+		return -EOPNOTSUPP;
+
+	srq = common->attrs[QUERY_SRQ_HANDLE].obj_attr.uobject->object;
+	ret = ib_query_srq(srq, &attr);
+	if (ret)
+		return ret;
+
+	resp.max_wr    = attr.max_wr;
+	resp.max_sge   = attr.max_sge;
+	resp.srq_limit = attr.srq_limit;
+
+	return uverbs_copy_to(common, QUERY_SRQ_RESP, &resp);
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_srq_modify_spec,
+	UVERBS_ATTR_IDR(MODIFY_SRQ_HANDLE, UVERBS_TYPE_SRQ,
+			UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(MODIFY_SRQ_CMD, struct ibv_ioctl_modify_srq_cmd));
+
+static int uverbs_srq_modify_handler(struct ib_device *ib_dev,
+				     struct ib_uverbs_file *file,
+				     struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_srq *srq;
+	struct ibv_ioctl_modify_srq_cmd iocmd;
+	struct ib_srq_attr attr;
+	struct ib_udata uhw;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_MODIFY_SRQ))
+		return -EOPNOTSUPP;
+
+	srq = common->attrs[MODIFY_SRQ_HANDLE].obj_attr.uobject->object;
+
+	if (uverbs_copy_from(&iocmd, common, MODIFY_SRQ_CMD))
+		return -EFAULT;
+
+	attr.max_wr = iocmd.max_wr;
+	attr.srq_limit = iocmd.srq_limit;
+
+	create_udata(ctx, num, &uhw);
+
+	return srq->device->modify_srq(srq, &attr, iocmd.attr_mask, &uhw);
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_srq_create_spec,
+	UVERBS_ATTR_IDR(CREATE_XSRQ_HANDLE, UVERBS_TYPE_SRQ,
+			UVERBS_ACCESS_NEW,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_XSRQ_PD_HANDLE, UVERBS_TYPE_PD,
+			UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(CREATE_XSRQ_CMD,
+			   struct ibv_ioctl_create_srq_cmd,
+			   UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_XSRQ_XRCD_HANDLE, UVERBS_TYPE_XRCD,
+			UVERBS_ACCESS_READ),
+	UVERBS_ATTR_IDR(CREATE_XSRQ_CQ_HANDLE, UVERBS_TYPE_CQ,
+			UVERBS_ACCESS_READ),
+	UVERBS_ATTR_PTR_OUT(CREATE_XSRQ_RESP,
+			    struct ibv_ioctl_create_srq_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_srq_create_handler(struct ib_device *ib_dev,
+				     struct ib_uverbs_file *file,
+				     struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_pd *pd;
+	struct ib_srq *srq;
+	struct ib_udata uhw;
+	struct ibv_ioctl_create_srq_cmd ioctl_cmd;
+	struct ib_usrq_object *obj;
+	struct ibv_ioctl_create_srq_resp resp = {};
+	struct ib_srq_init_attr attr;
+	int ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_CREATE_SRQ))
+		return -EOPNOTSUPP;
+
+	pd = common->attrs[CREATE_XSRQ_PD_HANDLE].obj_attr.uobject->object;
+
+	if (uverbs_copy_from(&ioctl_cmd, common, CREATE_XSRQ_CMD))
+		return -EFAULT;
+
+	obj = container_of(common->attrs[CREATE_XSRQ_HANDLE].obj_attr.uobject,
+			   struct ib_usrq_object, uevent.uobject);
+
+	attr.event_handler  = ib_uverbs_srq_event_handler;
+	attr.srq_context    = file;
+
+	if (uverbs_is_valid(common, CREATE_XSRQ_XRCD_HANDLE) &&
+	    uverbs_is_valid(common, CREATE_XSRQ_CQ_HANDLE)) {
+		attr.srq_type = IB_SRQT_XRC;
+		obj->uxrcd = container_of(common->attrs[CREATE_XSRQ_XRCD_HANDLE].obj_attr.uobject,
+				struct ib_uxrcd_object, uobject);
+		attr.ext.xrc.xrcd = (struct ib_xrcd *)obj->uxrcd->uobject.object;
+		attr.ext.xrc.cq  =
+			(struct ib_cq *)common->attrs[CREATE_XSRQ_CQ_HANDLE].obj_attr.uobject->object;
+
+		if (!attr.ext.xrc.xrcd || !attr.ext.xrc.cq)
+			return -EINVAL;
+
+		atomic_inc(&obj->uxrcd->refcnt);
+
+	} else if (!uverbs_is_valid(common, CREATE_XSRQ_XRCD_HANDLE) &&
+		   !uverbs_is_valid(common, CREATE_XSRQ_CQ_HANDLE)) {
+		attr.srq_type       = IB_SRQT_BASIC;
+	} else {
+		return -EINVAL;
+	}
+
+	attr.attr.max_wr    = ioctl_cmd.max_wr;
+	attr.attr.max_sge   = ioctl_cmd.max_sge;
+	attr.attr.srq_limit = ioctl_cmd.srq_limit;
+
+	obj->uevent.events_reported = 0;
+	INIT_LIST_HEAD(&obj->uevent.event_list);
+
+	// create the udata
+	create_udata(ctx, num, &uhw);
+
+	srq = pd->device->create_srq(pd, &attr, &uhw);
+
+	if (IS_ERR(srq)) {
+		ret = PTR_ERR(srq);
+		goto err;
+	}
+
+	srq->device        = pd->device;
+	srq->pd            = pd;
+	srq->srq_type	   = attr.srq_type;
+	srq->uobject       = &obj->uevent.uobject;
+	srq->event_handler = attr.event_handler;
+	srq->srq_context   = attr.srq_context;
+
+	if (attr.srq_type == IB_SRQT_XRC) {
+		srq->ext.xrc.cq   = attr.ext.xrc.cq;
+		srq->ext.xrc.xrcd = attr.ext.xrc.xrcd;
+	}
+
+	obj->uevent.uobject.object = srq;
+	obj->uevent.uobject.user_handle = ioctl_cmd.user_handle;
+
+	resp.max_wr     = attr.attr.max_wr;
+	resp.max_sge    = attr.attr.max_sge;
+	if (attr.srq_type == IB_SRQT_XRC)
+		resp.srqn = srq->ext.xrc.srq_num;
+
+	ret = uverbs_copy_to(common, CREATE_XSRQ_RESP, &resp);
+	if (ret)
+		goto clean;
+
+	atomic_inc(&pd->usecnt);
+	atomic_set(&srq->usecnt, 0);
+
+	if (attr.srq_type == IB_SRQT_XRC) {
+		atomic_inc(&attr.ext.xrc.cq->usecnt);
+		atomic_inc(&attr.ext.xrc.xrcd->usecnt);
+	}
+
+	return 0;
+
+clean:
+	ib_destroy_srq(srq);
+
+err:
+	if (attr.srq_type == IB_SRQT_XRC)
+		atomic_dec(&obj->uxrcd->refcnt);
+
+	return ret;
+}
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0,
 					  sizeof(struct ib_uverbs_completion_event_file),
@@ -1439,7 +1633,16 @@ DECLARE_UVERBS_TYPE(uverbs_type_mr,
 
 DECLARE_UVERBS_TYPE(uverbs_type_srq,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_usrq_object), 0,
-					      uverbs_free_srq));
+					      uverbs_free_srq),
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_ACTION(UVERBS_SRQ_CREATE, uverbs_srq_create_handler,
+					  &uverbs_srq_create_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_SRQ_MODIFY, uverbs_srq_modify_handler,
+					  &uverbs_srq_modify_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_SRQ_QUERY, uverbs_srq_query_handler,
+					  &uverbs_srq_query_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_ah,
 		    &UVERBS_TYPE_ALLOC_IDR(0, uverbs_free_ah));

@@ -42,6 +42,7 @@ extern const struct uverbs_action_group uverbs_actions_mr;
 extern const struct uverbs_action_group uverbs_actions_comp_channel;
 extern const struct uverbs_action_group uverbs_actions_cq;
 extern const struct uverbs_action_group uverbs_actions_qp;
+extern const struct uverbs_action_group uverbs_actions_srq;
 
 extern const struct uverbs_type uverbs_type_comp_channel;
 extern const struct uverbs_type uverbs_type_cq;

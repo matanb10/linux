@@ -1077,12 +1077,33 @@ struct ib_uverbs_create_srq_resp {
 	__u32 srqn;
 };
 
+struct ibv_ioctl_create_srq_cmd {
+	uint32_t  max_wr;
+	uint32_t  max_sge;
+	uint32_t  srq_limit;
+	uint32_t  reserved;
+	uint64_t  user_handle;
+};
+
+struct ibv_ioctl_create_srq_resp {
+	__u32 max_wr;
+	__u32 max_sge;
+	__u32 srqn;
+};
+
 struct ib_uverbs_modify_srq {
 	__u32 srq_handle;
 	__u32 attr_mask;
 	__u32 max_wr;
 	__u32 srq_limit;
 	__u64 driver_data[0];
+};
+
+struct ibv_ioctl_modify_srq_cmd {
+	__u32 max_wr;
+	__u32 srq_limit;
+	__u32 attr_mask;
+	__u32 reserved;
 };
 
 struct ib_uverbs_query_srq {
@@ -1093,6 +1114,13 @@ struct ib_uverbs_query_srq {
 };
 
 struct ib_uverbs_query_srq_resp {
+	__u32 max_wr;
+	__u32 max_sge;
+	__u32 srq_limit;
+	__u32 reserved;
+};
+
+struct ibv_query_srq_resp {
 	__u32 max_wr;
 	__u32 max_sge;
 	__u32 srq_limit;
