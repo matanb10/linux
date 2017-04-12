@@ -42,13 +42,25 @@
 int uverbs_free_ah(struct ib_uobject *uobject,
 		   enum rdma_remove_reason why)
 {
-	return ib_destroy_ah((struct ib_ah *)uobject->object);
+	struct ib_ah *ah = uobject->object;
+	struct ib_pd *pd = ah->pd;
+	int ret = ib_destroy_ah(ah);
+
+	if (!ret)
+		atomic_dec(&pd->uobject->depcnt);
+	return ret;
 }
 
 int uverbs_free_flow(struct ib_uobject *uobject,
 		     enum rdma_remove_reason why)
 {
-	return ib_destroy_flow((struct ib_flow *)uobject->object);
+	struct ib_flow *flow = uobject->object;
+	struct ib_qp *qp = flow->qp;
+	int ret = ib_destroy_flow(flow);
+
+	if (!ret)
+		atomic_dec(&qp->uobject->depcnt);
+	return ret;
 }
 
 int uverbs_free_mw(struct ib_uobject *uobject,
@@ -63,6 +75,10 @@ int uverbs_free_qp(struct ib_uobject *uobject,
 	struct ib_qp *qp = uobject->object;
 	struct ib_uqp_object *uqp =
 		container_of(uobject, struct ib_uqp_object, uevent.uobject);
+	struct ib_pd *pd;
+	struct ib_cq *scq, *rcq;
+	struct ib_srq *srq;
+	struct ib_rwq_ind_table *ind_tbl;
 	int ret;
 
 	if (why == RDMA_REMOVE_DESTROY) {
@@ -72,12 +88,28 @@ int uverbs_free_qp(struct ib_uobject *uobject,
 		ib_uverbs_detach_umcast(qp, uqp);
 	}
 
+	pd   = qp->pd;
+	scq  = qp->send_cq;
+	rcq  = qp->recv_cq;
+	srq  = qp->srq;
+	ind_tbl = qp->rwq_ind_tbl;
+
 	ret = ib_destroy_qp(qp);
 	if (ret && why == RDMA_REMOVE_DESTROY)
 		return ret;
 
 	if (uqp->uxrcd)
 		atomic_dec(&uqp->uxrcd->refcnt);
+	if (pd)
+		atomic_dec(&pd->uobject->depcnt);
+	if (scq)
+		atomic_dec(&scq->uobject->depcnt);
+	if (rcq)
+		atomic_dec(&rcq->uobject->depcnt);
+	if (srq)
+		atomic_dec(&srq->uobject->depcnt);
+	if (ind_tbl)
+		atomic_dec(&ind_tbl->uobject->depcnt);
 
 	ib_uverbs_release_uevent(uobject->context->ufile, &uqp->uevent);
 	return ret;
@@ -87,12 +119,18 @@ int uverbs_free_rwq_ind_tbl(struct ib_uobject *uobject,
 			    enum rdma_remove_reason why)
 {
 	struct ib_rwq_ind_table *rwq_ind_tbl = uobject->object;
-	struct ib_wq **ind_tbl = rwq_ind_tbl->ind_tbl;
 	int ret;
 
 	ret = ib_destroy_rwq_ind_table(rwq_ind_tbl);
-	if (!ret || why != RDMA_REMOVE_DESTROY)
+	if (!ret || why != RDMA_REMOVE_DESTROY) {
+		u32 table_size = (1 << rwq_ind_table->log_ind_tbl_size);
+		struct ib_wq **ind_tbl = rwq_ind_tbl->ind_tbl;
+		unsigned int i;
+
+		for (i = 0; i < table_size; i++)
+			atomic_dec(&ind_tbl[i]->uobject->depcnt);
 		kfree(ind_tbl);
+	}
 	return ret;
 }
 
@@ -100,13 +138,18 @@ int uverbs_free_wq(struct ib_uobject *uobject,
 		   enum rdma_remove_reason why)
 {
 	struct ib_wq *wq = uobject->object;
+	struct ib_cq *cq = wq->cq;
+	struct ib_pd *pd = wq->pd;
 	struct ib_uwq_object *uwq =
 		container_of(uobject, struct ib_uwq_object, uevent.uobject);
 	int ret;
 
 	ret = ib_destroy_wq(wq);
-	if (!ret || why != RDMA_REMOVE_DESTROY)
+	if (!ret || why != RDMA_REMOVE_DESTROY) {
+		atomic_dec(&pd->uobject->depcnt);
+		atomic_dec(&cq->uobject->depcnt);
 		ib_uverbs_release_uevent(uobject->context->ufile, &uwq->uevent);
+	}
 	return ret;
 }
 
@@ -116,18 +159,28 @@ int uverbs_free_srq(struct ib_uobject *uobject,
 	struct ib_srq *srq = uobject->object;
 	struct ib_uevent_object *uevent =
 		container_of(uobject, struct ib_uevent_object, uobject);
+	struct ib_xrcd *uninitialized_var(xrcd);
+	struct ib_cq *uninitialized_var(cq);
+	struvt ib_pd *pd = srq->pd;
 	enum ib_srq_type  srq_type = srq->srq_type;
 	int ret;
 
+	if (srq_type == IB_SRQT_XRC) {
+		xrcd = srq->ext.xrc.xrcd;
+		cq = srq->ext.xrc.cq;
+	}
 	ret = ib_destroy_srq(srq);
 
 	if (ret && why == RDMA_REMOVE_DESTROY)
 		return ret;
 
+	atomic_dec(&pd->uobject->depcnt);
 	if (srq_type == IB_SRQT_XRC) {
 		struct ib_usrq_object *us =
 			container_of(uevent, struct ib_usrq_object, uevent);
 
+		atomic_dec(&xrcd->uobject->depcnt);
+		atomic_dec(&cq->uobject->depcnt);
 		atomic_dec(&us->uxrcd->refcnt);
 	}
 
@@ -157,7 +210,14 @@ int uverbs_free_cq(struct ib_uobject *uobject,
 int uverbs_free_mr(struct ib_uobject *uobject,
 		   enum rdma_remove_reason why)
 {
-	return ib_dereg_mr((struct ib_mr *)uobject->object);
+	struct ib_mr *mr = uobject->object;
+	struct ib_pd *pd = mr->pd;
+	int ret = ib_dereg_mr(mr);
+
+	if (!ret || why == RDMA_REMOVE_DESTROY) {
+		atomic_dec(&pd->uobject->depcnt);
+	}
+	return ret;
 }
 
 int uverbs_free_xrcd(struct ib_uobject *uobject,

@@ -141,6 +141,7 @@ static struct ib_uobject *alloc_uobj(struct ib_ucontext *context,
 	uobj->context = context;
 	uobj->type = type;
 	atomic_set(&uobj->usecnt, 0);
+	atomic_set(&uobj->depcnt, 0);
 	kref_init(&uobj->ref);
 
 	return uobj;
@@ -413,6 +414,10 @@ static int __must_check _rdma_remove_commit_uobject(struct ib_uobject *uobj,
 {
 	int ret;
 	struct ib_ucontext *ucontext = uobj->context;
+
+	if (WARN_ON(atomic_read(&uobj->depcnt)) &&
+	    why == RDMA_REMOVE_DESTROY)
+		return -EBUSY;
 
 	ret = uobj->type->type_class->remove_commit(uobj, why);
 	if (ret && why == RDMA_REMOVE_DESTROY) {
