@@ -80,6 +80,14 @@ enum uverbs_query_port_cmd_attr_ids {
 	QUERY_PORT_RESP,
 };
 
+enum uverbs_alloc_pd_cmd_attr_ids {
+	ALLOC_PD_HANDLE,
+};
+
+enum uverbs_dealloc_pd_cmd_attr_ids {
+	DEALLOC_PD_HANDLE,
+};
+
 enum uverbs_create_cq_cmd_attr_ids {
 	CREATE_CQ_HANDLE,
 	CREATE_CQ_CQE,
@@ -99,6 +107,11 @@ enum uverbs_actions_device_ops {
 	UVERBS_DEVICE_ALLOC_CONTEXT,
 	UVERBS_DEVICE_QUERY,
 	UVERBS_DEVICE_PORT_QUERY,
+};
+
+enum uverbs_actions_pd_ops {
+	UVERBS_PD_ALLOC,
+	UVERBS_PD_DEALLOC
 };
 
 enum uverbs_actions_cq_ops {

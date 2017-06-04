@@ -210,6 +210,18 @@ static int uverbs_hot_unplug_completion_event_file(struct ib_uobject_file *uobj_
 	return 0;
 };
 
+static int uverbs_empty_dealloc_handler(struct ib_device *ib_dev,
+					struct ib_uverbs_file *file,
+					struct uverbs_attr_array *ctx, size_t num)
+{
+	/*
+	 * No need to check if the ib_dev->uverbs_cmd_mask supports it as if we
+	 * initialized such an object, the device must have an appropriate
+	 * function to destroy it.
+	 */
+	return 0;
+}
+
 /*
  * This spec is used in order to pass information to the hardware driver in a
  * legacy way. Every verb that could get driver specific data should get this
@@ -629,6 +641,48 @@ static int uverbs_query_port_handler(struct ib_device *ib_dev,
 	return uverbs_copy_to(common, QUERY_PORT_RESP, &resp);
 }
 
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_alloc_pd_spec,
+	UVERBS_ATTR_IDR(ALLOC_PD_HANDLE, UVERBS_TYPE_PD,
+			UVERBS_ACCESS_NEW,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_alloc_pd_handler(struct ib_device *ib_dev,
+				   struct ib_uverbs_file *file,
+				   struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_ucontext *ucontext = file->ucontext;
+	struct ib_udata uhw;
+	struct ib_uobject *uobject;
+	struct ib_pd *pd;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_ALLOC_PD))
+		return -EOPNOTSUPP;
+
+	/* Temporary, only until drivers get the new uverbs_attr_array */
+	create_udata(ctx, num, &uhw);
+
+	pd = ib_dev->alloc_pd(ib_dev, ucontext, &uhw);
+	if (IS_ERR(pd))
+		return PTR_ERR(pd);
+
+	uobject = common->attrs[ALLOC_PD_HANDLE].obj_attr.uobject;
+	pd->device  = ib_dev;
+	pd->uobject = uobject;
+	pd->__internal_mr = NULL;
+	uobject->object = pd;
+	atomic_set(&pd->usecnt, 0);
+
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_dealloc_pd_spec,
+	UVERBS_ATTR_IDR(DEALLOC_PD_HANDLE, UVERBS_TYPE_PD,
+			UVERBS_ACCESS_DESTROY,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0,
 					  sizeof(struct ib_uverbs_completion_event_file),
@@ -682,7 +736,15 @@ DECLARE_UVERBS_TYPE(uverbs_type_xrcd,
 
 DECLARE_UVERBS_TYPE(uverbs_type_pd,
 		    /* 2 is used in order to free the PD after MRs */
-		    &UVERBS_TYPE_ALLOC_IDR(2, uverbs_free_pd));
+		    &UVERBS_TYPE_ALLOC_IDR(2, uverbs_free_pd),
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_ACTION(UVERBS_PD_ALLOC,
+					  uverbs_alloc_pd_handler,
+					  &uverbs_alloc_pd_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_PD_DEALLOC,
+					  uverbs_empty_dealloc_handler,
+					  &uverbs_dealloc_pd_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_device, NULL,
 		    &UVERBS_ACTIONS(
