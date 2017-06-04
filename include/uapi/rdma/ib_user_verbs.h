@@ -594,6 +594,17 @@ struct ib_uverbs_ex_create_qp {
 	__u32  reserved1;
 };
 
+struct ib_uverbs_ioctl_create_qp {
+	__u32 max_send_wr;
+	__u32 max_recv_wr;
+	__u32 max_send_sge;
+	__u32 max_recv_sge;
+	__u32 max_inline_data;
+	__u8  sq_sig_all;
+	__u8  qp_type;
+	__u16 reserved;
+};
+
 struct ib_uverbs_open_qp {
 	__u64 response;
 	__u64 user_handle;
@@ -614,6 +625,15 @@ struct ib_uverbs_create_qp_resp {
 	__u32 max_recv_sge;
 	__u32 max_inline_data;
 	__u32 reserved;
+};
+
+struct ib_uverbs_ioctl_create_qp_resp {
+	__u32 qpn;
+	__u32 max_send_wr;
+	__u32 max_recv_wr;
+	__u32 max_send_sge;
+	__u32 max_recv_sge;
+	__u32 max_inline_data;
 };
 
 struct ib_uverbs_ex_create_qp_resp {
@@ -639,6 +659,13 @@ struct ib_uverbs_qp_dest {
 	__u8  static_rate;
 	__u8  is_global;
 	__u8  port_num;
+};
+
+struct ib_uverbs_ioctl_qp_alt_path {
+	struct ib_uverbs_qp_dest dest;
+	__u16 pkey_index;
+	__u8  port_num;
+	__u8  timeout;
 };
 
 struct ib_uverbs_query_qp {

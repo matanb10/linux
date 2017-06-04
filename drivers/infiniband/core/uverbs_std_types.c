@@ -868,6 +868,513 @@ static int uverbs_create_comp_channel_handler(struct ib_device *ib_dev,
 	return 0;
 }
 
+static int qp_fill_attrs(struct ib_qp_init_attr *attr, struct ib_ucontext *ctx,
+			 const struct ib_uverbs_ioctl_create_qp *cmd,
+			 u32 create_flags)
+{
+	if (create_flags & ~(IB_QP_CREATE_BLOCK_MULTICAST_LOOPBACK |
+			     IB_QP_CREATE_CROSS_CHANNEL |
+			     IB_QP_CREATE_MANAGED_SEND |
+			     IB_QP_CREATE_MANAGED_RECV |
+			     IB_QP_CREATE_SCATTER_FCS))
+		return -EINVAL;
+
+	attr->create_flags = create_flags;
+	attr->event_handler = ib_uverbs_qp_event_handler;
+	attr->qp_context = ctx->ufile;
+	attr->sq_sig_type = cmd->sq_sig_all ? IB_SIGNAL_ALL_WR :
+		IB_SIGNAL_REQ_WR;
+	attr->qp_type = cmd->qp_type;
+
+	attr->cap.max_send_wr     = cmd->max_send_wr;
+	attr->cap.max_recv_wr     = cmd->max_recv_wr;
+	attr->cap.max_send_sge    = cmd->max_send_sge;
+	attr->cap.max_recv_sge    = cmd->max_recv_sge;
+	attr->cap.max_inline_data = cmd->max_inline_data;
+
+	return 0;
+}
+
+static void qp_init_uqp(struct ib_uqp_object *obj)
+{
+	obj->uevent.events_reported     = 0;
+	INIT_LIST_HEAD(&obj->uevent.event_list);
+	INIT_LIST_HEAD(&obj->mcast_list);
+}
+
+static int qp_write_resp(const struct ib_qp_init_attr *attr,
+			 const struct ib_qp *qp,
+			 struct uverbs_attr_array *common)
+{
+	struct ib_uverbs_ioctl_create_qp_resp resp = {
+		.qpn = qp->qp_num,
+		.max_recv_sge    = attr->cap.max_recv_sge,
+		.max_send_sge    = attr->cap.max_send_sge,
+		.max_recv_wr     = attr->cap.max_recv_wr,
+		.max_send_wr     = attr->cap.max_send_wr,
+		.max_inline_data = attr->cap.max_inline_data};
+
+	return uverbs_copy_to(common, CREATE_QP_RESP, &resp);
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_create_qp_spec,
+	UVERBS_ATTR_IDR(CREATE_QP_HANDLE, UVERBS_TYPE_QP, UVERBS_ACCESS_NEW,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_QP_PD_HANDLE, UVERBS_TYPE_PD, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_QP_SEND_CQ, UVERBS_TYPE_CQ, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_QP_RECV_CQ, UVERBS_TYPE_CQ, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_QP_SRQ, UVERBS_TYPE_SRQ, UVERBS_ACCESS_READ),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_USER_HANDLE, u64),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_CMD, struct ib_uverbs_ioctl_create_qp),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_CMD_FLAGS, u32),
+	UVERBS_ATTR_PTR_OUT(CREATE_QP_RESP, struct ib_uverbs_ioctl_create_qp_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_create_qp_handler(struct ib_device *ib_dev,
+				    struct ib_uverbs_file *file,
+				    struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_ucontext *ucontext = file->ucontext;
+	struct ib_uqp_object           *obj;
+	struct ib_udata uhw;
+	int ret;
+	u64 user_handle = 0;
+	u32 create_flags = 0;
+	struct ib_uverbs_ioctl_create_qp cmd;
+	struct ib_qp_init_attr attr = {};
+	struct ib_qp                   *qp;
+	struct ib_pd			*pd;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_CREATE_QP))
+		return -EOPNOTSUPP;
+
+	ret = uverbs_copy_from(&cmd, common, CREATE_QP_CMD);
+	if (ret)
+		return ret;
+
+	/* Optional params */
+	if (uverbs_copy_from(&create_flags, common, CREATE_QP_CMD_FLAGS) == -EFAULT ||
+	    uverbs_copy_from(&user_handle, common, CREATE_QP_USER_HANDLE) == -EFAULT)
+		return -EFAULT;
+
+	if (cmd.qp_type == IB_QPT_XRC_INI) {
+		cmd.max_recv_wr = 0;
+		cmd.max_recv_sge = 0;
+	}
+
+	ret = qp_fill_attrs(&attr, ucontext, &cmd, create_flags);
+	if (ret)
+		return ret;
+
+	pd = common->attrs[CREATE_QP_PD_HANDLE].obj_attr.uobject->object;
+	attr.send_cq = common->attrs[CREATE_QP_SEND_CQ].obj_attr.uobject->object;
+	attr.recv_cq = common->attrs[CREATE_QP_RECV_CQ].obj_attr.uobject->object;
+	if (uverbs_is_valid(common, CREATE_QP_SRQ))
+		attr.srq = common->attrs[CREATE_QP_SRQ].obj_attr.uobject->object;
+	obj = (struct ib_uqp_object *)common->attrs[CREATE_QP_HANDLE].obj_attr.uobject;
+
+	obj->uxrcd = NULL;
+	if (attr.srq && attr.srq->srq_type != IB_SRQT_BASIC)
+		return -EINVAL;
+
+	qp_init_uqp(obj);
+	create_udata(ctx, num, &uhw);
+	qp = pd->device->create_qp(pd, &attr, &uhw);
+	if (IS_ERR(qp))
+		return PTR_ERR(qp);
+	qp->real_qp	  = qp;
+	qp->device	  = pd->device;
+	qp->pd		  = pd;
+	qp->send_cq	  = attr.send_cq;
+	qp->recv_cq	  = attr.recv_cq;
+	qp->srq		  = attr.srq;
+	qp->event_handler = attr.event_handler;
+	qp->qp_context	  = attr.qp_context;
+	qp->qp_type	  = attr.qp_type;
+	atomic_set(&qp->usecnt, 0);
+	atomic_inc(&pd->usecnt);
+	atomic_inc(&attr.send_cq->usecnt);
+	if (attr.recv_cq)
+		atomic_inc(&attr.recv_cq->usecnt);
+	if (attr.srq)
+		atomic_inc(&attr.srq->usecnt);
+	qp->uobject = &obj->uevent.uobject;
+	obj->uevent.uobject.object = qp;
+	obj->uevent.uobject.user_handle = user_handle;
+
+	ret = qp_write_resp(&attr, qp, common);
+	if (ret) {
+		ib_destroy_qp(qp);
+		return ret;
+	}
+
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_create_qp_xrc_tgt_spec,
+	UVERBS_ATTR_IDR(CREATE_QP_XRC_TGT_HANDLE, UVERBS_TYPE_QP, UVERBS_ACCESS_NEW,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(CREATE_QP_XRC_TGT_XRCD, UVERBS_TYPE_XRCD, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_XRC_TGT_USER_HANDLE, u64),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_XRC_TGT_CMD, struct ib_uverbs_ioctl_create_qp),
+	UVERBS_ATTR_PTR_IN(CREATE_QP_XRC_TGT_CMD_FLAGS, u32),
+	UVERBS_ATTR_PTR_OUT(CREATE_QP_XRC_TGT_RESP, struct ib_uverbs_ioctl_create_qp_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_create_qp_xrc_tgt_handler(struct ib_device *ib_dev,
+					    struct ib_uverbs_file *file,
+					    struct uverbs_attr_array *ctx,
+					    size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_ucontext *ucontext = file->ucontext;
+	struct ib_uqp_object           *obj;
+	int ret;
+	u64 user_handle = 0;
+	u32 create_flags = 0;
+	struct ib_uverbs_ioctl_create_qp cmd;
+	struct ib_qp_init_attr attr = {};
+	struct ib_qp                   *qp;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_CREATE_QP))
+		return -EOPNOTSUPP;
+
+	ret = uverbs_copy_from(&cmd, common, CREATE_QP_XRC_TGT_CMD);
+	if (ret)
+		return ret;
+
+	/* Optional params */
+	if (uverbs_copy_from(&create_flags, common, CREATE_QP_CMD_FLAGS) == -EFAULT ||
+	    uverbs_copy_from(&user_handle, common, CREATE_QP_USER_HANDLE) == -EFAULT)
+		return -EFAULT;
+
+	ret = qp_fill_attrs(&attr, ucontext, &cmd, create_flags);
+	if (ret)
+		return ret;
+
+	obj = (struct ib_uqp_object *)common->attrs[CREATE_QP_HANDLE].obj_attr.uobject;
+	obj->uxrcd = container_of(common->attrs[CREATE_QP_XRC_TGT_XRCD].obj_attr.uobject,
+				  struct ib_uxrcd_object, uobject);
+	attr.xrcd = obj->uxrcd->uobject.object;
+
+	qp_init_uqp(obj);
+	qp = ib_create_qp(NULL, &attr);
+	if (IS_ERR(qp))
+		return PTR_ERR(qp);
+	qp->uobject = &obj->uevent.uobject;
+	obj->uevent.uobject.object = qp;
+	obj->uevent.uobject.user_handle = user_handle;
+	atomic_inc(&obj->uxrcd->refcnt);
+
+	ret = qp_write_resp(&attr, qp, common);
+	if (ret) {
+		ib_destroy_qp(qp);
+		return ret;
+	}
+
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_destroy_qp_spec,
+	UVERBS_ATTR_IDR(DESTROY_QP_HANDLE, UVERBS_TYPE_QP,
+			UVERBS_ACCESS_DESTROY,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_OUT(DESTROY_QP_EVENTS_REPORTED,
+			    __u32,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_destroy_qp_handler(struct ib_device *ib_dev,
+				     struct ib_uverbs_file *file,
+				     struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_uobject *uobj =
+		common->attrs[DESTROY_QP_HANDLE].obj_attr.uobject;
+	struct ib_uqp_object *obj = container_of(uobj, struct ib_uqp_object,
+						 uevent.uobject);
+	int ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_DESTROY_QP))
+		return -EOPNOTSUPP;
+
+	ret = rdma_explicit_destroy(uobj);
+	if (ret)
+		return ret;
+
+	WARN_ON(uverbs_copy_to(common, DESTROY_QP_EVENTS_REPORTED,
+			       &obj->uevent.events_reported));
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_modify_qp_spec,
+	UVERBS_ATTR_IDR(MODIFY_QP_HANDLE, UVERBS_TYPE_QP, UVERBS_ACCESS_WRITE,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_STATE, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_CUR_STATE, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_EN_SQD_ASYNC_NOTIFY, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_ACCESS_FLAGS, u32),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_PKEY_INDEX, u16),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_PORT, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_QKEY, u32),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_AV, struct ib_uverbs_qp_dest),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_PATH_MTU, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_TIMEOUT, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_RETRY_CNT, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_RNR_RETRY, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_RQ_PSN, u32),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_MAX_RD_ATOMIC, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_ALT_PATH, struct ib_uverbs_ioctl_qp_alt_path),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_MIN_RNR_TIMER, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_SQ_PSN, u32),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_MAX_DEST_RD_ATOMIC, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_PATH_MIG_STATE, u8),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_DEST_QPN, u32),
+	UVERBS_ATTR_PTR_IN(MODIFY_QP_RATE_LIMIT, u32));
+
+static int uverbs_modify_qp_handler(struct ib_device *ib_dev,
+				    struct ib_uverbs_file *file,
+				    struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_udata            uhw;
+	struct ib_qp              *qp;
+	struct ib_qp_attr         *attr;
+	struct ib_uverbs_qp_dest  av;
+	struct ib_uverbs_ioctl_qp_alt_path alt_path;
+	u32 attr_mask = 0;
+	int ret = 0;
+
+	qp = common->attrs[MODIFY_QP_HANDLE].obj_attr.uobject->object;
+	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
+	if (!attr)
+		return -ENOMEM;
+
+#define MODIFY_QP_CPY(_param, _fld, _attr)				\
+	({								\
+		int __ret = uverbs_copy_from(_fld, common, _param);	\
+		if (!__ret)						\
+			attr_mask |= _attr;				\
+		__ret == -EFAULT ? __ret : 0;				\
+	})
+
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_STATE, &attr->qp_state,
+				   IB_QP_STATE);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_CUR_STATE, &attr->cur_qp_state,
+				   IB_QP_CUR_STATE);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_EN_SQD_ASYNC_NOTIFY,
+				   &attr->en_sqd_async_notify,
+				   IB_QP_EN_SQD_ASYNC_NOTIFY);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_ACCESS_FLAGS,
+				   &attr->qp_access_flags, IB_QP_ACCESS_FLAGS);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_PKEY_INDEX, &attr->pkey_index,
+				   IB_QP_PKEY_INDEX);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_PORT, &attr->port_num, IB_QP_PORT);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_QKEY, &attr->qkey, IB_QP_QKEY);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_PATH_MTU, &attr->path_mtu,
+				   IB_QP_PATH_MTU);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_TIMEOUT, &attr->timeout,
+				   IB_QP_TIMEOUT);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_RETRY_CNT, &attr->retry_cnt,
+				   IB_QP_RETRY_CNT);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_RNR_RETRY, &attr->rnr_retry,
+				   IB_QP_RNR_RETRY);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_RQ_PSN, &attr->rq_psn,
+				   IB_QP_RQ_PSN);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_MAX_RD_ATOMIC,
+				   &attr->max_rd_atomic,
+				   IB_QP_MAX_QP_RD_ATOMIC);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_MIN_RNR_TIMER,
+				   &attr->min_rnr_timer, IB_QP_MIN_RNR_TIMER);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_SQ_PSN, &attr->sq_psn,
+				   IB_QP_SQ_PSN);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_MAX_DEST_RD_ATOMIC,
+				   &attr->max_dest_rd_atomic,
+				   IB_QP_MAX_DEST_RD_ATOMIC);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_PATH_MIG_STATE,
+				   &attr->path_mig_state, IB_QP_PATH_MIG_STATE);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_DEST_QPN, &attr->dest_qp_num,
+				   IB_QP_DEST_QPN);
+	ret = ret ?: MODIFY_QP_CPY(MODIFY_QP_RATE_LIMIT, &attr->rate_limit,
+				   IB_QP_RATE_LIMIT);
+
+	if (ret)
+		goto err;
+
+	ret = uverbs_copy_from(&av, common, MODIFY_QP_AV);
+	if (!ret) {
+		attr_mask |= IB_QP_AV;
+		memcpy(attr->ah_attr.grh.dgid.raw, av.dgid, 16);
+		attr->ah_attr.grh.flow_label        = av.flow_label;
+		attr->ah_attr.grh.sgid_index        = av.sgid_index;
+		attr->ah_attr.grh.hop_limit         = av.hop_limit;
+		attr->ah_attr.grh.traffic_class     = av.traffic_class;
+		attr->ah_attr.ib.dlid		    = av.dlid;
+		attr->ah_attr.sl		    = av.sl;
+		attr->ah_attr.ib.src_path_bits	    = av.src_path_bits;
+		attr->ah_attr.static_rate	    = av.static_rate;
+		attr->ah_attr.ah_flags		    = av.is_global ? IB_AH_GRH : 0;
+		attr->ah_attr.port_num		    = av.port_num;
+	} else if (ret == -EFAULT) {
+		goto err;
+	}
+
+	ret = uverbs_copy_from(&alt_path, common, MODIFY_QP_ALT_PATH);
+	if (!ret) {
+		attr_mask |= IB_QP_ALT_PATH;
+		memcpy(attr->alt_ah_attr.grh.dgid.raw, alt_path.dest.dgid, 16);
+		attr->alt_ah_attr.grh.flow_label    = alt_path.dest.flow_label;
+		attr->alt_ah_attr.grh.sgid_index    = alt_path.dest.sgid_index;
+		attr->alt_ah_attr.grh.hop_limit     = alt_path.dest.hop_limit;
+		attr->alt_ah_attr.grh.traffic_class = alt_path.dest.traffic_class;
+		attr->alt_ah_attr.ib.dlid	    = alt_path.dest.dlid;
+		attr->alt_ah_attr.sl		    = alt_path.dest.sl;
+		attr->alt_ah_attr.ib.src_path_bits  = alt_path.dest.src_path_bits;
+		attr->alt_ah_attr.static_rate       = alt_path.dest.static_rate;
+		attr->alt_ah_attr.ah_flags	    = alt_path.dest.is_global ? IB_AH_GRH : 0;
+		attr->alt_ah_attr.port_num	    = alt_path.dest.port_num;
+		attr->alt_pkey_index		    = alt_path.pkey_index;
+		attr->alt_port_num		    = alt_path.port_num;
+		attr->alt_timeout		    = alt_path.timeout;
+	} else if (ret == -EFAULT) {
+		goto err;
+	}
+
+	create_udata(ctx, num, &uhw);
+
+	if (qp->real_qp == qp) {
+		if (attr_mask & IB_QP_AV) {
+			ret = ib_resolve_eth_dmac(qp->device, &attr->ah_attr);
+			if (ret)
+				goto err;
+		}
+		ret = qp->device->modify_qp(qp, attr,
+					    modify_qp_mask(qp->qp_type,
+							   attr_mask),
+					    &uhw);
+	} else {
+		ret = ib_modify_qp(qp, attr, modify_qp_mask(qp->qp_type,
+							    attr_mask));
+	}
+
+	if (ret)
+		goto err;
+
+	return 0;
+err:
+	kfree(attr);
+	return ret;
+}
+
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_query_qp_spec, 
+	UVERBS_ATTR_IDR(QUERY_QP_HANDLE,
+			UVERBS_TYPE_QP,
+			UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(QUERY_QP_ATTR_MASK, u32), 
+	UVERBS_ATTR_PTR_OUT(QUERY_QP_RESP,
+			    struct ib_uverbs_query_qp_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_query_qp_handler(struct ib_device *ib_dev,
+				   struct ib_uverbs_file *file,
+				   struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_qp              *qp;
+	u32 attr_mask = 0;
+	int ret;
+
+	struct ib_qp_attr              *attr;
+	struct ib_qp_init_attr         *init_attr;
+	struct ib_uverbs_query_qp_resp resp;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_QUERY_QP))
+		return -EOPNOTSUPP;
+
+	attr      = kmalloc(sizeof *attr, GFP_KERNEL);
+	init_attr = kmalloc(sizeof *init_attr, GFP_KERNEL);
+	if (!attr || !init_attr)
+		return -ENOMEM;
+
+	uverbs_copy_from(&attr_mask, common, QUERY_QP_ATTR_MASK);
+	qp = common->attrs[QUERY_QP_HANDLE].obj_attr.uobject->object;
+
+	ret = ib_query_qp(qp, attr, attr_mask, init_attr);
+	if (ret)
+		return ret;
+
+	memset(&resp, 0, sizeof resp);
+
+	resp.qp_state               = attr->qp_state;
+	resp.cur_qp_state           = attr->cur_qp_state;
+	resp.path_mtu               = attr->path_mtu;
+	resp.path_mig_state         = attr->path_mig_state;
+	resp.qkey                   = attr->qkey;
+	resp.rq_psn                 = attr->rq_psn;
+	resp.sq_psn                 = attr->sq_psn;
+	resp.dest_qp_num            = attr->dest_qp_num;
+	resp.qp_access_flags        = attr->qp_access_flags;
+	resp.pkey_index             = attr->pkey_index;
+	resp.alt_pkey_index         = attr->alt_pkey_index;
+	resp.sq_draining            = attr->sq_draining;
+	resp.max_rd_atomic          = attr->max_rd_atomic;
+	resp.max_dest_rd_atomic     = attr->max_dest_rd_atomic;
+	resp.min_rnr_timer          = attr->min_rnr_timer;
+	resp.port_num               = attr->port_num;
+	resp.timeout                = attr->timeout;
+	resp.retry_cnt              = attr->retry_cnt;
+	resp.rnr_retry              = attr->rnr_retry;
+	resp.alt_port_num           = attr->alt_port_num;
+	resp.alt_timeout            = attr->alt_timeout;
+
+	memcpy(resp.dest.dgid, attr->ah_attr.grh.dgid.raw, 16);
+	resp.dest.flow_label        = attr->ah_attr.grh.flow_label;
+	resp.dest.sgid_index        = attr->ah_attr.grh.sgid_index;
+	resp.dest.hop_limit         = attr->ah_attr.grh.hop_limit;
+	resp.dest.traffic_class     = attr->ah_attr.grh.traffic_class;
+	resp.dest.dlid              = attr->ah_attr.ib.dlid;
+	resp.dest.sl                = attr->ah_attr.sl;
+	resp.dest.src_path_bits     = attr->ah_attr.ib.src_path_bits;
+	resp.dest.static_rate       = attr->ah_attr.static_rate;
+	resp.dest.is_global         = !!(attr->ah_attr.ah_flags & IB_AH_GRH);
+	resp.dest.port_num          = attr->ah_attr.port_num;
+
+	memcpy(resp.alt_dest.dgid, attr->alt_ah_attr.grh.dgid.raw, 16);
+	resp.alt_dest.flow_label    = attr->alt_ah_attr.grh.flow_label;
+	resp.alt_dest.sgid_index    = attr->alt_ah_attr.grh.sgid_index;
+	resp.alt_dest.hop_limit     = attr->alt_ah_attr.grh.hop_limit;
+	resp.alt_dest.traffic_class = attr->alt_ah_attr.grh.traffic_class;
+	resp.alt_dest.dlid          = attr->alt_ah_attr.ib.dlid;
+	resp.alt_dest.sl            = attr->alt_ah_attr.sl;
+	resp.alt_dest.src_path_bits = attr->alt_ah_attr.ib.src_path_bits;
+	resp.alt_dest.static_rate   = attr->alt_ah_attr.static_rate;
+	resp.alt_dest.is_global     = !!(attr->alt_ah_attr.ah_flags & IB_AH_GRH);
+	resp.alt_dest.port_num      = attr->alt_ah_attr.port_num;
+
+	resp.max_send_wr            = init_attr->cap.max_send_wr;
+	resp.max_recv_wr            = init_attr->cap.max_recv_wr;
+	resp.max_send_sge           = init_attr->cap.max_send_sge;
+	resp.max_recv_sge           = init_attr->cap.max_recv_sge;
+	resp.max_inline_data        = init_attr->cap.max_inline_data;
+	resp.sq_sig_all             = init_attr->sq_sig_type == IB_SIGNAL_ALL_WR;
+
+	if (uverbs_copy_to(common, QUERY_QP_RESP, &resp))
+		return -EFAULT;
+
+	return 0;
+}
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0,
 					  sizeof(struct ib_uverbs_completion_event_file),
@@ -893,7 +1400,25 @@ DECLARE_UVERBS_TYPE(uverbs_type_cq,
 
 DECLARE_UVERBS_TYPE(uverbs_type_qp,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_uqp_object), 0,
-					      uverbs_free_qp));
+					      uverbs_free_qp),
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_ACTION(UVERBS_QP_CREATE,
+					  uverbs_create_qp_handler,
+					  &uverbs_create_qp_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_QP_CREATE_XRC_TGT,
+					  uverbs_create_qp_xrc_tgt_handler,
+					  &uverbs_create_qp_xrc_tgt_spec),
+			ADD_UVERBS_ACTION(UVERBS_QP_MODIFY,
+					  uverbs_modify_qp_handler,
+					  &uverbs_modify_qp_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_QP_DESTROY,
+					  uverbs_destroy_qp_handler,
+					  &uverbs_destroy_qp_spec),
+			ADD_UVERBS_ACTION(UVERBS_QP_QUERY,
+					  uverbs_query_qp_handler,
+					  &uverbs_query_qp_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_mw,
 		    &UVERBS_TYPE_ALLOC_IDR(0, uverbs_free_mw));
