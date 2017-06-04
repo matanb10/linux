@@ -684,6 +684,162 @@ static DECLARE_UVERBS_ATTR_SPEC(
 			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
 
 static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_reg_mr_spec,
+	UVERBS_ATTR_IDR(REG_MR_HANDLE, UVERBS_TYPE_MR, UVERBS_ACCESS_NEW,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(REG_MR_PD_HANDLE, UVERBS_TYPE_PD, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(REG_MR_CMD, struct ib_uverbs_ioctl_reg_mr,
+			   UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_OUT(REG_MR_RESP, struct ib_uverbs_ioctl_reg_mr_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_reg_mr_handler(struct ib_device *ib_dev,
+				 struct ib_uverbs_file *file,
+				 struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_uverbs_ioctl_reg_mr		cmd;
+	struct ib_uverbs_ioctl_reg_mr_resp	resp;
+	struct ib_udata uhw;
+	struct ib_uobject *uobject;
+	struct ib_pd                *pd;
+	struct ib_mr                *mr;
+	int                          ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_REG_MR))
+		return -EOPNOTSUPP;
+
+	if (uverbs_copy_from(&cmd, common, REG_MR_CMD))
+		return -EFAULT;
+
+	if ((cmd.start & ~PAGE_MASK) != (cmd.hca_va & ~PAGE_MASK))
+		return -EINVAL;
+
+	ret = ib_check_mr_access(cmd.access_flags);
+	if (ret)
+		return ret;
+
+	/* Temporary, only until drivers get the new uverbs_attr_array */
+	create_udata(ctx, num, &uhw);
+
+	uobject = common->attrs[REG_MR_HANDLE].obj_attr.uobject;
+	pd = common->attrs[REG_MR_PD_HANDLE].obj_attr.uobject->object;
+
+	if (cmd.access_flags & IB_ACCESS_ON_DEMAND) {
+		if (!(pd->device->attrs.device_cap_flags &
+		      IB_DEVICE_ON_DEMAND_PAGING)) {
+			pr_debug("ODP support not available\n");
+			return -EINVAL;
+		}
+	}
+
+	mr = pd->device->reg_user_mr(pd, cmd.start, cmd.length, cmd.hca_va,
+				     cmd.access_flags, &uhw);
+	if (IS_ERR(mr))
+		return PTR_ERR(mr);
+
+	mr->device  = pd->device;
+	mr->pd      = pd;
+	mr->uobject = uobject;
+	atomic_inc(&pd->usecnt);
+	uobject->object = mr;
+
+	resp.lkey      = mr->lkey;
+	resp.rkey      = mr->rkey;
+
+	if (uverbs_copy_to(common, REG_MR_RESP, &resp)) {
+		ret = -EFAULT;
+		goto err;
+	}
+
+	return 0;
+
+err:
+	ib_dereg_mr(mr);
+	return ret;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_rereg_mr_spec,
+	UVERBS_ATTR_IDR(REREG_MR_HANDLE, UVERBS_TYPE_MR, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_IDR(REREG_MR_PD_HANDLE, UVERBS_TYPE_PD, UVERBS_ACCESS_READ,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_IN(REREG_MR_CMD, struct ib_uverbs_rereg_mr,
+			   UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)),
+	UVERBS_ATTR_PTR_OUT(REG_MR_RESP, struct ib_uverbs_rereg_mr_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_rereg_mr_handler(struct ib_device *ib_dev,
+				   struct ib_uverbs_file *file,
+				   struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+
+	struct ib_udata                 uhw;
+	struct ib_uverbs_rereg_mr       cmd;
+	struct ib_uverbs_rereg_mr_resp  resp;
+	struct ib_mr                    *mr;
+	struct ib_pd                    *pd = NULL;
+	struct ib_pd                    *old_pd;
+	int                             ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_REREG_MR))
+		return -EOPNOTSUPP;
+
+	if (uverbs_copy_from(&cmd, common, REREG_MR_CMD))
+		return -EFAULT;
+
+	if (cmd.flags & ~IB_MR_REREG_SUPPORTED || !cmd.flags)
+		return -EINVAL;
+
+	if ((cmd.flags & IB_MR_REREG_TRANS) &&
+	    (!cmd.start || !cmd.hca_va || 0 >= cmd.length ||
+	     (cmd.start & ~PAGE_MASK) != (cmd.hca_va & ~PAGE_MASK)))
+		return -EINVAL;
+
+	/* Temporary, only until drivers get the new uverbs_attr_array */
+	create_udata(ctx, num, &uhw);
+
+	mr = common->attrs[REREG_MR_HANDLE].obj_attr.uobject->object;
+	pd = common->attrs[REREG_MR_PD_HANDLE].obj_attr.uobject->object;
+
+	if (cmd.flags & IB_MR_REREG_ACCESS) {
+		ret = ib_check_mr_access(cmd.access_flags);
+		if (ret)
+			return -EFAULT;
+	}
+
+	old_pd = mr->pd;
+	ret = mr->device->rereg_user_mr(mr, cmd.flags, cmd.start,
+					cmd.length, cmd.hca_va,
+					cmd.access_flags, pd, &uhw);
+	if (!ret) {
+		if (cmd.flags & IB_MR_REREG_PD) {
+			atomic_inc(&pd->usecnt);
+			mr->pd = pd;
+			atomic_dec(&old_pd->usecnt);
+		}
+	} else
+		return -EFAULT;
+
+	memset(&resp, 0, sizeof(resp));
+	resp.lkey      = mr->lkey;
+	resp.rkey      = mr->rkey;
+
+	if (uverbs_copy_to(common, REREG_MR_RESP, &resp))
+		return -EFAULT;
+
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_dereg_mr_spec,
+	UVERBS_ATTR_IDR(DEREG_MR_HANDLE, UVERBS_TYPE_MR, UVERBS_ACCESS_DESTROY,
+			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static DECLARE_UVERBS_ATTR_SPEC(
 	uverbs_create_comp_channel_spec,
 	UVERBS_ATTR_FD(CREATE_COMP_CHANNEL_FD, UVERBS_TYPE_COMP_CHANNEL,
 		       UVERBS_ACCESS_NEW,
@@ -744,7 +900,17 @@ DECLARE_UVERBS_TYPE(uverbs_type_mw,
 
 DECLARE_UVERBS_TYPE(uverbs_type_mr,
 		    /* 1 is used in order to free the MR after all the MWs */
-		    &UVERBS_TYPE_ALLOC_IDR(1, uverbs_free_mr));
+		    &UVERBS_TYPE_ALLOC_IDR(1, uverbs_free_mr),
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_ACTION(UVERBS_MR_REG, uverbs_reg_mr_handler,
+					  &uverbs_reg_mr_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_MR_DEREG,
+					  uverbs_empty_dealloc_handler,
+					  &uverbs_dereg_mr_spec),
+			ADD_UVERBS_ACTION(UVERBS_MR_REREG,
+					  uverbs_rereg_mr_handler,
+					  &uverbs_rereg_mr_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_srq,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_usrq_object), 0,

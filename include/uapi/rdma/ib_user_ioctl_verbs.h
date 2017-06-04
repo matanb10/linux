@@ -88,6 +88,24 @@ enum uverbs_dealloc_pd_cmd_attr_ids {
 	DEALLOC_PD_HANDLE,
 };
 
+enum uverbs_reg_mr_cmd_attr_ids {
+	REG_MR_HANDLE,
+	REG_MR_PD_HANDLE,
+	REG_MR_CMD,
+	REG_MR_RESP
+};
+
+enum uverbs_rereg_mr_cmd_attr_ids {
+	REREG_MR_HANDLE,
+	REREG_MR_PD_HANDLE,
+	REREG_MR_CMD,
+	REREG_MR_RESP
+};
+
+enum uverbs_dereg_mr_cmd_attr_ids {
+	DEREG_MR_HANDLE,
+};
+
 enum uverbs_create_comp_channel_cmd_attr_ids {
 	CREATE_COMP_CHANNEL_FD,
 };
@@ -116,6 +134,12 @@ enum uverbs_actions_device_ops {
 enum uverbs_actions_pd_ops {
 	UVERBS_PD_ALLOC,
 	UVERBS_PD_DEALLOC
+};
+
+enum uverbs_actions_mr_ops {
+	UVERBS_MR_REG,
+	UVERBS_MR_DEREG,
+	UVERBS_MR_REREG,
 };
 
 enum uverbs_actions_comp_channel_ops {
