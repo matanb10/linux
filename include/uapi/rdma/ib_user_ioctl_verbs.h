@@ -88,6 +88,10 @@ enum uverbs_dealloc_pd_cmd_attr_ids {
 	DEALLOC_PD_HANDLE,
 };
 
+enum uverbs_create_comp_channel_cmd_attr_ids {
+	CREATE_COMP_CHANNEL_FD,
+};
+
 enum uverbs_create_cq_cmd_attr_ids {
 	CREATE_CQ_HANDLE,
 	CREATE_CQ_CQE,
@@ -112,6 +116,10 @@ enum uverbs_actions_device_ops {
 enum uverbs_actions_pd_ops {
 	UVERBS_PD_ALLOC,
 	UVERBS_PD_DEALLOC
+};
+
+enum uverbs_actions_comp_channel_ops {
+	UVERBS_COMP_CHANNEL_CREATE,
 };
 
 enum uverbs_actions_cq_ops {

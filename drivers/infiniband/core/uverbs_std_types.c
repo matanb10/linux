@@ -683,12 +683,45 @@ static DECLARE_UVERBS_ATTR_SPEC(
 			UVERBS_ACCESS_DESTROY,
 			UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
 
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_create_comp_channel_spec,
+	UVERBS_ATTR_FD(CREATE_COMP_CHANNEL_FD, UVERBS_TYPE_COMP_CHANNEL,
+		       UVERBS_ACCESS_NEW,
+		       UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_create_comp_channel_handler(struct ib_device *ib_dev,
+					      struct ib_uverbs_file *file,
+					      struct uverbs_attr_array *ctx,
+					      size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_uverbs_completion_event_file *ev_file;
+	struct ib_uobject *uobj =
+		common->attrs[CREATE_COMP_CHANNEL_FD].obj_attr.uobject;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL <<
+	      IB_USER_VERBS_CMD_CREATE_COMP_CHANNEL))
+		return -EOPNOTSUPP;
+
+	kref_get(&uobj->ref);
+	ev_file = container_of(uobj,
+			       struct ib_uverbs_completion_event_file,
+			       uobj_file.uobj);
+	ib_uverbs_init_event_queue(&ev_file->ev_queue);
+
+	return 0;
+}
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0,
 					  sizeof(struct ib_uverbs_completion_event_file),
 					  uverbs_hot_unplug_completion_event_file,
 					  &uverbs_event_fops,
-					  "[infinibandevent]", O_RDONLY));
+					  "[infinibandevent]", O_RDONLY),
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_ACTION(UVERBS_COMP_CHANNEL_CREATE,
+					  uverbs_create_comp_channel_handler,
+					  &uverbs_create_comp_channel_spec)));
 
 DECLARE_UVERBS_TYPE(uverbs_type_cq,
 		    &UVERBS_TYPE_ALLOC_IDR_SZ(sizeof(struct ib_ucq_object), 0,
