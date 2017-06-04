@@ -60,6 +60,26 @@ enum {
 	UVERBS_UHW_OUT,
 };
 
+enum uverbs_get_context_cmd_attr_ids {
+	GET_CONTEXT_RESP,
+};
+
+enum uverbs_query_device_cmd_attr_ids {
+	QUERY_DEVICE_RESP,
+	QUERY_DEVICE_ODP,
+	QUERY_DEVICE_TIMESTAMP_MASK,
+	QUERY_DEVICE_HCA_CORE_CLOCK,
+	QUERY_DEVICE_CAP_FLAGS,
+	QUERY_DEVICE_RSS,
+	QUERY_DEVICE_WQ_TYPE,
+	QUERY_DEVICE_RAW_PACKET,
+};
+
+enum uverbs_query_port_cmd_attr_ids {
+	QUERY_PORT_PORT_NUM,
+	QUERY_PORT_RESP,
+};
+
 enum uverbs_create_cq_cmd_attr_ids {
 	CREATE_CQ_HANDLE,
 	CREATE_CQ_CQE,
@@ -73,6 +93,12 @@ enum uverbs_create_cq_cmd_attr_ids {
 enum uverbs_destroy_cq_cmd_attr_ids {
 	DESTROY_CQ_HANDLE,
 	DESTROY_CQ_RESP,
+};
+
+enum uverbs_actions_device_ops {
+	UVERBS_DEVICE_ALLOC_CONTEXT,
+	UVERBS_DEVICE_QUERY,
+	UVERBS_DEVICE_PORT_QUERY,
 };
 
 enum uverbs_actions_cq_ops {

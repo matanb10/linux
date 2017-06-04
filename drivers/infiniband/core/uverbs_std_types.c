@@ -37,6 +37,7 @@
 #include <linux/file.h>
 #include "rdma_core.h"
 #include "uverbs.h"
+#include "core_priv.h"
 
 static int uverbs_free_ah(struct ib_uobject *uobject,
 			  enum rdma_remove_reason why)
@@ -383,6 +384,251 @@ static int uverbs_destroy_cq_handler(struct ib_device *ib_dev,
 	return uverbs_copy_to(common, DESTROY_CQ_RESP, &resp);
 }
 
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_get_context_spec,
+	UVERBS_ATTR_PTR_OUT(GET_CONTEXT_RESP,
+			    struct ib_uverbs_get_context_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_get_context(struct ib_device *ib_dev,
+			      struct ib_uverbs_file *file,
+			      struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_udata uhw;
+	struct ib_uverbs_get_context_resp resp;
+	struct ib_ucontext		 *ucontext;
+	struct file			 *filp;
+	struct ib_rdmacg_object		 cg_obj;
+	int ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_GET_CONTEXT))
+		return -EOPNOTSUPP;
+
+	/* Temporary, only until drivers get the new uverbs_attr_array */
+	create_udata(ctx, num, &uhw);
+
+	mutex_lock(&file->mutex);
+
+	if (file->ucontext) {
+		ret = -EINVAL;
+		goto err;
+	}
+
+	ret = ib_rdmacg_try_charge(&cg_obj, ib_dev, RDMACG_RESOURCE_HCA_HANDLE);
+	if (ret)
+		goto err;
+
+	ucontext = ib_dev->alloc_ucontext(ib_dev, &uhw);
+	if (IS_ERR(ucontext)) {
+		ret = PTR_ERR(ucontext);
+		goto err_alloc;
+	}
+
+	ucontext->device = ib_dev;
+	ucontext->cg_obj = cg_obj;
+	/* ufile is required when some objects are released */
+	ucontext->ufile = file;
+	uverbs_initialize_ucontext(ucontext);
+
+	rcu_read_lock();
+	ucontext->tgid = get_task_pid(current->group_leader, PIDTYPE_PID);
+	rcu_read_unlock();
+	ucontext->closing = 0;
+
+#ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
+	ucontext->umem_tree = RB_ROOT;
+	init_rwsem(&ucontext->umem_rwsem);
+	ucontext->odp_mrs_count = 0;
+	INIT_LIST_HEAD(&ucontext->no_private_counters);
+
+	if (!(ib_dev->attrs.device_cap_flags & IB_DEVICE_ON_DEMAND_PAGING))
+		ucontext->invalidate_range = NULL;
+
+#endif
+
+	resp.num_comp_vectors = file->device->num_comp_vectors;
+
+	ret = get_unused_fd_flags(O_CLOEXEC);
+	if (ret < 0)
+		goto err_free;
+	resp.async_fd = ret;
+
+	filp = ib_uverbs_alloc_async_event_file(file, ib_dev);
+	if (IS_ERR(filp)) {
+		ret = PTR_ERR(filp);
+		goto err_fd;
+	}
+
+	ret = uverbs_copy_to(common, GET_CONTEXT_RESP, &resp);
+	if (ret)
+		goto err_file;
+
+	file->ucontext = ucontext;
+	ucontext->ufile = file;
+
+	fd_install(resp.async_fd, filp);
+
+	mutex_unlock(&file->mutex);
+
+	return 0;
+
+err_file:
+	ib_uverbs_free_async_event_file(file);
+	fput(filp);
+err_fd:
+	put_unused_fd(resp.async_fd);
+err_alloc:
+	ib_rdmacg_uncharge(&cg_obj, ib_dev, RDMACG_RESOURCE_HCA_HANDLE);
+err_free:
+	put_pid(ucontext->tgid);
+	ib_dev->dealloc_ucontext(ucontext);
+err:
+	mutex_unlock(&file->mutex);
+	return ret;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_query_device_spec,
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_RESP, struct ib_uverbs_query_device_resp),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_ODP, struct ib_uverbs_odp_caps),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_TIMESTAMP_MASK, u64),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_HCA_CORE_CLOCK, u64),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_CAP_FLAGS, u64),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_RSS, struct ib_uverbs_rss_caps),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_WQ_TYPE, u32),
+	UVERBS_ATTR_PTR_OUT(QUERY_DEVICE_RAW_PACKET, u32));
+
+static int uverbs_query_device_handler(struct ib_device *ib_dev,
+				       struct ib_uverbs_file *file,
+				       struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_device_attr attr = {};
+	struct ib_udata uhw;
+	int err;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_QUERY_DEVICE))
+		return -EOPNOTSUPP;
+
+	/* Temporary, only until drivers get the new uverbs_attr_array */
+	create_udata(ctx, num, &uhw);
+
+	err = ib_dev->query_device(ib_dev, &attr, &uhw);
+	if (err)
+		return err;
+
+	if (uverbs_is_valid(common, QUERY_DEVICE_RESP)) {
+		struct ib_uverbs_query_device_resp resp = {};
+
+		uverbs_copy_query_dev_fields(ib_dev, &resp, &attr);
+		if (uverbs_copy_to(common, QUERY_DEVICE_RESP, &resp))
+			return -EFAULT;
+	}
+
+#ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
+	if (uverbs_is_valid(common, QUERY_DEVICE_ODP)) {
+		struct ib_uverbs_odp_caps odp_caps;
+
+		odp_caps.general_caps = attr.odp_caps.general_caps;
+		odp_caps.per_transport_caps.rc_odp_caps =
+			attr.odp_caps.per_transport_caps.rc_odp_caps;
+		odp_caps.per_transport_caps.uc_odp_caps =
+			attr.odp_caps.per_transport_caps.uc_odp_caps;
+		odp_caps.per_transport_caps.ud_odp_caps =
+			attr.odp_caps.per_transport_caps.ud_odp_caps;
+
+		if (uverbs_copy_to(common, QUERY_DEVICE_ODP, &odp_caps))
+			return -EFAULT;
+	}
+#endif
+	if (uverbs_copy_to(common, QUERY_DEVICE_TIMESTAMP_MASK,
+			   &attr.timestamp_mask) == -EFAULT)
+		return -EFAULT;
+
+	if (uverbs_copy_to(common, QUERY_DEVICE_HCA_CORE_CLOCK,
+			   &attr.hca_core_clock) == -EFAULT)
+		return -EFAULT;
+
+	if (uverbs_copy_to(common, QUERY_DEVICE_CAP_FLAGS,
+			   &attr.device_cap_flags) == -EFAULT)
+		return -EFAULT;
+
+	if (uverbs_is_valid(common, QUERY_DEVICE_RSS)) {
+		struct ib_uverbs_rss_caps rss_caps;
+
+		rss_caps.supported_qpts = attr.rss_caps.supported_qpts;
+		rss_caps.max_rwq_indirection_tables =
+			attr.rss_caps.max_rwq_indirection_tables;
+		rss_caps.max_rwq_indirection_table_size =
+			attr.rss_caps.max_rwq_indirection_table_size;
+
+		if (uverbs_copy_to(common, QUERY_DEVICE_RSS, &rss_caps))
+			return -EFAULT;
+	}
+
+	if (uverbs_copy_to(common, QUERY_DEVICE_WQ_TYPE,
+			   &attr.max_wq_type_rq) == -EFAULT)
+		return -EFAULT;
+
+	if (uverbs_copy_to(common, QUERY_DEVICE_RAW_PACKET,
+			   &attr.raw_packet_caps) == -EFAULT)
+		return -EFAULT;
+
+	return 0;
+}
+
+static DECLARE_UVERBS_ATTR_SPEC(
+	uverbs_query_port_spec,
+	UVERBS_ATTR_PTR_IN(QUERY_PORT_PORT_NUM, __u8),
+	UVERBS_ATTR_PTR_OUT(QUERY_PORT_RESP, struct ib_uverbs_query_port_resp,
+			    UA_FLAGS(UVERBS_ATTR_SPEC_F_MANDATORY)));
+
+static int uverbs_query_port_handler(struct ib_device *ib_dev,
+				     struct ib_uverbs_file *file,
+				     struct uverbs_attr_array *ctx, size_t num)
+{
+	struct uverbs_attr_array *common = &ctx[0];
+	struct ib_uverbs_query_port_resp resp = {};
+	struct ib_port_attr              attr;
+	u8				 port_num;
+	int				 ret;
+
+	if (!(ib_dev->uverbs_cmd_mask & 1ULL << IB_USER_VERBS_CMD_QUERY_PORT))
+		return -EOPNOTSUPP;
+
+	ret = uverbs_copy_from(&port_num, common, QUERY_PORT_PORT_NUM);
+	if (ret)
+		return ret;
+
+	ret = ib_query_port(ib_dev, port_num, &attr);
+	if (ret)
+		return ret;
+
+	resp.state	     = attr.state;
+	resp.max_mtu	     = attr.max_mtu;
+	resp.active_mtu      = attr.active_mtu;
+	resp.gid_tbl_len     = attr.gid_tbl_len;
+	resp.port_cap_flags  = attr.port_cap_flags;
+	resp.max_msg_sz      = attr.max_msg_sz;
+	resp.bad_pkey_cntr   = attr.bad_pkey_cntr;
+	resp.qkey_viol_cntr  = attr.qkey_viol_cntr;
+	resp.pkey_tbl_len    = attr.pkey_tbl_len;
+	resp.lid	     = attr.lid;
+	resp.sm_lid	     = attr.sm_lid;
+	resp.lmc	     = attr.lmc;
+	resp.max_vl_num      = attr.max_vl_num;
+	resp.sm_sl	     = attr.sm_sl;
+	resp.subnet_timeout  = attr.subnet_timeout;
+	resp.init_type_reply = attr.init_type_reply;
+	resp.active_width    = attr.active_width;
+	resp.active_speed    = attr.active_speed;
+	resp.phys_state      = attr.phys_state;
+	resp.link_layer      = rdma_port_get_link_layer(ib_dev, port_num);
+
+	return uverbs_copy_to(common, QUERY_PORT_RESP, &resp);
+}
+
 DECLARE_UVERBS_TYPE(uverbs_type_comp_channel,
 		    &UVERBS_TYPE_ALLOC_FD(0,
 					  sizeof(struct ib_uverbs_completion_event_file),
@@ -438,7 +684,19 @@ DECLARE_UVERBS_TYPE(uverbs_type_pd,
 		    /* 2 is used in order to free the PD after MRs */
 		    &UVERBS_TYPE_ALLOC_IDR(2, uverbs_free_pd));
 
-DECLARE_UVERBS_TYPE(uverbs_type_device, NULL);
+DECLARE_UVERBS_TYPE(uverbs_type_device, NULL,
+		    &UVERBS_ACTIONS(
+			ADD_UVERBS_CTX_ACTION(UVERBS_DEVICE_ALLOC_CONTEXT,
+					      uverbs_get_context,
+					      &uverbs_get_context_spec,
+					      &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_DEVICE_QUERY,
+					  uverbs_query_device_handler,
+					  &uverbs_query_device_spec,
+					  &uverbs_uhw_compat_spec),
+			ADD_UVERBS_ACTION(UVERBS_DEVICE_PORT_QUERY,
+					  uverbs_query_port_handler,
+					  &uverbs_query_port_spec)));
 
 DECLARE_UVERBS_TYPES(uverbs_common_types,
 		     ADD_UVERBS_TYPE(UVERBS_TYPE_DEVICE, uverbs_type_device),
