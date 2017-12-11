@@ -334,7 +334,8 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(struct ib_device *ib_dev,
 	obj->uobject.user_handle = user_handle;
 	atomic_set(&cq->usecnt, 0);
 
-	ret = uverbs_copy_to(attrs, UVERBS_ATTR_CREATE_CQ_RESP_CQE, &cq->cqe);
+	ret = uverbs_copy_to(attrs, UVERBS_ATTR_CREATE_CQ_RESP_CQE, &cq->cqe,
+			     sizeof(cq->cqe));
 	if (ret)
 		goto err_cq;
 
@@ -387,7 +388,8 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_DESTROY)(struct ib_device *ib_dev,
 	resp.comp_events_reported  = obj->comp_events_reported;
 	resp.async_events_reported = obj->async_events_reported;
 
-	return uverbs_copy_to(attrs, UVERBS_ATTR_DESTROY_CQ_RESP, &resp);
+	return uverbs_copy_to(attrs, UVERBS_ATTR_DESTROY_CQ_RESP, &resp,
+			      sizeof(resp));
 }
 
 static DECLARE_COMMON_METHOD(UVERBS_METHOD_CQ_DESTROY,
